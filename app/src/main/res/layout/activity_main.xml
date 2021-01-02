@@ -4,10 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".Activities.MainActivity">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/main_fragment"
+        android:layout_above="@+id/navigation_bottom_bar">
+
+    </FrameLayout>
 
     <nl.joery.animatedbottombar.AnimatedBottomBar
-        android:id="@+id/bottom_bar"
+        android:id="@+id/navigation_bottom_bar"
         android:background="#FFF"
         android:layout_width="match_parent"
         android:layout_alignParentBottom="true"
