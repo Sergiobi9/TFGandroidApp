@@ -9,11 +9,13 @@ import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
@@ -22,6 +24,8 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.example.tfgapp.Entities.Concert.Concert;
+import com.example.tfgapp.Entities.Concert.ConcertHome;
+import com.example.tfgapp.Global.Api;
 import com.example.tfgapp.R;
 import com.jama.carouselview.CarouselView;
 import com.jama.carouselview.CarouselViewListener;
@@ -29,6 +33,10 @@ import com.jama.carouselview.enums.IndicatorAnimationType;
 import com.jama.carouselview.enums.OffsetType;
 
 import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class HomeFragment extends Fragment {
 
@@ -200,11 +208,26 @@ public class HomeFragment extends Fragment {
 
     private void loadConcerts() {
 
-        suggestionConcertsArrayList = new ArrayList<>();
-        suggestionConcertsArrayList.add(new Concert());
-        suggestionConcertsArrayList.add(new Concert());
-        suggestionConcertsArrayList.add(new Concert());
-        suggestionConcertsArrayList.add(new Concert());
+        Call<ArrayList<ConcertHome>> call = Api.getInstance().getAPI().getHomeConcerts("hello");
+        call.enqueue(new Callback<ArrayList<ConcertHome>>() {
+            @Override
+            public void onResponse(Call<ArrayList<ConcertHome>> call, Response<ArrayList<ConcertHome>> response) {
+                switch (response.code()) {
+                    case 200:
+                        Log.d(TAG, "Home concerts success " + response.body());
+                        break;
+                    default:
+                        Log.d(TAG, "Home concerts default " + response.code());
+                        break;
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<ConcertHome>> call, Throwable t) {
+                Log.d(TAG, "Home concerts failure " + t.getLocalizedMessage());
+            }
+        });
+
 
         mostSearchedArrayList = new ArrayList<>();
         mostSearchedArrayList.add(new Concert());
