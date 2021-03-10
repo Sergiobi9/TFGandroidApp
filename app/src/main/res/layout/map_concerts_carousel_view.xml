@@ -51,7 +51,7 @@
                     android:fontFamily="@font/lato"
                     android:textStyle="normal"
                     android:text="Palau Sant Jordi"
-                    android:textColor="@color/black"/>
+                    android:textColor="@color/grey"/>
 
                 <TextView
                     android:id="@+id/wipass_name"
@@ -76,7 +76,7 @@
                     android:gravity="right"
                     android:text="31th February 2021"
                     android:layout_marginTop="20dp"
-                    android:textColor="@color/black"/>
+                    android:textColor="@color/grey"/>
             </LinearLayout>
 
         </LinearLayout>
