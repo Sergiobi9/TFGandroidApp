@@ -26,10 +26,9 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
-import com.example.tfgapp.Activities.MainActivity;
 import com.example.tfgapp.Broadcasts.UserLocationBroadcast;
-import com.example.tfgapp.Entities.Concert;
-import com.example.tfgapp.Global.Global;
+import com.example.tfgapp.Entities.Concert.Concert;
+import com.example.tfgapp.Global.Globals;
 import com.example.tfgapp.Global.Permissions;
 import com.example.tfgapp.Global.UserLocation;
 import com.example.tfgapp.R;
@@ -210,7 +209,7 @@ public class MapFragment extends Fragment {
                             userLocation = new UserLocation(String.valueOf(location.getLatitude()), String.valueOf(location.getLongitude()));
                             focusUserInMap();
                         } else {
-                            Global.displayShortToast(context, "Error getting your location");
+                            Globals.displayShortToast(context, "Error getting your location");
                         }
                     }
                 });

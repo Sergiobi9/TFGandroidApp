@@ -63,4 +63,9 @@ dependencies {
     /* Carousel */
     implementation 'com.github.jama5262:CarouselView:1.1.0'
     implementation 'com.google.android:flexbox:2.0.1'
+
+    /* Retrofit */
+    implementation 'com.squareup.retrofit2:retrofit:2.5.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
+
 }

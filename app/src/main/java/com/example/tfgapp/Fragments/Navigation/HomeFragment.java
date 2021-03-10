@@ -1,29 +1,19 @@
 package com.example.tfgapp.Fragments.Navigation;
 
 import android.content.Context;
-import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.DisplayMetrics;
-import android.util.Log;
-import android.view.DragEvent;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
@@ -31,20 +21,12 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
-import com.example.tfgapp.Adapters.HomeAdapter;
-import com.example.tfgapp.Entities.Concert;
+import com.example.tfgapp.Entities.Concert.Concert;
 import com.example.tfgapp.R;
-import com.jama.carouselview.CarouselScrollListener;
 import com.jama.carouselview.CarouselView;
 import com.jama.carouselview.CarouselViewListener;
 import com.jama.carouselview.enums.IndicatorAnimationType;
 import com.jama.carouselview.enums.OffsetType;
-import com.yuyakaido.android.cardstackview.CardStackLayoutManager;
-import com.yuyakaido.android.cardstackview.CardStackListener;
-import com.yuyakaido.android.cardstackview.CardStackView;
-import com.yuyakaido.android.cardstackview.Direction;
-import com.yuyakaido.android.cardstackview.StackFrom;
-import com.yuyakaido.android.cardstackview.SwipeableMethod;
 
 import java.util.ArrayList;
 

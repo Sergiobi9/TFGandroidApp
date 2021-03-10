@@ -1,15 +1,10 @@
 package com.example.tfgapp.Adapters;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,7 +16,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
-import com.example.tfgapp.Entities.Concert;
+import com.example.tfgapp.Entities.Concert.Concert;
 import com.example.tfgapp.R;
 import com.makeramen.roundedimageview.RoundedImageView;
 
@@ -29,9 +24,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-import kotlin.jvm.internal.Intrinsics;
-
-import static android.view.View.GONE;
 import static java.util.Collections.emptyList;
 
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {

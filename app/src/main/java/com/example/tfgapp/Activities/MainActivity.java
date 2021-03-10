@@ -14,7 +14,7 @@ import com.example.tfgapp.Fragments.Navigation.HomeFragment;
 import com.example.tfgapp.Fragments.Navigation.MapFragment;
 import com.example.tfgapp.Fragments.Navigation.SearchFragment;
 import com.example.tfgapp.Fragments.Navigation.UserProfileFragment;
-import com.example.tfgapp.Global.Global;
+import com.example.tfgapp.Global.Globals;
 import com.example.tfgapp.Global.Permissions;
 import com.example.tfgapp.R;
 import com.karumi.dexter.Dexter;
@@ -134,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onPermissionDenied(PermissionDeniedResponse response) {
                         if (response.isPermanentlyDenied()){
-                            Global.displayShortToast(context, "Location is necessary");
+                            Globals.displayShortToast(context, "Location is necessary");
                         }
                     }
 
