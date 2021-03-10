@@ -29,6 +29,8 @@ public class ConcertHome {
     private String placeDescription;
     @SerializedName("extraDescription")
     private String extraDescription;
+    @SerializedName("concertCoverImage")
+    private String concertCoverImage;
     @SerializedName("imagesUrls")
     private ArrayList<String> imagesUrls;
     @SerializedName("artists")
@@ -122,6 +124,14 @@ public class ConcertHome {
 
     public void setExtraDescription(String extraDescription) {
         this.extraDescription = extraDescription;
+    }
+
+    public String getConcertCoverImage() {
+        return concertCoverImage;
+    }
+
+    public void setConcertCoverImage(String concertCoverImage) {
+        this.concertCoverImage = concertCoverImage;
     }
 
     public ArrayList<String> getImagesUrls() {

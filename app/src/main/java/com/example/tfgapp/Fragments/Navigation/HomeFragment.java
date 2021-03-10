@@ -46,11 +46,11 @@ public class HomeFragment extends Fragment {
 
     private CarouselView suggestionConcertsCarousel;
     private CarouselView mostSearchedCarousel;
-    private ArrayList<Concert> suggestionConcertsArrayList;
-    private ArrayList<Concert> mostSearchedArrayList;
+    private ArrayList<ConcertHome> suggestionConcertsArrayList;
+    private ArrayList<ConcertHome> mostSearchedArrayList;
 
     private ImageView viralImageView;
-
+    private int screenWidth;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -68,19 +68,80 @@ public class HomeFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_home, container, false);
         context = getContext();
 
-        loadConcerts();
-        initView();
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        screenWidth = displayMetrics.widthPixels;
+
+        getSuggestedConcerts();
+        getMostSearchedConcerts();
+        getMostWantedConcert();
 
         return view;
     }
 
-    private void initView() {
+    private void getMostWantedConcert() {
         String imageUrl = "https://images.dailyhive.com/20161031091319/Post-Malone-DHV-Brandon-Artis-Photography-9-e1477931590637.jpg";
-        /* Get screen size */
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        int width = displayMetrics.widthPixels;
 
+        CardView viralCardView = view.findViewById(R.id.viral);
+        ViewGroup.LayoutParams params = viralCardView.getLayoutParams();
+
+        params.height = (int) (screenWidth * 0.7 / 1.5);
+        params.width = (int) (screenWidth * 0.85);
+        viralCardView.setLayoutParams(params);
+
+        LinearLayout viralInfoLayout = view.findViewById(R.id.viral_info_layout);
+        params = viralInfoLayout.getLayoutParams();
+        params.width = (int) (screenWidth * 0.85);
+        viralInfoLayout.setLayoutParams(params);
+
+        viralImageView = view.findViewById(R.id.viral_image_view);
+        Glide.with(context).load(imageUrl)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
+                .listener(new RequestListener<Drawable>() {
+                    @Override
+                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                        return false;
+                    }
+                }).into(viralImageView);
+    }
+
+    private void getSuggestedConcerts() {
+
+        Call<ArrayList<ConcertHome>> call = Api.getInstance().getAPI().getHomeConcerts("hello");
+        call.enqueue(new Callback<ArrayList<ConcertHome>>() {
+            @Override
+            public void onResponse(Call<ArrayList<ConcertHome>> call, Response<ArrayList<ConcertHome>> response) {
+                switch (response.code()) {
+                    case 200:
+                        Log.d(TAG, "Home concerts success " + response.body());
+                        suggestionConcertsArrayList = response.body();
+
+                        initSuggestionsCarousel();
+                        break;
+                    default:
+                        Log.d(TAG, "Home concerts default " + response.code());
+                        break;
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<ConcertHome>> call, Throwable t) {
+                Log.d(TAG, "Home concerts failure " + t.getLocalizedMessage());
+            }
+        });
+    }
+
+    private void getMostSearchedConcerts(){
+
+    }
+
+    private void initSuggestionsCarousel(){
         if (suggestionConcertsArrayList != null && suggestionConcertsArrayList.size() != 0){
             suggestionConcertsCarousel = view.findViewById(R.id.suggestion_concerts);
 
@@ -110,7 +171,7 @@ public class HomeFragment extends Fragment {
                     concertImageLayout.setLayoutParams(params);
 
                     ImageView imageView = view.findViewById(R.id.imageView);
-                    String imageUrl = "https://images.dailyhive.com/20161031091319/Post-Malone-DHV-Brandon-Artis-Photography-9-e1477931590637.jpg";
+                    String imageUrl = suggestionConcertsArrayList.get(position).getConcertCoverImage();
 
                     Glide.with(context).load(imageUrl)
                             .diskCacheStrategy(DiskCacheStrategy.NONE)
@@ -132,6 +193,9 @@ public class HomeFragment extends Fragment {
             suggestionConcertsCarousel.show();
         }
 
+    }
+
+    private void initMostSearchedCarousel(){
         if (mostSearchedArrayList != null && mostSearchedArrayList.size() != 0){
             mostSearchedCarousel = view.findViewById(R.id.most_searched);
 
@@ -151,12 +215,12 @@ public class HomeFragment extends Fragment {
 
                     CardView concertImageLayout = view.findViewById(R.id.concert_cards);
                     params = concertImageLayout.getLayoutParams();
-                    params.height = (int) (width * 0.7 / 1.714);
-                    params.width = (int) (width * 0.7);
+                    params.height = (int) (screenWidth * 0.7 / 1.714);
+                    params.width = (int) (screenWidth * 0.7);
                     concertImageLayout.setLayoutParams(params);
 
                     ImageView imageView = view.findViewById(R.id.imageView);
-
+                    String imageUrl = mostSearchedArrayList.get(position).getConcertCoverImage();
                     Glide.with(context).load(imageUrl)
                             .diskCacheStrategy(DiskCacheStrategy.NONE)
                             .skipMemoryCache(true)
@@ -176,63 +240,5 @@ public class HomeFragment extends Fragment {
 
             mostSearchedCarousel.show();
         }
-
-        CardView viralCardView = view.findViewById(R.id.viral);
-        ViewGroup.LayoutParams params = viralCardView.getLayoutParams();
-
-        params.height = (int) (width * 0.7 / 1.5);
-        params.width = (int) (width * 0.85);
-        viralCardView.setLayoutParams(params);
-
-        LinearLayout viralInfoLayout = view.findViewById(R.id.viral_info_layout);
-        params = viralInfoLayout.getLayoutParams();
-        params.width = (int) (width * 0.85);
-        viralInfoLayout.setLayoutParams(params);
-
-        viralImageView = view.findViewById(R.id.viral_image_view);
-        Glide.with(context).load(imageUrl)
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .skipMemoryCache(true)
-                .listener(new RequestListener<Drawable>() {
-                    @Override
-                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                        return false;
-                    }
-
-                    @Override
-                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                        return false;
-                    }
-                }).into(viralImageView);
-    }
-
-    private void loadConcerts() {
-
-        Call<ArrayList<ConcertHome>> call = Api.getInstance().getAPI().getHomeConcerts("hello");
-        call.enqueue(new Callback<ArrayList<ConcertHome>>() {
-            @Override
-            public void onResponse(Call<ArrayList<ConcertHome>> call, Response<ArrayList<ConcertHome>> response) {
-                switch (response.code()) {
-                    case 200:
-                        Log.d(TAG, "Home concerts success " + response.body());
-                        break;
-                    default:
-                        Log.d(TAG, "Home concerts default " + response.code());
-                        break;
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ArrayList<ConcertHome>> call, Throwable t) {
-                Log.d(TAG, "Home concerts failure " + t.getLocalizedMessage());
-            }
-        });
-
-
-        mostSearchedArrayList = new ArrayList<>();
-        mostSearchedArrayList.add(new Concert());
-        mostSearchedArrayList.add(new Concert());
-        mostSearchedArrayList.add(new Concert());
-        mostSearchedArrayList.add(new Concert());
     }
 }
