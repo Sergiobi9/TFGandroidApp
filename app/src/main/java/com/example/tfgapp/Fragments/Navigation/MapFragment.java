@@ -5,17 +5,30 @@ import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.example.tfgapp.Activities.MainActivity;
 import com.example.tfgapp.Broadcasts.UserLocationBroadcast;
+import com.example.tfgapp.Entities.Concert;
 import com.example.tfgapp.Global.Global;
 import com.example.tfgapp.Global.Permissions;
 import com.example.tfgapp.Global.UserLocation;
@@ -29,6 +42,12 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.jama.carouselview.CarouselView;
+import com.jama.carouselview.CarouselViewListener;
+import com.jama.carouselview.enums.IndicatorAnimationType;
+import com.jama.carouselview.enums.OffsetType;
+
+import java.util.ArrayList;
 
 public class MapFragment extends Fragment {
 
@@ -42,6 +61,9 @@ public class MapFragment extends Fragment {
 
     private FusedLocationProviderClient fusedLocationProviderClient;
     private LocationRequest locationRequest;
+
+    private CarouselView concertsCarousel;
+    private ArrayList<Concert> concertsArrayList;
 
     private UserLocation userLocation;
 
@@ -93,8 +115,77 @@ public class MapFragment extends Fragment {
                 googleMap.getUiSettings().setMyLocationButtonEnabled(true);
                 googleMap.getUiSettings().setRotateGesturesEnabled(true);
 
+                showPoints();
             }
         });
+    }
+
+    private void showPoints(){
+        concertsArrayList = new ArrayList<>();
+        concertsArrayList.add(new Concert());
+        concertsArrayList.add(new Concert());
+        concertsArrayList.add(new Concert());
+        concertsArrayList.add(new Concert());
+
+        initCarrousel();
+    }
+
+    private void initCarrousel(){
+        String imageUrl = "https://images.dailyhive.com/20161031091319/Post-Malone-DHV-Brandon-Artis-Photography-9-e1477931590637.jpg";
+        /* Get screen size */
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int width = displayMetrics.widthPixels;
+
+        if (concertsArrayList != null && concertsArrayList.size() != 0){
+            concertsCarousel = view.findViewById(R.id.map_concerts_list);
+
+            concertsCarousel.setSize(concertsArrayList.size());
+            concertsCarousel.setResource(R.layout.map_concerts_carousel_view);
+            concertsCarousel.setAutoPlay(false);
+            concertsCarousel.setAutoPlayDelay(3000);
+            concertsCarousel.hideIndicator(true);
+            concertsCarousel.setIndicatorAnimationType(IndicatorAnimationType.THIN_WORM);
+            concertsCarousel.setCarouselOffset(OffsetType.CENTER);
+            concertsCarousel.setCarouselViewListener(new CarouselViewListener() {
+                @Override
+                public void onBindView(View view, final int position) {
+                    LinearLayout concertInfoLayout = view.findViewById(R.id.concert_info_layout);
+                    ViewGroup.LayoutParams params = concertInfoLayout.getLayoutParams();
+                    concertInfoLayout.setLayoutParams(params);
+
+                    CardView concertImageLayout = view.findViewById(R.id.concert_cards);
+                    params = concertImageLayout.getLayoutParams();
+                    params.height = (int) (width * 0.3);
+                    params.width = (int) (width * 0.85);
+                    concertImageLayout.setLayoutParams(params);
+
+                    ImageView imageView = view.findViewById(R.id.imageView);
+
+                    params = imageView.getLayoutParams();
+                    params.height = (int) (width * 0.3);
+                    params.width = (int) (width * 0.3);
+                    imageView.setLayoutParams(params);
+
+                    Glide.with(context).load(imageUrl)
+                            .diskCacheStrategy(DiskCacheStrategy.NONE)
+                            .skipMemoryCache(true)
+                            .listener(new RequestListener<Drawable>() {
+                                @Override
+                                public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                                    return false;
+                                }
+
+                                @Override
+                                public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                                    return false;
+                                }
+                            }).into(imageView);
+                }
+            });
+
+            concertsCarousel.show();
+        }
     }
 
 

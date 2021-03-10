@@ -12,4 +12,33 @@
         android:translationZ="-1dp"
         android:apiKey="AIzaSyAQzNWnibhgysdR80Qr9VK2T-uKEwB93fE" />
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_marginLeft="-40dp"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/concerts_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="bottom"
+            android:orientation="vertical"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="25dp"
+            android:translationZ="1dp"
+            android:tag="mMapView">
+
+            <com.jama.carouselview.CarouselView
+                android:id="@+id/map_concerts_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:elevation="5dp" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+
+
+
 </FrameLayout>
