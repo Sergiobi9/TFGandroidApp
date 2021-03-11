@@ -7,13 +7,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,9 +31,12 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.example.tfgapp.Broadcasts.UserLocationBroadcast;
 import com.example.tfgapp.Entities.Concert.Concert;
+import com.example.tfgapp.Entities.Concert.ConcertHome;
+import com.example.tfgapp.Global.Api;
 import com.example.tfgapp.Global.Globals;
 import com.example.tfgapp.Global.Permissions;
 import com.example.tfgapp.Global.UserLocation;
+import com.example.tfgapp.Global.Utils;
 import com.example.tfgapp.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationRequest;
@@ -40,6 +46,8 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.jama.carouselview.CarouselView;
 import com.jama.carouselview.CarouselViewListener;
@@ -47,6 +55,10 @@ import com.jama.carouselview.enums.IndicatorAnimationType;
 import com.jama.carouselview.enums.OffsetType;
 
 import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MapFragment extends Fragment {
 
@@ -62,9 +74,11 @@ public class MapFragment extends Fragment {
     private LocationRequest locationRequest;
 
     private CarouselView concertsCarousel;
-    private ArrayList<Concert> concertsArrayList;
+    private ArrayList<ConcertHome> concertsArrayList;
+    private int radius = 1000;
 
     private UserLocation userLocation;
+    private int screenWidth;
 
     public MapFragment() {
         // Required empty public constructor
@@ -73,6 +87,10 @@ public class MapFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        screenWidth = displayMetrics.widthPixels;
 
     }
 
@@ -114,27 +132,43 @@ public class MapFragment extends Fragment {
                 googleMap.getUiSettings().setMyLocationButtonEnabled(true);
                 googleMap.getUiSettings().setRotateGesturesEnabled(true);
 
-                showPoints();
             }
         });
     }
 
     private void showPoints(){
-        concertsArrayList = new ArrayList<>();
-        concertsArrayList.add(new Concert());
-        concertsArrayList.add(new Concert());
-        concertsArrayList.add(new Concert());
-        concertsArrayList.add(new Concert());
+        for (int i = 0; i < concertsArrayList.size(); i++) {
+            ConcertHome concertToShow = concertsArrayList.get(i);
 
-        initCarrousel();
+            googleMap.addMarker(
+                    new MarkerOptions()
+                            .position(new LatLng(concertToShow.getLatitude(), concertToShow.getLongitude()))
+                            .title(concertToShow.getName())
+                            .snippet(concertToShow.getStreet())
+                            .icon(Utils.vectorToBitmap(getResources().getDrawable(R.drawable.map_marker),
+                                    -1, 90, 90))
+
+            );
+        }
+
+        /* Add listener for markers on click */
+        googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                try {
+                    Uri gmmIntentUri = Uri.parse(String.format("google.navigation:q=%s,%s&mode=d", marker.getPosition().latitude, marker.getPosition().longitude));
+                    Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                    mapIntent.setPackage("com.google.android.apps.maps");
+                    startActivity(mapIntent);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                return false;
+            }
+        });
     }
 
     private void initCarrousel(){
-        String imageUrl = "https://images.dailyhive.com/20161031091319/Post-Malone-DHV-Brandon-Artis-Photography-9-e1477931590637.jpg";
-        /* Get screen size */
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        int width = displayMetrics.widthPixels;
 
         if (concertsArrayList != null && concertsArrayList.size() != 0){
             concertsCarousel = view.findViewById(R.id.map_concerts_list);
@@ -155,16 +189,18 @@ public class MapFragment extends Fragment {
 
                     CardView concertImageLayout = view.findViewById(R.id.concert_cards);
                     params = concertImageLayout.getLayoutParams();
-                    params.height = (int) (width * 0.3);
-                    params.width = (int) (width * 0.85);
+                    params.height = (int) (screenWidth * 0.3);
+                    params.width = (int) (screenWidth * 0.85);
                     concertImageLayout.setLayoutParams(params);
 
                     ImageView imageView = view.findViewById(R.id.imageView);
 
                     params = imageView.getLayoutParams();
-                    params.height = (int) (width * 0.3);
-                    params.width = (int) (width * 0.3);
+                    params.height = (int) (screenWidth * 0.3);
+                    params.width = (int) (screenWidth * 0.3);
                     imageView.setLayoutParams(params);
+
+                    String imageUrl = concertsArrayList.get(position).getConcertCoverImage();
 
                     Glide.with(context).load(imageUrl)
                             .diskCacheStrategy(DiskCacheStrategy.NONE)
@@ -185,6 +221,8 @@ public class MapFragment extends Fragment {
 
             concertsCarousel.show();
         }
+
+        showPoints();
     }
 
 
@@ -218,7 +256,33 @@ public class MapFragment extends Fragment {
     private void focusUserInMap(){
         if (userLocation != null && !userLocation.longitude.equals("0.0") && !userLocation.latitude.equals("0.0")) {
             googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(Double.parseDouble(userLocation.latitude), Double.parseDouble(userLocation.longitude)), 16));
+
+            createPoints();
         }
+    }
+
+    private void createPoints(){
+        Call<ArrayList<ConcertHome>> call = Api.getInstance().getAPI().getConcertsNearby(Double.parseDouble(userLocation.latitude), Double.parseDouble(userLocation.longitude), radius);
+        call.enqueue(new Callback<ArrayList<ConcertHome>>() {
+            @Override
+            public void onResponse(@NonNull Call<ArrayList<ConcertHome>> call, Response<ArrayList<ConcertHome>> response) {
+                switch (response.code()) {
+                    case 200:
+                        Log.d(TAG, "Nearby concerts successful");
+                        concertsArrayList = response.body();
+                        initCarrousel();
+                        break;
+                    default:
+                        Log.d(TAG, "Nearby concerts default " + response.code());
+                        break;
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ArrayList<ConcertHome>> call, Throwable t) {
+                Log.d(TAG, "Nearby concerts onFailure " + t.getLocalizedMessage());
+            }
+        });
     }
 
     private void buildLocationRequest() {

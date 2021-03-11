@@ -12,4 +12,7 @@ public interface ApiInterface {
 
     @GET("/concert/home/{userId}")
     Call<ArrayList<ConcertHome>> getHomeConcerts(@Path("userId") String userId);
+
+    @GET("/concert/map/{userLatitude}/{userLongitude}/{radius}")
+    Call<ArrayList<ConcertHome>> getConcertsNearby(@Path("userLatitude") double userLatitude, @Path("userLongitude") double userLongitude, @Path("radius") double radius);
 }

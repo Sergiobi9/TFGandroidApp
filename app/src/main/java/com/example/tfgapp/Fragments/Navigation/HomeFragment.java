@@ -121,8 +121,8 @@ public class HomeFragment extends Fragment {
                     case 200:
                         Log.d(TAG, "Home concerts success " + response.body());
                         suggestionConcertsArrayList = response.body();
-
                         initSuggestionsCarousel();
+
                         break;
                     default:
                         Log.d(TAG, "Home concerts default " + response.code());
@@ -156,18 +156,14 @@ public class HomeFragment extends Fragment {
                 @Override
                 public void onBindView(View view, final int position) {
                     /* Get screen size */
-                    DisplayMetrics displayMetrics = new DisplayMetrics();
-                    getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-                    int width = displayMetrics.widthPixels;
-
                     LinearLayout concertInfoLayout = view.findViewById(R.id.concert_info_layout);
                     ViewGroup.LayoutParams params = concertInfoLayout.getLayoutParams();
                     concertInfoLayout.setLayoutParams(params);
 
                     CardView concertImageLayout = view.findViewById(R.id.concert_cards);
                     params = concertImageLayout.getLayoutParams();
-                    params.height = (int) (width * 0.7 / 1.714);
-                    params.width = (int) (width * 0.7);
+                    params.height = (int) (screenWidth * 0.7 / 1.714);
+                    params.width = (int) (screenWidth * 0.7);
                     concertImageLayout.setLayoutParams(params);
 
                     ImageView imageView = view.findViewById(R.id.imageView);
