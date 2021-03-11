@@ -18,25 +18,24 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
-import com.example.tfgapp.Entities.Concert.Concert;
+import com.example.tfgapp.Entities.Concert.ConcertHome;
 import com.example.tfgapp.R;
-import com.makeramen.roundedimageview.RoundedImageView;
 
 import org.jetbrains.annotations.NotNull;
-import org.w3c.dom.Text;
 
-import java.util.List;
-
-import static java.util.Collections.emptyList;
+import java.util.ArrayList;
 
 public class TicketsAdapter extends RecyclerView.Adapter<TicketsAdapter.ViewHolder> {
 
-    private List<Concert> concertsList = emptyList();
+    private ArrayList<ConcertHome> ticketsArrayList;
     private final String TAG = "TicketsAdapter";
     private Context context;
+    private TicketsAdapter.OnConcertTicketListener onLoyaltyCardClicked;
 
-    public TicketsAdapter(Context context) {
+    public TicketsAdapter(Context context, ArrayList<ConcertHome> ticketsArrayList, OnConcertTicketListener onLoyaltyCardClicked) {
         this.context = context;
+        this.onLoyaltyCardClicked = onLoyaltyCardClicked;
+        this.ticketsArrayList = ticketsArrayList;
     }
 
     @NonNull
@@ -45,18 +44,19 @@ public class TicketsAdapter extends RecyclerView.Adapter<TicketsAdapter.ViewHold
 
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
 
-        return new TicketsAdapter.ViewHolder(inflater.inflate(R.layout.tickets_list, parent, false));
+        return new TicketsAdapter.ViewHolder(inflater.inflate(R.layout.tickets_list, parent, false), onLoyaltyCardClicked);
     }
 
     @Override
     public void onBindViewHolder(@NonNull TicketsAdapter.ViewHolder holder, int position) {
-        Concert currentConcert = concertsList.get(position);
+        ConcertHome currentConcert = ticketsArrayList.get(position);
 
-        String imageUrl = "https://images.dailyhive.com/20161031091319/Post-Malone-DHV-Brandon-Artis-Photography-9-e1477931590637.jpg";
+        String imageUrl = currentConcert.getConcertCoverImage();
 
         Glide.with(context).load(imageUrl)
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .skipMemoryCache(true)
+                .circleCrop()
                 .listener(new RequestListener<Drawable>() {
                     @Override
                     public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
@@ -70,16 +70,12 @@ public class TicketsAdapter extends RecyclerView.Adapter<TicketsAdapter.ViewHold
                 }).into(holder.concertCover);
     }
 
-    public void setConcertsList(List<Concert> concertsList) {
-        this.concertsList = concertsList;
-    }
-
     @Override
     public int getItemCount() {
-        return concertsList.size();
+        return ticketsArrayList.size();
     }
 
-    public static final class ViewHolder extends androidx.recyclerview.widget.RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private ImageView concertCover;
         private TextView ticketReference;
@@ -88,8 +84,9 @@ public class TicketsAdapter extends RecyclerView.Adapter<TicketsAdapter.ViewHold
         private TextView concertStreet;
         private TextView concertDate;
         private ImageView directionsImg;
+        public TicketsAdapter.OnConcertTicketListener onConcertTicketListener;
 
-        public ViewHolder(@NotNull View view) {
+        public ViewHolder(@NotNull View view, TicketsAdapter.OnConcertTicketListener onConcertTicketListener) {
             super(view);
 
             this.concertCover = (ImageView) view.findViewById(R.id.concert_cover);
@@ -99,7 +96,20 @@ public class TicketsAdapter extends RecyclerView.Adapter<TicketsAdapter.ViewHold
             this.concertStreet = (TextView) view.findViewById(R.id.concert_place);
             this.concertDate = (TextView) view.findViewById(R.id.concert_date);
             this.directionsImg = (ImageView) view.findViewById(R.id.directions);
+            this.onConcertTicketListener = onConcertTicketListener;
+            itemView.setOnClickListener(this);
+        }
 
+        @Override
+        public void onClick(View v) {
+            onConcertTicketListener.onConcertTicketClicked(getAdapterPosition());
         }
     }
-}
+
+    public interface OnConcertTicketListener {
+        void onConcertTicketClicked(int position);
+    }
+
+
+
+    }

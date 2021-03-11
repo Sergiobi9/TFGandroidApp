@@ -6,20 +6,26 @@
     android:background="@color/white"
     tools:context=".Fragments.Navigation.TicketsFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <RelativeLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/ticket_qr"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_margin="50dp">
-        </ImageView>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:paddingTop="40dp"
+            android:paddingBottom="20dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:layout_height="match_parent">
 
-    </RelativeLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/tickets_recycler_view"
+                android:layout_marginTop="20sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
+
+    </androidx.core.widget.NestedScrollView>
 
 
 
