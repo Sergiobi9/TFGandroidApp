@@ -13,6 +13,7 @@ import android.view.WindowManager;
 import com.example.tfgapp.Fragments.Navigation.HomeFragment;
 import com.example.tfgapp.Fragments.Navigation.MapFragment;
 import com.example.tfgapp.Fragments.Navigation.SearchFragment;
+import com.example.tfgapp.Fragments.Navigation.TicketsFragment;
 import com.example.tfgapp.Fragments.Navigation.UserProfileFragment;
 import com.example.tfgapp.Global.Globals;
 import com.example.tfgapp.Global.Permissions;
@@ -65,23 +66,27 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        animatedBottomBar.selectTabAt(0, true);
-
+        animatedBottomBar.selectTabAt(2, true);
     }
 
     private void selectNavigationItem(int itemPosition){
         switch (itemPosition){
-            case 1:
+            case 0:
                 goMapSecction();
                 break;
-            case 2:
+            case 1:
                 goSearchFragment();
                 break;
+            case 2:
+                goHomeFragment();
+                break;
             case 3:
+                goTicketsFragment();
+                break;
+            case 4:
                 goUserProfileFragment();
                 break;
             default:
-                goHomeFragment();
                 break;
 
         }
@@ -114,6 +119,12 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "Opening home fragment");
 
         openFragment(new HomeFragment());
+    }
+
+    private void goTicketsFragment(){
+        Log.d(TAG, "Opening tickets fragment");
+
+        openFragment(new TicketsFragment());
     }
 
     private void openFragment(Fragment fragmentToBeOpened){
