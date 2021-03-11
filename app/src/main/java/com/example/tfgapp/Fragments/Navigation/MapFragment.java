@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -30,7 +31,6 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.example.tfgapp.Broadcasts.UserLocationBroadcast;
-import com.example.tfgapp.Entities.Concert.Concert;
 import com.example.tfgapp.Entities.Concert.ConcertHome;
 import com.example.tfgapp.Global.Api;
 import com.example.tfgapp.Global.Globals;
@@ -49,6 +49,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.jama.carouselview.CarouselScrollListener;
 import com.jama.carouselview.CarouselView;
 import com.jama.carouselview.CarouselViewListener;
 import com.jama.carouselview.enums.IndicatorAnimationType;
@@ -78,7 +79,7 @@ public class MapFragment extends Fragment {
     private int radius = 1000;
 
     private UserLocation userLocation;
-    private int screenWidth;
+    private int screenWidth, lastPostionCarrousel = 0;
 
     public MapFragment() {
         // Required empty public constructor
@@ -219,12 +220,35 @@ public class MapFragment extends Fragment {
                 }
             });
 
+            concertsCarousel.setCarouselScrollListener(new CarouselScrollListener() {
+                @Override
+                public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState, int position) {
+                    if (lastPostionCarrousel != position) {
+                        lastPostionCarrousel = position;
+                        focusConcertOnCarouselScrolled(position);
+                    }
+                }
+
+                @Override
+                public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                }
+
+            });
+
+
             concertsCarousel.show();
         }
 
         showPoints();
     }
 
+    private void focusConcertOnCarouselScrolled(int position) {
+        ConcertHome concertHome = concertsArrayList.get(position);
+
+        if (googleMap != null) {
+            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(concertHome.getLatitude(), concertHome.getLongitude()), 16));
+        }
+    }
 
     private PendingIntent getPendingIntent() {
         Intent intent = new Intent(context, UserLocationBroadcast.class);
