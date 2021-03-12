@@ -1,6 +1,7 @@
 package com.example.tfgapp.Fragments.Navigation;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
@@ -23,9 +24,14 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+import com.example.tfgapp.Activities.LoginActivity;
+import com.example.tfgapp.Activities.MainActivity;
 import com.example.tfgapp.Entities.Concert.Concert;
 import com.example.tfgapp.Entities.Concert.ConcertHome;
+import com.example.tfgapp.Entities.User.UserSession;
 import com.example.tfgapp.Global.Api;
+import com.example.tfgapp.Global.Constants;
+import com.example.tfgapp.Global.CurrentUser;
 import com.example.tfgapp.R;
 import com.jama.carouselview.CarouselView;
 import com.jama.carouselview.CarouselViewListener;
@@ -51,6 +57,10 @@ public class HomeFragment extends Fragment {
 
     private ImageView viralImageView;
     private int screenWidth;
+    private ImageView loginIcon;
+
+    private UserSession userSession;
+    private String userRole = null;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -72,11 +82,30 @@ public class HomeFragment extends Fragment {
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         screenWidth = displayMetrics.widthPixels;
 
+        userSession = CurrentUser.getInstance(context).getCurrentUser();
+        userRole = CurrentUser.getInstance(context).getUserRole();
+
+        initView();
+
         getSuggestedConcerts();
         getMostSearchedConcerts();
         getMostWantedConcert();
 
         return view;
+    }
+
+    private void initView(){
+        loginIcon = view.findViewById(R.id.login_icon);
+
+        loginIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goLoginScreen();
+            }
+        });
+        if (userRole != null) {
+           loginIcon.setVisibility(View.GONE);
+        }
     }
 
     private void getMostWantedConcert() {
@@ -135,6 +164,11 @@ public class HomeFragment extends Fragment {
                 Log.d(TAG, "Home concerts failure " + t.getLocalizedMessage());
             }
         });
+    }
+
+    private void goLoginScreen(){
+        Intent intent = new Intent(context, LoginActivity.class);
+        startActivity(intent);
     }
 
     private void getMostSearchedConcerts(){

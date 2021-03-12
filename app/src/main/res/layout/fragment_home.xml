@@ -16,16 +16,48 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:maxLines="1"
-                android:fontFamily="@font/lato"
-                android:textStyle="normal"
-                android:text="Buenos días, Sergi"
-                android:padding="25sp"
-                android:textSize="26sp"
-                android:textColor="@color/black"/>
+                android:paddingTop="25sp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:fontFamily="@font/lato"
+                    android:textStyle="normal"
+                    android:text="Buenos días"
+                    android:paddingLeft="25sp"
+                    android:layout_marginRight="65dp"
+                    android:paddingTop="50dp"
+                    android:paddingRight="25sp"
+                    android:textSize="26sp"
+                    android:textColor="@color/black"/>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:layout_marginLeft="-65dp"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/login_icon"
+                        android:layout_width="35sp"
+                        android:layout_height="35dp"
+                        android:layout_gravity="right"
+                        android:tint="@color/black"
+                        android:src="@drawable/profile">
+                    </ImageView>
+                </RelativeLayout>
+
+
+            </LinearLayout>
+
+
+
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/viral"
@@ -35,7 +67,7 @@
                 android:visibility="visible"
                 android:elevation="5dp"
                 android:translationZ="0dp"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="50dp"
                 android:layout_marginBottom="15dp"
                 app:cardCornerRadius="10dp">
 

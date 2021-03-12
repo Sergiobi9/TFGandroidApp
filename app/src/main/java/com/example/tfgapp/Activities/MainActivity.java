@@ -8,8 +8,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
 
 import com.example.tfgapp.Entities.User.User;
 import com.example.tfgapp.Entities.User.UserSession;
@@ -63,12 +65,19 @@ public class MainActivity extends AppCompatActivity {
 
     private void initView(){
 
-        if (userRole.equals(Constants.USER_NORMAL_ROLE))
-            animatedBottomBar = findViewById(R.id.normal_user_navigation);
-        else if (userRole.equals(Constants.ARTIST_ROLE))
-            animatedBottomBar = findViewById(R.id.artist_navigation);
-        else
+        if (userRole == null) {
             animatedBottomBar = findViewById(R.id.main_navigation);
+            animatedBottomBar.setVisibility(View.VISIBLE);
+            selectNavigationItem(1);
+        } else if (userRole.equals(Constants.USER_NORMAL_ROLE)) {
+            animatedBottomBar = findViewById(R.id.normal_user_navigation);
+            animatedBottomBar.setVisibility(View.VISIBLE);
+            selectNavigationItem(2);
+        } else if (userRole.equals(Constants.ARTIST_ROLE)) {
+            animatedBottomBar = findViewById(R.id.artist_navigation);
+            animatedBottomBar.setVisibility(View.VISIBLE);
+            selectNavigationItem(2);
+        }
 
         animatedBottomBar.setOnTabSelectListener(new AnimatedBottomBar.OnTabSelectListener() {
             @Override
@@ -81,17 +90,15 @@ public class MainActivity extends AppCompatActivity {
                 selectNavigationItem(itemPosition);
             }
         });
-
-        animatedBottomBar.selectTabAt(2, true);
     }
 
     private void selectNavigationItem(int itemPosition){
-        if (userRole.equals(Constants.USER_NORMAL_ROLE))
+        if (userRole == null)
+            mainNavigationController(itemPosition);
+        else if (userRole.equals(Constants.USER_NORMAL_ROLE))
             userNavigationController(itemPosition);
         else if (userRole.equals(Constants.ARTIST_ROLE))
             artistNavigationController(itemPosition);
-        else
-            mainNavigationController(itemPosition);
     }
 
     private void userNavigationController(int itemPosition){
@@ -141,6 +148,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void mainNavigationController(int itemPosition){
+        Log.d(TAG, "Selection item");
         switch (itemPosition){
             case 0:
                 goMapSecction();

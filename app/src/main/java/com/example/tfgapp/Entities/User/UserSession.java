@@ -8,6 +8,7 @@ public class UserSession {
     private User user;
 
     public UserSession() {
+        user = new User();
     }
 
     public String getToken() {

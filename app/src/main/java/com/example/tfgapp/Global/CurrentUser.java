@@ -21,9 +21,6 @@ public class CurrentUser {
     }
 
     public static void setCurrentUser(UserSession userSession){
-        if (userSession == null)
-            return;
-
         if (sharedPreferences != null) {
             sharedPreferences.edit().putString(Constants.CURRENT_USER_SESSION, userSession.toJson()).apply();
         }

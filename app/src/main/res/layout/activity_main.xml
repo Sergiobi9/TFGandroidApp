@@ -24,7 +24,8 @@
         app:abb_indicatorAppearance="round"
         app:abb_indicatorMargin="16dp"
         app:abb_indicatorHeight="4dp"
-        app:abb_tabs="@menu/tabs"
+        app:abb_tabs="@menu/main_navigation"
+        android:visibility="gone"
         app:abb_selectedIndex="1" />
 
     <nl.joery.animatedbottombar.AnimatedBottomBar
@@ -37,8 +38,9 @@
         app:abb_indicatorAppearance="round"
         app:abb_indicatorMargin="16dp"
         app:abb_indicatorHeight="4dp"
-        app:abb_tabs="@menu/tabs"
-        app:abb_selectedIndex="1" />
+        android:visibility="gone"
+        app:abb_tabs="@menu/normal_user_navigation"
+        app:abb_selectedIndex="2" />
 
     <nl.joery.animatedbottombar.AnimatedBottomBar
         android:id="@+id/artist_navigation"
@@ -50,7 +52,8 @@
         app:abb_indicatorAppearance="round"
         app:abb_indicatorMargin="16dp"
         app:abb_indicatorHeight="4dp"
-        app:abb_tabs="@menu/tabs"
-        app:abb_selectedIndex="1" />
+        app:abb_tabs="@menu/artist_navigation"
+        android:visibility="gone"
+        app:abb_selectedIndex="2" />
 
 </RelativeLayout>

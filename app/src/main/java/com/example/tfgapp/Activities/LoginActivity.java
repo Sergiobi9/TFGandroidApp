@@ -20,4 +20,16 @@ public class LoginActivity extends AppCompatActivity {
         Intent intent = new Intent(LoginActivity.this, AuthenticationActivity.class);
         startActivity(intent);
     }
+
+    private void goMainActivity(){
+        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        goMainActivity();
+    }
 }
