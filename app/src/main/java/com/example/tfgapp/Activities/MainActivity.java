@@ -5,16 +5,21 @@ import androidx.fragment.app.Fragment;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.example.tfgapp.Entities.User.User;
+import com.example.tfgapp.Entities.User.UserSession;
 import com.example.tfgapp.Fragments.Navigation.HomeFragment;
 import com.example.tfgapp.Fragments.Navigation.MapFragment;
 import com.example.tfgapp.Fragments.Navigation.SearchFragment;
 import com.example.tfgapp.Fragments.Navigation.TicketsFragment;
 import com.example.tfgapp.Fragments.Navigation.UserProfileFragment;
+import com.example.tfgapp.Global.Constants;
+import com.example.tfgapp.Global.CurrentUser;
 import com.example.tfgapp.Global.Globals;
 import com.example.tfgapp.Global.Permissions;
 import com.example.tfgapp.R;
@@ -36,7 +41,9 @@ public class MainActivity extends AppCompatActivity {
     private AnimatedBottomBar animatedBottomBar;
     private Context context;
 
-    private boolean mapIntent = false;
+    private boolean mapIntent = false, isLoggedIn = false;
+    private UserSession userSession;
+    private String userRole = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,11 +55,20 @@ public class MainActivity extends AppCompatActivity {
 
         context = getApplicationContext();
 
+        userSession = CurrentUser.getInstance(context).getCurrentUser();
+        userRole = CurrentUser.getInstance(context).getUserRole();
+
         initView();
     }
 
     private void initView(){
-        animatedBottomBar = findViewById(R.id.navigation_bottom_bar);
+
+        if (userRole.equals(Constants.USER_NORMAL_ROLE))
+            animatedBottomBar = findViewById(R.id.normal_user_navigation);
+        else if (userRole.equals(Constants.ARTIST_ROLE))
+            animatedBottomBar = findViewById(R.id.artist_navigation);
+        else
+            animatedBottomBar = findViewById(R.id.main_navigation);
 
         animatedBottomBar.setOnTabSelectListener(new AnimatedBottomBar.OnTabSelectListener() {
             @Override
@@ -70,6 +86,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void selectNavigationItem(int itemPosition){
+        if (userRole.equals(Constants.USER_NORMAL_ROLE))
+            userNavigationController(itemPosition);
+        else if (userRole.equals(Constants.ARTIST_ROLE))
+            artistNavigationController(itemPosition);
+        else
+            mainNavigationController(itemPosition);
+    }
+
+    private void userNavigationController(int itemPosition){
         switch (itemPosition){
             case 0:
                 goMapSecction();
@@ -92,6 +117,51 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void artistNavigationController(int itemPosition){
+        switch (itemPosition){
+            case 0:
+                goMapSecction();
+                break;
+            case 1:
+                goSearchFragment();
+                break;
+            case 2:
+                goHomeFragment();
+                break;
+            case 3:
+                goTicketsFragment();
+                break;
+            case 4:
+                goUserProfileFragment();
+                break;
+            default:
+                break;
+
+        }
+    }
+
+    private void mainNavigationController(int itemPosition){
+        switch (itemPosition){
+            case 0:
+                goMapSecction();
+                break;
+            case 1:
+                goHomeFragment();
+                break;
+            case 2:
+                goSearchFragment();
+                break;
+            default:
+                break;
+
+        }
+    }
+
+    private void goLogginScreen(){
+        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+        startActivity(intent);
+    }
+
     private void goMapSecction(){
         Log.d(TAG, "Opening map fragment");
 
@@ -112,7 +182,9 @@ public class MainActivity extends AppCompatActivity {
     private void goUserProfileFragment(){
         Log.d(TAG, "Opening profile fragment");
 
-        openFragment(new UserProfileFragment());
+        if (CurrentUser.getInstance(context).isUserLoggedIn())
+            openFragment(new UserProfileFragment());
+        else goLogginScreen();
     }
 
     private void goHomeFragment(){
@@ -124,7 +196,9 @@ public class MainActivity extends AppCompatActivity {
     private void goTicketsFragment(){
         Log.d(TAG, "Opening tickets fragment");
 
-        openFragment(new TicketsFragment());
+        if (CurrentUser.getInstance(context).isUserLoggedIn())
+            openFragment(new TicketsFragment());
+        else goLogginScreen();
     }
 
     private void openFragment(Fragment fragmentToBeOpened){

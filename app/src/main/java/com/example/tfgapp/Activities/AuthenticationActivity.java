@@ -14,6 +14,7 @@ import com.example.tfgapp.Entities.Login.AuthenticationData;
 import com.example.tfgapp.Entities.User.User;
 import com.example.tfgapp.Entities.User.UserSession;
 import com.example.tfgapp.Global.Api;
+import com.example.tfgapp.Global.CurrentUser;
 import com.example.tfgapp.Global.Globals;
 import com.example.tfgapp.R;
 
@@ -57,7 +58,13 @@ public class AuthenticationActivity extends AppCompatActivity {
                 switch (response.code()) {
                     case 200:
                         Log.d(TAG, "User login success " + response.body());
-                        Globals.displayShortToast(context, "Login success");
+
+                        UserSession userSession = response.body();
+
+                        CurrentUser.getInstance(context).setCurrentUser(userSession);
+                        CurrentUser.getInstance(context).setUserLogin(true);
+
+                        goMainScreen();
                         break;
                     default:
                         Log.d(TAG, "User login default " + response.code());
@@ -72,5 +79,10 @@ public class AuthenticationActivity extends AppCompatActivity {
                 Globals.displayShortToast(context, "Something happened, please try again in a few minutes");
             }
         });
+    }
+
+    private void goMainScreen(){
+        Intent intent = new Intent(AuthenticationActivity.this, MainActivity.class);
+        startActivity(intent);
     }
 }

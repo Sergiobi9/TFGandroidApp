@@ -10,12 +10,38 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/main_fragment"
-        android:layout_above="@+id/navigation_bottom_bar">
+        android:layout_marginBottom="60dp">
 
     </FrameLayout>
 
     <nl.joery.animatedbottombar.AnimatedBottomBar
-        android:id="@+id/navigation_bottom_bar"
+        android:id="@+id/main_navigation"
+        android:background="#FFF"
+        android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_height="60dp"
+        app:abb_selectedTabType="text"
+        app:abb_indicatorAppearance="round"
+        app:abb_indicatorMargin="16dp"
+        app:abb_indicatorHeight="4dp"
+        app:abb_tabs="@menu/tabs"
+        app:abb_selectedIndex="1" />
+
+    <nl.joery.animatedbottombar.AnimatedBottomBar
+        android:id="@+id/normal_user_navigation"
+        android:background="#FFF"
+        android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_height="60dp"
+        app:abb_selectedTabType="text"
+        app:abb_indicatorAppearance="round"
+        app:abb_indicatorMargin="16dp"
+        app:abb_indicatorHeight="4dp"
+        app:abb_tabs="@menu/tabs"
+        app:abb_selectedIndex="1" />
+
+    <nl.joery.animatedbottombar.AnimatedBottomBar
+        android:id="@+id/artist_navigation"
         android:background="#FFF"
         android:layout_width="match_parent"
         android:layout_alignParentBottom="true"

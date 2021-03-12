@@ -1,5 +1,7 @@
 package com.example.tfgapp.Entities.User;
 
+import com.google.gson.Gson;
+
 public class UserSession {
 
     private String token;
@@ -30,5 +32,15 @@ public class UserSession {
                 "token='" + token + '\'' +
                 ", user=" + user +
                 '}';
+    }
+
+    public String toJson() {
+        Gson gson = new Gson();
+        return gson.toJson(this);
+    }
+
+    public static UserSession fromJson(String serializedObject) {
+        Gson gson = new Gson();
+        return gson.fromJson(serializedObject, UserSession.class);
     }
 }
