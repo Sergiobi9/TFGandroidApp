@@ -11,8 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.tfgapp.Activities.LoginActivity;
-import com.example.tfgapp.Entities.User.User;
+import com.example.tfgapp.Activities.Login.LoginActivity;
 import com.example.tfgapp.Entities.User.UserSession;
 import com.example.tfgapp.Global.CurrentUser;
 import com.example.tfgapp.R;

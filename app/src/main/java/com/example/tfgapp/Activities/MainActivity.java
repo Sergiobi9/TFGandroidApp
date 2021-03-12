@@ -13,9 +13,8 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.ImageView;
 
-import com.example.tfgapp.Entities.User.User;
+import com.example.tfgapp.Activities.Login.LoginActivity;
 import com.example.tfgapp.Entities.User.UserSession;
 import com.example.tfgapp.Fragments.Navigation.HomeFragment;
 import com.example.tfgapp.Fragments.Navigation.MapFragment;
