@@ -51,7 +51,7 @@ public class RegisterPasswordFragment extends Fragment {
 
     private void initView(){
         passwordEditText = view.findViewById(R.id.register_password);
-        registerPasswordBtn = view.findViewById(R.id.confirm_password);
+        registerPasswordBtn = view.findViewById(R.id.confirm_password_btn);
         showOrHidePassword = view.findViewById(R.id.show_password_icon);
 
         registerPasswordBtn.setOnClickListener(new View.OnClickListener() {

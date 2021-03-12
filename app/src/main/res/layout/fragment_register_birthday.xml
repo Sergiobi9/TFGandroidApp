@@ -11,7 +11,7 @@
         android:layout_height="wrap_content">
 
         <TextView
-            android:id="@+id/which_email_tv"
+            android:id="@+id/register_birthday_question"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/lato_black"
@@ -23,7 +23,7 @@
             android:id="@+id/register_birthday"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/which_email_tv"
+            android:layout_below="@+id/register_birthday_question"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="50dp"
             android:layout_marginRight="20dp"
@@ -34,6 +34,7 @@
             android:outlineSpotShadowColor="@color/black" />
 
         <Button
+            android:id="@+id/confirm_birthday_btn"
             android:layout_width="match_parent"
             android:layout_marginLeft="50dp"
             android:layout_marginRight="50dp"

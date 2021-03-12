@@ -13,6 +13,7 @@ import android.view.View;
 import com.example.tfgapp.Activities.Login.LoginActivity;
 import com.example.tfgapp.Activities.Register.Fragments.RegisterEmailFragment;
 import com.example.tfgapp.Activities.SignIn.AuthenticationActivity;
+import com.example.tfgapp.Global.Globals;
 import com.example.tfgapp.Global.UserLocationInformation;
 import com.example.tfgapp.Entities.User.User;
 import com.example.tfgapp.Global.Permissions;
@@ -24,7 +25,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 public class RegisterAccountActivity extends AppCompatActivity {
 
     private static User registeredUser;
-    private Context context;
+    private static Context context;
     private FusedLocationProviderClient fusedLocationClient;
     private static final String TAG = "RegisterAccountActivity";
 
@@ -96,6 +97,11 @@ public class RegisterAccountActivity extends AppCompatActivity {
 
     public static void isRegisterFirstScreen(boolean isRegisterFirstScreen){
         RegisterAccountActivity.isRegisterFirstScreen = isRegisterFirstScreen;
+    }
+
+    public static void doUserFinalRegister(){
+        /* Register user and show screen of music styles he/she likes */
+        Globals.displayShortToast(context, "Ready to register user");
     }
 
     @Override

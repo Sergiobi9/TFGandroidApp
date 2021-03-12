@@ -80,6 +80,10 @@ public class Helpers {
         return matcher.matches();
     }
 
+    public static String capitalizeString(String content){
+        return content != null ? content.substring(0, 1).toUpperCase() + content.substring(1) : "";
+    }
+
     public static boolean isPasswordValid(String password){
         int passwordLength = password.length();
 
