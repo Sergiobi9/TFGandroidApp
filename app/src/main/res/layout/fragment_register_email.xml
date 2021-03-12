@@ -28,6 +28,8 @@
             android:paddingTop="15dp"
             android:paddingBottom="15dp"
             android:paddingRight="20dp"
+            android:maxHeight="50dp"
+            android:inputType="textEmailAddress"
             android:layout_marginTop="25dp"
             android:background="@drawable/login_edit_text_background">
 

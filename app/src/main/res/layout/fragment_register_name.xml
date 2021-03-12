@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activities.Register.Fragments.RegisterEmailFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_margin="25dp"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/which_email_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/lato_black"
+            android:text="¿Cómo te llamas?"
+            android:textSize="28sp">
+        </TextView>
+
+        <EditText
+            android:id="@+id/register_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/which_email_tv"
+            android:paddingLeft="20dp"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
+            android:paddingRight="20dp"
+            android:layout_marginTop="25dp"
+            android:inputType="text"
+            android:maxHeight="50dp"
+            android:background="@drawable/login_edit_text_background">
+
+        </EditText>
+
+        <Button
+            android:id="@+id/register_name_btn"
+            android:layout_width="match_parent"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:text="NEXT"
+            android:background="@drawable/login_email_button"
+            android:fontFamily="@font/lato"
+            android:textColor="@color/white"
+            android:textSize="12dp"
+            android:layout_marginTop="50dp"
+            android:layout_below="@+id/register_email"
+            android:textAllCaps="false"
+            android:layout_height="wrap_content"></Button>
+
+        <TextView
+            android:id="@+id/terms_first_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/register_name_btn"
+            android:text="Al crear una cuenta, aceptas los Términos y Condiciones de {{nombreApp}}"
+            android:layout_marginTop="25dp"
+            android:gravity="center"
+            android:fontFamily="@font/lato"
+            android:textSize="14sp">
+        </TextView>
+
+        <TextView
+            android:id="@+id/second_first_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/terms_first_text"
+            android:text="Para obtenir más información acerca de cómo {{nombreApp}} recopila, utiliza, comparte y protege tus datos personales, consulta la Politica de Privacidad de {{nombreApp}}"
+            android:layout_marginTop="25dp"
+            android:gravity="center"
+            android:fontFamily="@font/lato"
+            android:textSize="14sp">
+        </TextView>
+
+        <TextView
+            android:id="@+id/third_first_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/second_first_text"
+            android:text="Ocasionalmente podemos enviarte mensajes relacionados con el servicio"
+            android:layout_marginTop="25dp"
+            android:gravity="center"
+            android:fontFamily="@font/lato"
+            android:textSize="14sp">
+        </TextView>
+
+    </RelativeLayout>
+
+</FrameLayout>
