@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -44,6 +45,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.example.tfgapp.Global.Helpers.getIntervalDay;
+
 public class HomeFragment extends Fragment {
 
     private final String TAG = "HomeFragment";
@@ -58,6 +61,7 @@ public class HomeFragment extends Fragment {
     private ImageView viralImageView;
     private int screenWidth;
     private ImageView loginIcon;
+    private TextView welcomeTv;
 
     private UserSession userSession;
     private String userRole = null;
@@ -103,9 +107,19 @@ public class HomeFragment extends Fragment {
                 goLoginScreen();
             }
         });
+
+        welcomeTv = view.findViewById(R.id.warm_welcome);
+
+        String warmWelcomeText = "";
+        warmWelcomeText = getIntervalDay(context, userSession);
+
         if (userRole != null) {
            loginIcon.setVisibility(View.GONE);
+            String userFullName = userSession.getUser().getName();
+            warmWelcomeText = warmWelcomeText + ", " + userFullName;
         }
+
+        welcomeTv.setText(warmWelcomeText);
     }
 
     private void getMostWantedConcert() {
