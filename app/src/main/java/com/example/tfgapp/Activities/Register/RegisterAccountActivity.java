@@ -19,7 +19,7 @@ public class RegisterAccountActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_account);
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.register_account_fragment, new RegisterNameFragment()).addToBackStack(null).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.register_account_fragment, new RegisterEmailFragment()).addToBackStack(null).commit();
     }
 
     public void goBackRegisterProcess(View view) {

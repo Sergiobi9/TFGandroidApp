@@ -48,6 +48,7 @@
 
 
         <Button
+            android:id="@+id/register_email_btn"
             android:layout_width="match_parent"
             android:layout_marginLeft="50dp"
             android:layout_marginRight="50dp"
