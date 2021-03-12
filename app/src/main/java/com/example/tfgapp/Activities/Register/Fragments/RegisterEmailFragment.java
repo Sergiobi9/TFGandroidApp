@@ -6,21 +6,29 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 
 import com.example.tfgapp.Activities.Login.LoginActivity;
-import com.example.tfgapp.Activities.MainActivity;
+import com.example.tfgapp.Activities.Register.RegisterAccountActivity;
+import com.example.tfgapp.Entities.User.User;
+import com.example.tfgapp.Global.UserLocationInformation;
+import com.example.tfgapp.Global.Globals;
+import com.example.tfgapp.Global.Helpers;
 import com.example.tfgapp.R;
 
 public class RegisterEmailFragment extends Fragment {
 
+    private final String TAG = "RegisterEmailFragment";
     private Context context;
     private View view;
     private Button registerEmailBtn;
+    private EditText emailEditText;
 
     public RegisterEmailFragment() {
         // Required empty public constructor
@@ -35,6 +43,9 @@ public class RegisterEmailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        RegisterAccountActivity.isRegisterFirstScreen(true);
+
         view = inflater.inflate(R.layout.fragment_register_email, container, false);
         context = getContext();
 
@@ -44,9 +55,23 @@ public class RegisterEmailFragment extends Fragment {
 
     private void initView(){
         registerEmailBtn = view.findViewById(R.id.register_email_btn);
+        emailEditText = view.findViewById(R.id.register_email);
+
         registerEmailBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                String userEmail = emailEditText.getText().toString().toLowerCase();
+                if (!Helpers.isEmailValid(userEmail)) {
+                    Globals.displayShortToast(context, "El correo electrónico no tiene el formato correcto");
+                    return;
+                }
+
+                User registeredUser = RegisterAccountActivity.getRegisteredUser();
+                registeredUser.setEmail(userEmail);
+                RegisterAccountActivity.setRegisteredUser(registeredUser);
+                RegisterAccountActivity.isRegisterFirstScreen(false);
+
                 getFragmentManager().beginTransaction().replace(R.id.register_account_fragment, new RegisterPasswordFragment()).addToBackStack(null).commit();
             }
         });
@@ -63,6 +88,12 @@ public class RegisterEmailFragment extends Fragment {
                 return false;
             }
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume");
     }
 
     private void goBackLoginScreen(){

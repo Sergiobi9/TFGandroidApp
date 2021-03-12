@@ -1,5 +1,6 @@
 package com.example.tfgapp.Entities.User;
 
+import com.example.tfgapp.Global.Constants;
 import com.google.gson.annotations.SerializedName;
 
 public class User {
@@ -10,6 +11,10 @@ public class User {
     private String name;
     @SerializedName("country")
     private String country;
+    @SerializedName("city")
+    private String city;
+    @SerializedName("zipCode")
+    private String zipCode;
     @SerializedName("gender")
     private int gender;
     @SerializedName("birthday")
@@ -23,7 +28,10 @@ public class User {
     @SerializedName("userRole")
     private String userRole;
 
-    public User(){}
+    public User(){
+        gender = Constants.NON_BINARY;
+        userRole = Constants.USER_NORMAL_ROLE;
+    }
 
     public String getId() {
         return id;
@@ -47,6 +55,22 @@ public class User {
 
     public void setCountry(String country) {
         this.country = country;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getZipCode() {
+        return zipCode;
+    }
+
+    public void setZipCode(String zipCode) {
+        this.zipCode = zipCode;
     }
 
     public int getGender() {
@@ -95,5 +119,22 @@ public class User {
 
     public void setUserRole(String userRole) {
         this.userRole = userRole;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", country='" + country + '\'' +
+                ", city='" + city + '\'' +
+                ", zipCode='" + zipCode + '\'' +
+                ", gender=" + gender +
+                ", birthday='" + birthday + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", profileUrl='" + profileUrl + '\'' +
+                ", userRole='" + userRole + '\'' +
+                '}';
     }
 }
