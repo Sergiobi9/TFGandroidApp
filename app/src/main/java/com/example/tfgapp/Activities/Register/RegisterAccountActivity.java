@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.example.tfgapp.Activities.Login.LoginActivity;
+import com.example.tfgapp.Activities.MainActivity;
 import com.example.tfgapp.Activities.Register.Fragments.RegisterEmailFragment;
 import com.example.tfgapp.Activities.Register.Fragments.RegisterPasswordFragment;
 import com.example.tfgapp.Activities.SignIn.AuthenticationActivity;
@@ -110,7 +111,7 @@ public class RegisterAccountActivity extends AppCompatActivity {
         RegisterAccountActivity.isRegisterFirstScreen = isRegisterFirstScreen;
     }
 
-    public static void doUserFinalRegister(){
+    public static void doUserFinalRegister(Context context){
         /* Register user with pop up loading */
         Call<User> call = Api.getInstance().getAPI().registerUser(registeredUser);
         call.enqueue(new Callback<User>() {
@@ -123,7 +124,7 @@ public class RegisterAccountActivity extends AppCompatActivity {
                         String userEmail = registeredUser.getEmail();
                         String userPassword = registeredUser.getPassword();
 
-                        doUserLogin(userEmail, userPassword);
+                        doUserLogin(context, userEmail, userPassword);
 
                         break;
                     default:
@@ -141,7 +142,7 @@ public class RegisterAccountActivity extends AppCompatActivity {
         });
     }
 
-    private static void doUserLogin(String userEmail, String userPassword){
+    private static void doUserLogin(Context context, String userEmail, String userPassword){
         /* Login user with pop up loading */
         Call<UserSession> call = Api.getInstance().getAPI().doUserLogin(new AuthenticationData(userEmail, userPassword));
         call.enqueue(new Callback<UserSession>() {
@@ -156,7 +157,7 @@ public class RegisterAccountActivity extends AppCompatActivity {
                         CurrentUser.getInstance(context).setCurrentUser(userSession);
                         CurrentUser.getInstance(context).setUserLogin(true);
 
-                        goRegisterMusicStyles();
+                        goRegisterMusicStyles(context);
                         break;
                     default:
                         Log.d(TAG, "User login default " + response.code());
@@ -173,8 +174,11 @@ public class RegisterAccountActivity extends AppCompatActivity {
         });
     }
 
-    private static void goRegisterMusicStyles(){
+    private static void goRegisterMusicStyles(Context context){
         /* Open screen with music styles scroll */
+        Intent intent = new Intent(context, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
     }
 
     @Override

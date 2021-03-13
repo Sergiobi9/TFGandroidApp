@@ -62,7 +62,7 @@ public class RegisterNameFragment extends Fragment {
                 registeredUser.setName(nameCapitalized);
                 RegisterAccountActivity.setRegisteredUser(registeredUser);
 
-                RegisterAccountActivity.doUserFinalRegister();
+                RegisterAccountActivity.doUserFinalRegister(context);
             }
         });
     }

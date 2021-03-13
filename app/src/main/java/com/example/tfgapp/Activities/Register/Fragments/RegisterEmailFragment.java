@@ -104,7 +104,7 @@ public class RegisterEmailFragment extends Fragment {
                     case 200:
                         Log.d(TAG, "User exists by email success " + response.body());
 
-                        if (response.body().info.equals(Constants.USER_EXISTS)){
+                        if (response.body().getInfo().equals(Constants.USER_EXISTS)){
                             Globals.displayShortToast(context, "Ya existe una cuenta con este correo");
                         } else {
                             User registeredUser = RegisterAccountActivity.getRegisteredUser();
