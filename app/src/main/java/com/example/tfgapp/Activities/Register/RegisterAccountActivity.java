@@ -37,7 +37,7 @@ import retrofit2.Response;
 public class RegisterAccountActivity extends AppCompatActivity {
 
     private static User registeredUser;
-    private static Context context;
+    private Context context;
     private FusedLocationProviderClient fusedLocationClient;
     private static final String TAG = "RegisterAccountActivity";
 
