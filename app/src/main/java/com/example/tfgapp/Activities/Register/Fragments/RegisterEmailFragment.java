@@ -16,11 +16,21 @@ import android.widget.EditText;
 
 import com.example.tfgapp.Activities.Login.LoginActivity;
 import com.example.tfgapp.Activities.Register.RegisterAccountActivity;
+import com.example.tfgapp.Entities.Login.AuthenticationData;
 import com.example.tfgapp.Entities.User.User;
+import com.example.tfgapp.Entities.User.UserExists;
+import com.example.tfgapp.Entities.User.UserSession;
+import com.example.tfgapp.Global.Api;
+import com.example.tfgapp.Global.Constants;
+import com.example.tfgapp.Global.CurrentUser;
 import com.example.tfgapp.Global.UserLocationInformation;
 import com.example.tfgapp.Global.Globals;
 import com.example.tfgapp.Global.Helpers;
 import com.example.tfgapp.R;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class RegisterEmailFragment extends Fragment {
 
@@ -67,12 +77,7 @@ public class RegisterEmailFragment extends Fragment {
                     return;
                 }
 
-                User registeredUser = RegisterAccountActivity.getRegisteredUser();
-                registeredUser.setEmail(userEmail);
-                RegisterAccountActivity.setRegisteredUser(registeredUser);
-                RegisterAccountActivity.isRegisterFirstScreen(false);
-
-                getFragmentManager().beginTransaction().replace(R.id.register_account_fragment, new RegisterPasswordFragment()).addToBackStack(null).commit();
+                checkEmailExists(userEmail);
             }
         });
 
@@ -86,6 +91,41 @@ public class RegisterEmailFragment extends Fragment {
                     return true;
                 }
                 return false;
+            }
+        });
+    }
+
+    private void checkEmailExists(String userEmail){
+        Call<UserExists> call = Api.getInstance().getAPI().checkUserAlreadyExists(userEmail);
+        call.enqueue(new Callback<UserExists>() {
+            @Override
+            public void onResponse(Call<UserExists> call, Response<UserExists> response) {
+                switch (response.code()) {
+                    case 200:
+                        Log.d(TAG, "User exists by email success " + response.body());
+
+                        if (response.body().info.equals(Constants.USER_EXISTS)){
+                            Globals.displayShortToast(context, "Ya existe una cuenta con este correo");
+                        } else {
+                            User registeredUser = RegisterAccountActivity.getRegisteredUser();
+                            registeredUser.setEmail(userEmail);
+                            RegisterAccountActivity.setRegisteredUser(registeredUser);
+                            RegisterAccountActivity.isRegisterFirstScreen(false);
+
+                            getFragmentManager().beginTransaction().replace(R.id.register_account_fragment, new RegisterPasswordFragment()).addToBackStack(null).commit();
+                        }
+                        break;
+                    default:
+                        Log.d(TAG, "User exists by email default " + response.code());
+                        Globals.displayShortToast(context, "Something happened, please try again in a few minutes");
+                        break;
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserExists> call, Throwable t) {
+                Log.d(TAG, "User exists by email failure " + t.getLocalizedMessage());
+                Globals.displayShortToast(context, "Something happened, please try again in a few minutes");
             }
         });
     }

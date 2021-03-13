@@ -12,7 +12,14 @@ import android.view.View;
 
 import com.example.tfgapp.Activities.Login.LoginActivity;
 import com.example.tfgapp.Activities.Register.Fragments.RegisterEmailFragment;
+import com.example.tfgapp.Activities.Register.Fragments.RegisterPasswordFragment;
 import com.example.tfgapp.Activities.SignIn.AuthenticationActivity;
+import com.example.tfgapp.Entities.Login.AuthenticationData;
+import com.example.tfgapp.Entities.User.UserExists;
+import com.example.tfgapp.Entities.User.UserSession;
+import com.example.tfgapp.Global.Api;
+import com.example.tfgapp.Global.Constants;
+import com.example.tfgapp.Global.CurrentUser;
 import com.example.tfgapp.Global.Globals;
 import com.example.tfgapp.Global.UserLocationInformation;
 import com.example.tfgapp.Entities.User.User;
@@ -21,6 +28,10 @@ import com.example.tfgapp.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class RegisterAccountActivity extends AppCompatActivity {
 
@@ -100,8 +111,70 @@ public class RegisterAccountActivity extends AppCompatActivity {
     }
 
     public static void doUserFinalRegister(){
-        /* Register user and show screen of music styles he/she likes */
-        Globals.displayShortToast(context, "Ready to register user");
+        /* Register user with pop up loading */
+        Call<User> call = Api.getInstance().getAPI().registerUser(registeredUser);
+        call.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                switch (response.code()) {
+                    case 200:
+                        Log.d(TAG, "User registered success " + response.body());
+
+                        String userEmail = registeredUser.getEmail();
+                        String userPassword = registeredUser.getPassword();
+
+                        doUserLogin(userEmail, userPassword);
+
+                        break;
+                    default:
+                        Log.d(TAG, "User registered default " + response.code());
+                        Globals.displayShortToast(context, "Something happened, please try again in a few minutes");
+                        break;
+                }
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                Log.d(TAG, "User registered failure " + t.getLocalizedMessage());
+                Globals.displayShortToast(context, "Something happened, please try again in a few minutes");
+            }
+        });
+    }
+
+    private static void doUserLogin(String userEmail, String userPassword){
+        /* Login user with pop up loading */
+        Call<UserSession> call = Api.getInstance().getAPI().doUserLogin(new AuthenticationData(userEmail, userPassword));
+        call.enqueue(new Callback<UserSession>() {
+            @Override
+            public void onResponse(Call<UserSession> call, Response<UserSession> response) {
+                switch (response.code()) {
+                    case 200:
+                        Log.d(TAG, "User login success " + response.body());
+
+                        UserSession userSession = response.body();
+
+                        CurrentUser.getInstance(context).setCurrentUser(userSession);
+                        CurrentUser.getInstance(context).setUserLogin(true);
+
+                        goRegisterMusicStyles();
+                        break;
+                    default:
+                        Log.d(TAG, "User login default " + response.code());
+                        Globals.displayShortToast(context, "Incorrect email or password");
+                        break;
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserSession> call, Throwable t) {
+                Log.d(TAG, "User login failure " + t.getLocalizedMessage());
+                Globals.displayShortToast(context, "Something happened, please try again in a few minutes");
+            }
+        });
+    }
+
+    private static void goRegisterMusicStyles(){
+        /* Open screen with music styles scroll */
     }
 
     @Override

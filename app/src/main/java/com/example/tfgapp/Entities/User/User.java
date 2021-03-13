@@ -30,7 +30,6 @@ public class User {
 
     public User(){
         gender = Constants.NON_BINARY;
-        userRole = Constants.USER_NORMAL_ROLE;
         country = "";
         city = "";
         zipCode = "";

@@ -2,6 +2,8 @@ package com.example.tfgapp.API;
 
 import com.example.tfgapp.Entities.Concert.ConcertHome;
 import com.example.tfgapp.Entities.Login.AuthenticationData;
+import com.example.tfgapp.Entities.User.User;
+import com.example.tfgapp.Entities.User.UserExists;
 import com.example.tfgapp.Entities.User.UserSession;
 
 import java.util.ArrayList;
@@ -22,4 +24,10 @@ public interface ApiInterface {
 
     @POST("/auth/login")
     Call<UserSession> doUserLogin(@Body AuthenticationData authenticationData);
+
+    @POST("/user/create")
+    Call<User> registerUser(@Body User user);
+
+    @GET("/user/existing/{email}")
+    Call<UserExists> checkUserAlreadyExists(@Path("email") String email);
 }
