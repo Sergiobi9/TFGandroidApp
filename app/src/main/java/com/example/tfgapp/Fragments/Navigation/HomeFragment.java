@@ -28,6 +28,7 @@ import com.example.tfgapp.Activities.Login.LoginActivity;
 import com.example.tfgapp.Entities.Artist.ArtistInfo;
 import com.example.tfgapp.Entities.Concert.ConcertHome;
 import com.example.tfgapp.Entities.User.UserSession;
+import com.example.tfgapp.Fragments.Artist.ArtistFragment;
 import com.example.tfgapp.Global.Api;
 import com.example.tfgapp.Global.CircleTransform;
 import com.example.tfgapp.Global.CurrentUser;
@@ -163,6 +164,13 @@ public class HomeFragment extends Fragment {
                         //String imageUrl = suggestionConcertsArrayList.get(position).getConcertCoverImage();
 
                         Picasso.get().load(imageUrl).transform(new CircleTransform()).into(artistImageView);
+
+                        artistContainerLayout.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                getFragmentManager().beginTransaction().replace(R.id.main_fragment, new ArtistFragment()).addToBackStack(null).commit();
+                            }
+                        });
                     } else {
                         RelativeLayout addArtistsContainerLayout = view.findViewById(R.id.more_artists_container);
                         artistContainerLayout.setVisibility(View.GONE);
@@ -232,7 +240,6 @@ public class HomeFragment extends Fragment {
                         Log.d(TAG, "Home concerts success " + response.body());
                         suggestionConcertsArrayList = response.body();
                         initSuggestionsCarousel();
-
                         break;
                     default:
                         Log.d(TAG, "Home concerts default " + response.code());
@@ -307,6 +314,7 @@ public class HomeFragment extends Fragment {
     }
 
     private void initMostSearchedCarousel(){
+/*
         if (mostSearchedArrayList != null && mostSearchedArrayList.size() != 0){
             mostSearchedCarousel = view.findViewById(R.id.most_searched);
 
@@ -351,5 +359,6 @@ public class HomeFragment extends Fragment {
 
             mostSearchedCarousel.show();
         }
+*/
     }
 }
