@@ -57,9 +57,6 @@
 
             </LinearLayout>
 
-
-
-
             <androidx.cardview.widget.CardView
                 android:id="@+id/viral"
                 android:layout_width="300dp"
@@ -120,7 +117,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="You would like"
+                android:text="Concerts you would like"
                 android:textColor="@color/black"
                 android:fontFamily="@font/lato"
                 android:padding="25sp"
@@ -130,14 +127,29 @@
             <com.jama.carouselview.CarouselView
                 android:id="@+id/suggestion_concerts"
                 android:layout_width="match_parent"
-                android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp"
                 android:layout_height="wrap_content" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Most searched"
+                android:text="Artists to follow"
+                android:textColor="@color/black"
+                android:fontFamily="@font/lato"
+                android:padding="25sp"
+                android:textSize="26sp">
+            </TextView>
+
+                <com.jama.carouselview.CarouselView
+                    android:id="@+id/artists_to_follow"
+                    android:layout_marginBottom="20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Most searched concerts"
                 android:textColor="@color/black"
                 android:fontFamily="@font/lato"
                 android:padding="25sp"
@@ -147,7 +159,6 @@
             <com.jama.carouselview.CarouselView
                 android:id="@+id/most_searched"
                 android:layout_width="match_parent"
-                android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp"
                 android:layout_height="wrap_content" />
 

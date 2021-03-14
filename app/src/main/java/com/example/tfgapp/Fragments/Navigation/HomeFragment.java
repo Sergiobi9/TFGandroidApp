@@ -4,11 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-
-import androidx.annotation.Nullable;
-import androidx.cardview.widget.CardView;
-import androidx.fragment.app.Fragment;
-
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,7 +11,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
+import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
@@ -25,15 +25,18 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.example.tfgapp.Activities.Login.LoginActivity;
+import com.example.tfgapp.Entities.Artist.ArtistInfo;
 import com.example.tfgapp.Entities.Concert.ConcertHome;
 import com.example.tfgapp.Entities.User.UserSession;
 import com.example.tfgapp.Global.Api;
+import com.example.tfgapp.Global.CircleTransform;
 import com.example.tfgapp.Global.CurrentUser;
 import com.example.tfgapp.R;
 import com.jama.carouselview.CarouselView;
 import com.jama.carouselview.CarouselViewListener;
 import com.jama.carouselview.enums.IndicatorAnimationType;
 import com.jama.carouselview.enums.OffsetType;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -50,8 +53,10 @@ public class HomeFragment extends Fragment {
     private View view;
 
     private CarouselView suggestionConcertsCarousel;
+    private CarouselView suggestionArtistsCarousel;
     private CarouselView mostSearchedCarousel;
     private ArrayList<ConcertHome> suggestionConcertsArrayList;
+    private ArrayList<ArtistInfo> suggestionArtistsArrayList;
     private ArrayList<ConcertHome> mostSearchedArrayList;
 
     private ImageView viralImageView;
@@ -87,9 +92,10 @@ public class HomeFragment extends Fragment {
 
         initView();
 
-        getSuggestedConcerts();
-        getMostSearchedConcerts();
         getMostWantedConcert();
+        getSuggestedConcerts();
+        getSuggestedArtists();
+        getMostSearchedConcerts();
 
         return view;
     }
@@ -116,6 +122,71 @@ public class HomeFragment extends Fragment {
         }
 
         welcomeTv.setText(warmWelcomeText);
+    }
+
+    private void getSuggestedArtists(){
+        suggestionArtistsArrayList = new ArrayList<>();
+        suggestionArtistsArrayList.add(new ArtistInfo());
+        suggestionArtistsArrayList.add(new ArtistInfo());
+        suggestionArtistsArrayList.add(new ArtistInfo());
+        suggestionArtistsArrayList.add(new ArtistInfo());
+        suggestionArtistsArrayList.add(new ArtistInfo());
+        suggestionArtistsArrayList.add(new ArtistInfo());
+
+        String imageUrl = "https://i0.wp.com/www.primerafila.cat/wp-content/uploads/2021/02/post-malone.jpg?fit=1024%2C768&ssl=1";
+
+        if (suggestionArtistsArrayList != null && suggestionArtistsArrayList.size() != 0){
+            suggestionArtistsCarousel = view.findViewById(R.id.artists_to_follow);
+
+            suggestionArtistsCarousel.setSize(suggestionArtistsArrayList.size());
+            suggestionArtistsCarousel.setResource(R.layout.home_artists_carrousel_lists);
+            suggestionArtistsCarousel.setAutoPlay(false);
+            suggestionArtistsCarousel.setAutoPlayDelay(3000);
+            suggestionArtistsCarousel.hideIndicator(true);
+            suggestionArtistsCarousel.setIndicatorAnimationType(IndicatorAnimationType.THIN_WORM);
+            suggestionArtistsCarousel.setCarouselOffset(OffsetType.START);
+            suggestionArtistsCarousel.setCarouselViewListener(new CarouselViewListener() {
+                @Override
+                public void onBindView(View view, final int position) {
+                    /* Get screen size */
+
+                    RelativeLayout artistContainerLayout = view.findViewById(R.id.artist_container);
+                    TextView artistName = view.findViewById(R.id.artist_name);
+
+                    if (position != suggestionArtistsArrayList.size() - 1){
+                        ImageView artistImageView = view.findViewById(R.id.imageView);
+                        ViewGroup.LayoutParams params = artistImageView.getLayoutParams();
+                        params.height = (int) (screenWidth * 0.30);
+                        params.width = (int) (screenWidth * 0.30);
+                        artistImageView.setLayoutParams(params);
+
+                        //String imageUrl = suggestionConcertsArrayList.get(position).getConcertCoverImage();
+
+                        Picasso.get().load(imageUrl).transform(new CircleTransform()).into(artistImageView);
+                    } else {
+                        RelativeLayout addArtistsContainerLayout = view.findViewById(R.id.more_artists_container);
+                        artistContainerLayout.setVisibility(View.GONE);
+                        addArtistsContainerLayout.setVisibility(View.VISIBLE);
+
+                        ViewGroup.LayoutParams params = addArtistsContainerLayout.getLayoutParams();
+                        params.height = (int) (screenWidth * 0.30);
+                        params.width = (int) (screenWidth * 0.30);
+                        addArtistsContainerLayout.setLayoutParams(params);
+
+                        artistName.setVisibility(View.GONE);
+
+                        addArtistsContainerLayout.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                goLoginScreen();
+                            }
+                        });
+                    }
+                }
+            });
+
+            suggestionArtistsCarousel.show();
+        }
     }
 
     private void getMostWantedConcert() {
@@ -195,7 +266,7 @@ public class HomeFragment extends Fragment {
             suggestionConcertsCarousel.setAutoPlayDelay(3000);
             suggestionConcertsCarousel.hideIndicator(true);
             suggestionConcertsCarousel.setIndicatorAnimationType(IndicatorAnimationType.THIN_WORM);
-            suggestionConcertsCarousel.setCarouselOffset(OffsetType.CENTER);
+            suggestionConcertsCarousel.setCarouselOffset(OffsetType.START);
             suggestionConcertsCarousel.setCarouselViewListener(new CarouselViewListener() {
                 @Override
                 public void onBindView(View view, final int position) {
@@ -245,7 +316,7 @@ public class HomeFragment extends Fragment {
             mostSearchedCarousel.setAutoPlayDelay(3000);
             mostSearchedCarousel.hideIndicator(true);
             mostSearchedCarousel.setIndicatorAnimationType(IndicatorAnimationType.THIN_WORM);
-            mostSearchedCarousel.setCarouselOffset(OffsetType.CENTER);
+            mostSearchedCarousel.setCarouselOffset(OffsetType.START);
             mostSearchedCarousel.setCarouselViewListener(new CarouselViewListener() {
                 @Override
                 public void onBindView(View view, final int position) {
