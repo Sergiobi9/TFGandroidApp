@@ -32,6 +32,7 @@ import com.example.tfgapp.Fragments.Artist.ArtistFragment;
 import com.example.tfgapp.Global.Api;
 import com.example.tfgapp.Global.CircleTransform;
 import com.example.tfgapp.Global.CurrentUser;
+import com.example.tfgapp.Global.Utils;
 import com.example.tfgapp.R;
 import com.jama.carouselview.CarouselView;
 import com.jama.carouselview.CarouselViewListener;
@@ -61,7 +62,6 @@ public class HomeFragment extends Fragment {
     private ArrayList<ConcertHome> mostSearchedArrayList;
 
     private ImageView viralImageView;
-    private int screenWidth;
     private ImageView loginIcon;
     private TextView welcomeTv;
 
@@ -83,10 +83,6 @@ public class HomeFragment extends Fragment {
 
         view = inflater.inflate(R.layout.fragment_home, container, false);
         context = getContext();
-
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        screenWidth = displayMetrics.widthPixels;
 
         userSession = CurrentUser.getInstance(context).getCurrentUser();
         userRole = CurrentUser.getInstance(context).getUserRole();
@@ -156,12 +152,8 @@ public class HomeFragment extends Fragment {
 
                     if (position != suggestionArtistsArrayList.size() - 1){
                         ImageView artistImageView = view.findViewById(R.id.imageView);
-                        ViewGroup.LayoutParams params = artistImageView.getLayoutParams();
-                        params.height = (int) (screenWidth * 0.30);
-                        params.width = (int) (screenWidth * 0.30);
-                        artistImageView.setLayoutParams(params);
 
-                        //String imageUrl = suggestionConcertsArrayList.get(position).getConcertCoverImage();
+                        Utils.responsiveView(artistImageView, 0.3, 0.3, getActivity());
 
                         Picasso.get().load(imageUrl).transform(new CircleTransform()).into(artistImageView);
 
@@ -172,16 +164,13 @@ public class HomeFragment extends Fragment {
                             }
                         });
                     } else {
-                        RelativeLayout addArtistsContainerLayout = view.findViewById(R.id.more_artists_container);
                         artistContainerLayout.setVisibility(View.GONE);
+                        artistName.setVisibility(View.GONE);
+
+                        RelativeLayout addArtistsContainerLayout = view.findViewById(R.id.more_artists_container);
                         addArtistsContainerLayout.setVisibility(View.VISIBLE);
 
-                        ViewGroup.LayoutParams params = addArtistsContainerLayout.getLayoutParams();
-                        params.height = (int) (screenWidth * 0.30);
-                        params.width = (int) (screenWidth * 0.30);
-                        addArtistsContainerLayout.setLayoutParams(params);
-
-                        artistName.setVisibility(View.GONE);
+                        Utils.responsiveView(addArtistsContainerLayout, 0.3, 0.3, getActivity());
 
                         addArtistsContainerLayout.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -201,16 +190,10 @@ public class HomeFragment extends Fragment {
         String imageUrl = "https://images.dailyhive.com/20161031091319/Post-Malone-DHV-Brandon-Artis-Photography-9-e1477931590637.jpg";
 
         CardView viralCardView = view.findViewById(R.id.viral);
-        ViewGroup.LayoutParams params = viralCardView.getLayoutParams();
-
-        params.height = (int) (screenWidth * 0.7 / 1.5);
-        params.width = (int) (screenWidth * 0.85);
-        viralCardView.setLayoutParams(params);
-
         LinearLayout viralInfoLayout = view.findViewById(R.id.viral_info_layout);
-        params = viralInfoLayout.getLayoutParams();
-        params.width = (int) (screenWidth * 0.85);
-        viralInfoLayout.setLayoutParams(params);
+
+        Utils.responsiveView(viralCardView, 0.85, 0.7 / 1.5, getActivity());
+        Utils.responsiveViewWidth(viralInfoLayout, 0.85, getActivity());
 
         viralImageView = view.findViewById(R.id.viral_image_view);
         Glide.with(context).load(imageUrl)
@@ -278,15 +261,8 @@ public class HomeFragment extends Fragment {
                 @Override
                 public void onBindView(View view, final int position) {
                     /* Get screen size */
-                    LinearLayout concertInfoLayout = view.findViewById(R.id.concert_info_layout);
-                    ViewGroup.LayoutParams params = concertInfoLayout.getLayoutParams();
-                    concertInfoLayout.setLayoutParams(params);
-
                     CardView concertImageLayout = view.findViewById(R.id.concert_cards);
-                    params = concertImageLayout.getLayoutParams();
-                    params.height = (int) (screenWidth * 0.7 / 1.714);
-                    params.width = (int) (screenWidth * 0.7);
-                    concertImageLayout.setLayoutParams(params);
+                    Utils.responsiveView(concertImageLayout, 0.7, 0.7 / 1.714, getActivity());
 
                     ImageView imageView = view.findViewById(R.id.imageView);
                     String imageUrl = suggestionConcertsArrayList.get(position).getConcertCoverImage();

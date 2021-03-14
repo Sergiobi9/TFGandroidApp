@@ -113,7 +113,7 @@
             android:text="SIGN IN"
             android:layout_marginTop="30sp"
             android:onClick="doUserLogin"
-            android:background="@drawable/login_email_button"
+            android:background="@drawable/black_btn"
             android:fontFamily="@font/lato"
             android:textColor="@color/white"
             android:textSize="12dp"

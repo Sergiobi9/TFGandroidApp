@@ -79,7 +79,7 @@ public class MapFragment extends Fragment {
     private int radius = 1000;
 
     private UserLocation userLocation;
-    private int screenWidth, lastPostionCarrousel = 0;
+    private int lastPostionCarrousel = 0;
 
     public MapFragment() {
         // Required empty public constructor
@@ -88,11 +88,6 @@ public class MapFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        screenWidth = displayMetrics.widthPixels;
-
     }
 
     @Override
@@ -184,22 +179,12 @@ public class MapFragment extends Fragment {
             concertsCarousel.setCarouselViewListener(new CarouselViewListener() {
                 @Override
                 public void onBindView(View view, final int position) {
-                    LinearLayout concertInfoLayout = view.findViewById(R.id.concert_info_layout);
-                    ViewGroup.LayoutParams params = concertInfoLayout.getLayoutParams();
-                    concertInfoLayout.setLayoutParams(params);
 
                     CardView concertImageLayout = view.findViewById(R.id.concert_cards);
-                    params = concertImageLayout.getLayoutParams();
-                    params.height = (int) (screenWidth * 0.3);
-                    params.width = (int) (screenWidth * 0.85);
-                    concertImageLayout.setLayoutParams(params);
-
                     ImageView imageView = view.findViewById(R.id.imageView);
 
-                    params = imageView.getLayoutParams();
-                    params.height = (int) (screenWidth * 0.3);
-                    params.width = (int) (screenWidth * 0.3);
-                    imageView.setLayoutParams(params);
+                    Utils.responsiveView(concertImageLayout, 0.85, 0.3, getActivity());
+                    Utils.responsiveView(imageView, 0.3, 0.3, getActivity());
 
                     String imageUrl = concertsArrayList.get(position).getConcertCoverImage();
 

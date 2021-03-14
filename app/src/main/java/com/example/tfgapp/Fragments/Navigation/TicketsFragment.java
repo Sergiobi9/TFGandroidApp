@@ -37,7 +37,6 @@ public class TicketsFragment extends Fragment implements TicketsAdapter.OnConcer
     private View view;
     private Context context;
     private ImageView ticketQR;
-    private int screenWidth;
 
     private ArrayList<ConcertHome> ticketsArrayList;
     private RecyclerView ticketsRecyclerView;
@@ -59,10 +58,6 @@ public class TicketsFragment extends Fragment implements TicketsAdapter.OnConcer
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_tickets, container, false);
         context = getContext();
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        screenWidth = displayMetrics.widthPixels;
-
         onTicketListener = this;
 
         initView();

@@ -1,8 +1,13 @@
 package com.example.tfgapp.Global;
 
+import android.app.Activity;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
+import android.util.DisplayMetrics;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.ColorInt;
 import androidx.core.graphics.drawable.DrawableCompat;
@@ -22,5 +27,26 @@ public class Utils {
         }
         vectorDrawable.draw(canvas);
         return BitmapDescriptorFactory.fromBitmap(bitmap);
+    }
+
+    public static void responsiveViewWidth(View view, double appliedWidth, Activity activity){
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        activity.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int screenWidth = displayMetrics.widthPixels;
+
+        ViewGroup.LayoutParams params = view.getLayoutParams();
+        params.width = (int) (screenWidth * appliedWidth);
+        view.setLayoutParams(params);
+    }
+
+    public static void responsiveView(View view, double appliedWidth, double appliedHeight, Activity activity){
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        activity.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int screenWidth = displayMetrics.widthPixels;
+
+        ViewGroup.LayoutParams params = view.getLayoutParams();
+        params.height = (int) (screenWidth * appliedHeight);
+        params.width = (int) (screenWidth * appliedWidth);
+        view.setLayoutParams(params);
     }
 }
