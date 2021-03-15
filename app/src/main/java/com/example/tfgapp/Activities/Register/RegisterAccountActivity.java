@@ -1,7 +1,6 @@
 package com.example.tfgapp.Activities.Register;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,14 +11,10 @@ import android.view.View;
 
 import com.example.tfgapp.Activities.Login.LoginActivity;
 import com.example.tfgapp.Activities.MainActivity;
-import com.example.tfgapp.Activities.Register.Fragments.RegisterEmailFragment;
-import com.example.tfgapp.Activities.Register.Fragments.RegisterPasswordFragment;
-import com.example.tfgapp.Activities.SignIn.AuthenticationActivity;
+import com.example.tfgapp.Activities.Register.Fragments.UserAccount.RegisterEmailFragment;
 import com.example.tfgapp.Entities.Login.AuthenticationData;
-import com.example.tfgapp.Entities.User.UserExists;
 import com.example.tfgapp.Entities.User.UserSession;
 import com.example.tfgapp.Global.Api;
-import com.example.tfgapp.Global.Constants;
 import com.example.tfgapp.Global.CurrentUser;
 import com.example.tfgapp.Global.Globals;
 import com.example.tfgapp.Global.UserLocationInformation;

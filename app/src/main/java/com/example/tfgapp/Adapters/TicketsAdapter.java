@@ -109,7 +109,4 @@ public class TicketsAdapter extends RecyclerView.Adapter<TicketsAdapter.ViewHold
     public interface OnConcertTicketListener {
         void onConcertTicketClicked(int position);
     }
-
-
-
-    }
+}
