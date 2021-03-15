@@ -8,23 +8,36 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.example.tfgapp.Activities.Register.Fragments.UserAccount.RegisterNameFragment;
+import com.example.tfgapp.Activities.Register.Fragments.UserAccount.RegisterPasswordFragment;
+import com.example.tfgapp.Activities.Register.RegisterAccountActivity;
 import com.example.tfgapp.Adapters.CustomUserMusicStyleAdapter;
 import com.example.tfgapp.Adapters.TicketsAdapter;
 import com.example.tfgapp.Entities.CustomUserLikes.MusicStyle;
+import com.example.tfgapp.Entities.User.User;
+import com.example.tfgapp.Entities.User.UserExists;
+import com.example.tfgapp.Global.Api;
+import com.example.tfgapp.Global.Constants;
+import com.example.tfgapp.Global.Globals;
 import com.example.tfgapp.R;
 
 import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class UserCustomMusicStylesFragment extends Fragment implements CustomUserMusicStyleAdapter.OnMusicStyleListener {
 
     private View view;
     private Context context;
+    private final String TAG = "MusicStylesFragment";
 
     private Button continueBtn;
 
@@ -54,14 +67,9 @@ public class UserCustomMusicStylesFragment extends Fragment implements CustomUse
     }
 
     private void initView(){
-        initMusicStyles();
         musicStyleRecyclerView = view.findViewById(R.id.music_style_recyclerview);
 
-        customUserMusicStyleAdapter = new CustomUserMusicStyleAdapter(context, musicStyleArrayList, onMusicStyleListener);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false);
-        musicStyleRecyclerView.setLayoutManager(gridLayoutManager);
-        musicStyleRecyclerView.setNestedScrollingEnabled(false);
-        musicStyleRecyclerView.setAdapter(customUserMusicStyleAdapter);
+        getMusicStyles();
 
         continueBtn = view.findViewById(R.id.continue_btn);
         continueBtn.setOnClickListener(new View.OnClickListener() {
@@ -72,17 +80,39 @@ public class UserCustomMusicStylesFragment extends Fragment implements CustomUse
         });
     }
 
-    private void initMusicStyles(){
-        musicStyleArrayList = new ArrayList<>();
+    private void getMusicStyles(){
+        Call<ArrayList<MusicStyle>> call = Api.getInstance().getAPI().getMusicStyles();
+        call.enqueue(new Callback<ArrayList<MusicStyle>>() {
+            @Override
+            public void onResponse(Call<ArrayList<MusicStyle>>call, Response<ArrayList<MusicStyle>> response) {
+                switch (response.code()) {
+                    case 200:
+                        Log.d(TAG, "Get music styles success " + response.body());
 
-        musicStyleArrayList.add(new MusicStyle("1", "Trap", "https://i.scdn.co/image/29180f7f9c945e04de9b39cb5188f6a9171ae485"));
-        musicStyleArrayList.add(new MusicStyle("2", "Reggae", "https://i.scdn.co/image/29180f7f9c945e04de9b39cb5188f6a9171ae485"));
-        musicStyleArrayList.add(new MusicStyle("3", "Dance", "https://i.scdn.co/image/29180f7f9c945e04de9b39cb5188f6a9171ae485"));
-        musicStyleArrayList.add(new MusicStyle("4", "Pop", "https://i.scdn.co/image/29180f7f9c945e04de9b39cb5188f6a9171ae485"));
-        musicStyleArrayList.add(new MusicStyle("5", "Rock", "https://i.scdn.co/image/29180f7f9c945e04de9b39cb5188f6a9171ae485"));
-        musicStyleArrayList.add(new MusicStyle("6", "Jazz", "https://i.scdn.co/image/29180f7f9c945e04de9b39cb5188f6a9171ae485"));
-        musicStyleArrayList.add(new MusicStyle("7", "Blue", "https://i.scdn.co/image/29180f7f9c945e04de9b39cb5188f6a9171ae485"));
-        musicStyleArrayList.add(new MusicStyle("8", "Folklore", "https://i.scdn.co/image/29180f7f9c945e04de9b39cb5188f6a9171ae485"));
+                        musicStyleArrayList = response.body();
+                        initMusicStylesView();
+                        break;
+                    default:
+                        Log.d(TAG, "Get music styles default " + response.code());
+                        Globals.displayShortToast(context, "Something happened, please try again in a few minutes");
+                        break;
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<MusicStyle>> call, Throwable t) {
+                Log.d(TAG, "Get music styles failure " + t.getLocalizedMessage());
+                Globals.displayShortToast(context, "Something happened, please try again in a few minutes");
+            }
+        });
+    }
+
+    private void initMusicStylesView(){
+        customUserMusicStyleAdapter = new CustomUserMusicStyleAdapter(context, musicStyleArrayList, onMusicStyleListener);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false);
+        musicStyleRecyclerView.setLayoutManager(gridLayoutManager);
+        musicStyleRecyclerView.setNestedScrollingEnabled(false);
+        musicStyleRecyclerView.setAdapter(customUserMusicStyleAdapter);
     }
 
     @Override

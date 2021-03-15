@@ -1,6 +1,7 @@
 package com.example.tfgapp.API;
 
 import com.example.tfgapp.Entities.Concert.ConcertHome;
+import com.example.tfgapp.Entities.CustomUserLikes.MusicStyle;
 import com.example.tfgapp.Entities.Login.AuthenticationData;
 import com.example.tfgapp.Entities.User.User;
 import com.example.tfgapp.Entities.User.UserExists;
@@ -30,4 +31,7 @@ public interface ApiInterface {
 
     @GET("/user/existing/{email}")
     Call<UserExists> checkUserAlreadyExists(@Path("email") String email);
+
+    @GET("/music/style/all")
+    Call<ArrayList<MusicStyle>> getMusicStyles();
 }
