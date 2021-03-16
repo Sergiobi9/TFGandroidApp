@@ -76,7 +76,12 @@ public class UserCustomMusicStylesFragment extends Fragment implements CustomUse
         continueBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getFragmentManager().beginTransaction().replace(R.id.register_user_likes_fragment, new UserCustomArtistsLikedFragment()).addToBackStack(null).commit();
+                ArrayList<String> musicStylesIds = RegisterCustomLikesActivity.getMusicStylesIdsSelected();
+
+                if (musicStylesIds.size() > 0)
+                    getFragmentManager().beginTransaction().replace(R.id.register_user_likes_fragment, new UserCustomArtistsLikedFragment()).addToBackStack(null).commit();
+                else
+                    Globals.displayShortToast(context, "Selecciona almenos un estilo musical");
             }
         });
     }
@@ -121,7 +126,6 @@ public class UserCustomMusicStylesFragment extends Fragment implements CustomUse
         boolean isSelected = !musicStyleArrayList.get(position).isSelected();
         String musicStyleId = musicStyleArrayList.get(position).id;
         musicStyleArrayList.get(position).setSelected(isSelected);
-        customUserMusicStyleAdapter.notifyDataSetChanged();
 
         ArrayList<String> musicStylesSelected = RegisterCustomLikesActivity.getMusicStylesIdsSelected();
         if (isSelected)
@@ -130,6 +134,6 @@ public class UserCustomMusicStylesFragment extends Fragment implements CustomUse
             musicStylesSelected.remove(musicStyleId);
 
         RegisterCustomLikesActivity.setMusicStylesIdsSelected(musicStylesSelected);
-        Log.d(TAG, musicStylesSelected.toString());
+        customUserMusicStyleAdapter.notifyDataSetChanged();
     }
 }

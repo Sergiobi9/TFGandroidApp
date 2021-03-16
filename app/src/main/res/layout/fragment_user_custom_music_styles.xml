@@ -15,7 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/lato_black"
-            android:text="Elige 3 o más estilos musicales que te gusten"
+            android:text="Elige 1 o más estilos musicales que te gusten"
             android:textSize="28sp">
         </TextView>
 

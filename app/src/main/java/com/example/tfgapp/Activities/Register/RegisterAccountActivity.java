@@ -108,7 +108,8 @@ public class RegisterAccountActivity extends AppCompatActivity {
 
     public static void doUserFinalRegister(Context context){
         /* Register user with pop up loading */
-        Call<User> call = Api.getInstance().getAPI().registerUser(registeredUser);
+        goRegisterMusicStyles(context);
+      /*  Call<User> call = Api.getInstance().getAPI().registerUser(registeredUser);
         call.enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
@@ -134,7 +135,7 @@ public class RegisterAccountActivity extends AppCompatActivity {
                 Log.d(TAG, "User registered failure " + t.getLocalizedMessage());
                 Globals.displayShortToast(context, "Something happened, please try again in a few minutes");
             }
-        });
+        });*/
     }
 
     private static void doUserLogin(Context context, String userEmail, String userPassword){
@@ -171,7 +172,7 @@ public class RegisterAccountActivity extends AppCompatActivity {
 
     private static void goRegisterMusicStyles(Context context){
         /* Open screen with music styles scroll */
-        Intent intent = new Intent(context, MainActivity.class);
+        Intent intent = new Intent(context, RegisterCustomLikesActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
     }

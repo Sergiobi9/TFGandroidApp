@@ -42,5 +42,5 @@ public interface ApiInterface {
     Call<ArrayList<ArtistUserRegisterSelection>> getArtistsByMusicStylesSelected(@Body ArrayList<String> musicStylesIds);
 
     @PUT("/user/preferences/save")
-    Call<UserPreferences> saveUserPreferences(@Body ArrayList<String> musicStylesIds);
+    Call<UserPreferences> saveUserPreferences(@Body UserPreferences userPreferences);
 }

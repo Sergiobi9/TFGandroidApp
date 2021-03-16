@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.example.tfgapp.Activities.Register.RegisterCustomLikesActivity;
 import com.example.tfgapp.Adapters.CustomUserArtistsAdapter;
@@ -18,6 +19,8 @@ import com.example.tfgapp.Adapters.CustomUserMusicStyleAdapter;
 import com.example.tfgapp.Entities.Artist.ArtistReducedInfo;
 import com.example.tfgapp.Entities.Artist.ArtistUserRegisterSelection;
 import com.example.tfgapp.Entities.CustomUserLikes.MusicStyle;
+import com.example.tfgapp.Entities.User.User;
+import com.example.tfgapp.Entities.User.UserPreferences;
 import com.example.tfgapp.Global.Api;
 import com.example.tfgapp.Global.Globals;
 import com.example.tfgapp.R;
@@ -40,6 +43,8 @@ public class UserCustomArtistsLikedFragment extends Fragment implements CustomUs
     private CustomUserArtistsAdapter customUserArtistsAdapter;
     private CustomUserArtistsAdapter.OnArtistListener onArtistListener;
 
+    private Button continueBtn;
+
     public UserCustomArtistsLikedFragment() {
     }
 
@@ -52,6 +57,7 @@ public class UserCustomArtistsLikedFragment extends Fragment implements CustomUs
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         view = inflater.inflate(R.layout.fragment_user_custom_artists_liked, container, false);
         context = getContext();
         onArtistListener = this;
@@ -62,6 +68,26 @@ public class UserCustomArtistsLikedFragment extends Fragment implements CustomUs
 
     private void initView(){
         getArtists();
+
+        continueBtn = view.findViewById(R.id.continue_btn);
+        continueBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ArrayList<String> artistsSelected = RegisterCustomLikesActivity.getArtistsSelectedIdsArrayList();
+                if (artistsSelected.size() > 0)
+                    RegisterCustomLikesActivity.saveUserPreferences(context);
+                else
+                    Globals.displayShortToast(context, "Selecciona almenos tres artistas");
+            }
+        });
+    }
+
+    private void saveUserPreferences(){
+
+    }
+
+    private void goMainScreen(){
+
     }
 
     private void getArtists(){
@@ -109,13 +135,14 @@ public class UserCustomArtistsLikedFragment extends Fragment implements CustomUs
         boolean isSelected = !artistReducedInfoArrayList.get(position).isSelected();
         String artistId = artistReducedInfoArrayList.get(position).getArtistId();
         artistReducedInfoArrayList.get(position).setSelected(isSelected);
-        customUserArtistsAdapter.notifyDataSetChanged();
 
+        ArrayList<String> artistsIdsSelected = RegisterCustomLikesActivity.getArtistsSelectedIdsArrayList();
         if (isSelected)
-            artistsSelectedIdsArrayList.add(artistId);
+            artistsIdsSelected.add(artistId);
         else
-            artistsSelectedIdsArrayList.remove(artistId);
+            artistsIdsSelected.remove(artistId);
 
-        Log.d(TAG, artistsSelectedIdsArrayList.toString());
+        RegisterCustomLikesActivity.setArtistsSelectedIdsArrayList(artistsIdsSelected);
+        customUserArtistsAdapter.notifyDataSetChanged();
     }
 }

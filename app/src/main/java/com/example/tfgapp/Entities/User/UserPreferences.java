@@ -6,10 +6,16 @@ public class UserPreferences {
 
     public String id;
     public String userId;
-    public ArrayList<String> artistsId;
+    public ArrayList<String> artistsIds;
     public ArrayList<String> musicStylesIds;
 
     public UserPreferences(){}
+
+    public UserPreferences(String userId, ArrayList<String> artistsIds, ArrayList<String> musicStylesIds) {
+        this.userId = userId;
+        this.artistsIds = artistsIds;
+        this.musicStylesIds = musicStylesIds;
+    }
 
     public String getId() {
         return id;
@@ -27,12 +33,12 @@ public class UserPreferences {
         this.userId = userId;
     }
 
-    public ArrayList<String> getArtistsId() {
-        return artistsId;
+    public ArrayList<String> getArtistsIds() {
+        return artistsIds;
     }
 
-    public void setArtistsId(ArrayList<String> artistsId) {
-        this.artistsId = artistsId;
+    public void setArtistsIds(ArrayList<String> artistsIds) {
+        this.artistsIds = artistsIds;
     }
 
     public ArrayList<String> getMusicStylesIds() {
