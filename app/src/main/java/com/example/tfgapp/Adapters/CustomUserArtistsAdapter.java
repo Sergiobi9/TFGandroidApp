@@ -1,6 +1,7 @@
 package com.example.tfgapp.Adapters;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,19 +51,21 @@ public class CustomUserArtistsAdapter extends RecyclerView.Adapter<CustomUserArt
         String imageUrl = currentArtist.getProfileUrl();
 
         Picasso.get().load(imageUrl).transform(new CircleTransform()).into(holder.image);
-        holder.musicStyleName.setText(currentArtist.getArtistName());
 
-        holder.image.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                boolean isSelected = currentArtist.isSelected();
+        TextView musicStyleName = (TextView) holder.musicStyleName;
+        ImageView musicStyleCover = (ImageView) holder.image;
 
-                if (isSelected)
-                    holder.image.setAlpha(0.5f);
-                else
-                    holder.image.setAlpha(1.0f);
-            }
-        });
+        musicStyleName.setText(currentArtist.getArtistName());
+
+        boolean isSelected = currentArtist.isSelected();
+
+        if (isSelected){
+            musicStyleCover.setAlpha(0.5f);
+            musicStyleName.setTypeface(null, Typeface.BOLD);
+        } else {
+            musicStyleCover.setAlpha(1.0f);
+            musicStyleName.setTypeface(null, Typeface.NORMAL);
+        }
     }
 
     @Override

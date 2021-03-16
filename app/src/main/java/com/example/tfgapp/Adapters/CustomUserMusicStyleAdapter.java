@@ -1,6 +1,7 @@
 package com.example.tfgapp.Adapters;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,19 +50,20 @@ public class CustomUserMusicStyleAdapter extends RecyclerView.Adapter<CustomUser
 
         Picasso.get().load(imageUrl).transform(new CircleTransform()).into(holder.image);
 
-        holder.musicStyleName.setText(currentMusicStyle.getName());
+        TextView musicStyleName = (TextView) holder.musicStyleName;
+        ImageView musicStyleCover = (ImageView) holder.image;
 
-        holder.image.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                boolean isSelected = currentMusicStyle.isSelected();
+        musicStyleName.setText(currentMusicStyle.getName());
 
-                if (isSelected)
-                    holder.image.setAlpha(0.5f);
-                else
-                    holder.image.setAlpha(1.0f);
-            }
-        });
+        boolean isSelected = currentMusicStyle.isSelected();
+
+        if (isSelected){
+            musicStyleCover.setAlpha(0.5f);
+            musicStyleName.setTypeface(null, Typeface.BOLD);
+        } else {
+            musicStyleCover.setAlpha(1.0f);
+            musicStyleName.setTypeface(null, Typeface.NORMAL);
+        }
     }
 
     @Override

@@ -216,7 +216,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void openFragment(Fragment fragmentToBeOpened){
-        getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, fragmentToBeOpened).addToBackStack(null).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, fragmentToBeOpened).commit();
     }
 
     private void requestLocationPermission() {

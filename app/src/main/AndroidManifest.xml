@@ -15,7 +15,6 @@
         android:theme="@style/Theme.TFGapp"
         android:usesCleartextTraffic="true">
         <activity android:name=".Activities.Register.RegisterCustomLikesActivity">
-
         </activity>
         <activity android:name=".Activities.Register.RegisterAccountActivity" />
         <activity android:name=".Activities.SignIn.AuthenticationActivity" />

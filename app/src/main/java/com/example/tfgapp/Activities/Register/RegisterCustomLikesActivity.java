@@ -1,12 +1,20 @@
 package com.example.tfgapp.Activities.Register;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.example.tfgapp.Activities.MainActivity;
 import com.example.tfgapp.Activities.Register.Fragments.UserAccount.RegisterEmailFragment;
@@ -33,18 +41,43 @@ public class RegisterCustomLikesActivity extends AppCompatActivity {
     private static ArrayList<String> artistsSelectedIdsArrayList = new ArrayList<>();
     private static boolean isUserPreferencesFirstScreen = true;
 
+    private TextView omitBtn;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_register_custom_likes);
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.register_user_likes_fragment, new UserCustomMusicStylesFragment()).addToBackStack(null).commit();
+        if (Build.VERSION.SDK_INT == 26) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
+        } else {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
+
+        initView();
+
+        getSupportFragmentManager().beginTransaction().replace(R.id.register_user_likes_fragment, new UserCustomMusicStylesFragment()).commit();
+    }
+
+    private void initView(){
+        omitBtn = findViewById(R.id.omit_user_preferences_tv);
+        omitBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                artistsSelectedIdsArrayList = new ArrayList<>();
+                musicStylesIdsSelected = new ArrayList<>();
+
+                saveUserPreferences(getApplicationContext());
+            }
+        });
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        goMainScreen(getApplicationContext());
+        goMainScreenOnBack(getApplicationContext());
     }
 
     public static ArrayList<String> getMusicStylesIdsSelected(){
@@ -95,12 +128,16 @@ public class RegisterCustomLikesActivity extends AppCompatActivity {
         });
     }
 
-    private static void goMainScreen(Context context){
+    private static void goMainScreenOnBack(Context context){
         if (isUserPreferencesFirstScreen){
-            Intent intent = new Intent(context, MainActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            context.startActivity(intent);
+            goMainScreen(context);
         }
+    }
+
+    private static void goMainScreen(Context context){
+        Intent intent = new Intent(context, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
     }
 
 }

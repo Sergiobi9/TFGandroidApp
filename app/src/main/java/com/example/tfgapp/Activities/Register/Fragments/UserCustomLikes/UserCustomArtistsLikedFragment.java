@@ -135,6 +135,6 @@ public class UserCustomArtistsLikedFragment extends Fragment implements CustomUs
             artistsIdsSelected.remove(artistId);
 
         RegisterCustomLikesActivity.setArtistsSelectedIdsArrayList(artistsIdsSelected);
-        customUserArtistsAdapter.notifyDataSetChanged();
+        customUserArtistsAdapter.notifyItemChanged(position);
     }
 }

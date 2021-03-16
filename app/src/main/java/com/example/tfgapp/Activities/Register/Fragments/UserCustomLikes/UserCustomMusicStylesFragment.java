@@ -60,7 +60,7 @@ public class UserCustomMusicStylesFragment extends Fragment implements CustomUse
                              Bundle savedInstanceState) {
 
         view = inflater.inflate(R.layout.fragment_user_custom_music_styles, container, false);
-        RegisterAccountActivity.isRegisterFirstScreen(true);
+        RegisterCustomLikesActivity.setIsUserPreferencesFirstScreen(true);
         context = getContext();
         onMusicStyleListener = this;
 
@@ -80,7 +80,7 @@ public class UserCustomMusicStylesFragment extends Fragment implements CustomUse
                 ArrayList<String> musicStylesIds = RegisterCustomLikesActivity.getMusicStylesIdsSelected();
 
                 if (musicStylesIds.size() > 0) {
-                    RegisterAccountActivity.isRegisterFirstScreen(false);
+                    RegisterCustomLikesActivity.setIsUserPreferencesFirstScreen(false);
                     getFragmentManager().beginTransaction().replace(R.id.register_user_likes_fragment, new UserCustomArtistsLikedFragment()).addToBackStack(null).commit();
                 }
                 else {
@@ -127,6 +127,7 @@ public class UserCustomMusicStylesFragment extends Fragment implements CustomUse
 
     @Override
     public void onMusicStyleClicked(int position) {
+        Log.d(TAG, "WTF");
         boolean isSelected = !musicStyleArrayList.get(position).isSelected();
         String musicStyleId = musicStyleArrayList.get(position).id;
         musicStyleArrayList.get(position).setSelected(isSelected);
@@ -138,6 +139,6 @@ public class UserCustomMusicStylesFragment extends Fragment implements CustomUse
             musicStylesSelected.remove(musicStyleId);
 
         RegisterCustomLikesActivity.setMusicStylesIdsSelected(musicStylesSelected);
-        customUserMusicStyleAdapter.notifyDataSetChanged();
+        customUserMusicStyleAdapter.notifyItemChanged(position);
     }
 }

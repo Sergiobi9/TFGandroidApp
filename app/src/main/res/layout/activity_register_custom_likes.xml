@@ -9,15 +9,16 @@
     <RelativeLayout
         android:id="@+id/register_likes_top_layout"
         android:layout_width="match_parent"
-        android:padding="25sp"
         android:gravity="right"
         android:layout_height="wrap_content">
 
         <TextView
+            android:id="@+id/omit_user_preferences_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Omitir"
             android:translationZ="1dp"
+            android:padding="25sp"
             android:layout_centerVertical="true"
             android:gravity="center"
             android:textSize="16sp">
