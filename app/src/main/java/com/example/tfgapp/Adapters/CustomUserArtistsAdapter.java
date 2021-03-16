@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tfgapp.Entities.Artist.ArtistReducedInfo;
+import com.example.tfgapp.Entities.Artist.ArtistUserRegisterSelection;
 import com.example.tfgapp.Entities.CustomUserLikes.MusicStyle;
 import com.example.tfgapp.Global.CircleTransform;
 import com.example.tfgapp.R;
@@ -22,15 +23,15 @@ import java.util.ArrayList;
 
 public class CustomUserArtistsAdapter extends RecyclerView.Adapter<CustomUserArtistsAdapter.ViewHolder> {
 
-    private ArrayList<ArtistReducedInfo> artistReducedInfoArrayList;
+    private ArrayList<ArtistUserRegisterSelection> artistUserRegisterSelectionArrayList;
     private final String TAG = "CustomUserArtistsAdapter";
     private Context context;
     private CustomUserArtistsAdapter.OnArtistListener onArtistListener;
 
-    public CustomUserArtistsAdapter(Context context, ArrayList<ArtistReducedInfo> artistReducedInfoArrayList, OnArtistListener onArtistListener) {
+    public CustomUserArtistsAdapter(Context context, ArrayList<ArtistUserRegisterSelection> artistUserRegisterSelectionArrayList, OnArtistListener onArtistListener) {
         this.context = context;
         this.onArtistListener = onArtistListener;
-        this.artistReducedInfoArrayList = artistReducedInfoArrayList;
+        this.artistUserRegisterSelectionArrayList = artistUserRegisterSelectionArrayList;
     }
 
     @NonNull
@@ -44,17 +45,29 @@ public class CustomUserArtistsAdapter extends RecyclerView.Adapter<CustomUserArt
 
     @Override
     public void onBindViewHolder(@NonNull CustomUserArtistsAdapter.ViewHolder holder, int position) {
-        ArtistReducedInfo currentArtist = artistReducedInfoArrayList.get(position);
+        ArtistUserRegisterSelection currentArtist = artistUserRegisterSelectionArrayList.get(position);
 
-        String imageUrl = currentArtist.getImageUrl();
+        String imageUrl = currentArtist.getProfileUrl();
 
         Picasso.get().load(imageUrl).transform(new CircleTransform()).into(holder.image);
-        holder.musicStyleName.setText(currentArtist.getName());
+        holder.musicStyleName.setText(currentArtist.getArtistName());
+
+        holder.image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean isSelected = currentArtist.isSelected();
+
+                if (isSelected)
+                    holder.image.setAlpha(0.5f);
+                else
+                    holder.image.setAlpha(1.0f);
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
-        return artistReducedInfoArrayList.size();
+        return artistUserRegisterSelectionArrayList.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

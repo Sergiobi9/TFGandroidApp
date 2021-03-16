@@ -7,24 +7,35 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.tfgapp.Activities.Register.RegisterCustomLikesActivity;
 import com.example.tfgapp.Adapters.CustomUserArtistsAdapter;
 import com.example.tfgapp.Adapters.CustomUserMusicStyleAdapter;
 import com.example.tfgapp.Entities.Artist.ArtistReducedInfo;
+import com.example.tfgapp.Entities.Artist.ArtistUserRegisterSelection;
 import com.example.tfgapp.Entities.CustomUserLikes.MusicStyle;
+import com.example.tfgapp.Global.Api;
+import com.example.tfgapp.Global.Globals;
 import com.example.tfgapp.R;
 
 import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class UserCustomArtistsLikedFragment extends Fragment implements CustomUserArtistsAdapter.OnArtistListener {
 
     private View view;
     private Context context;
+    private final String TAG = "ArtistLikesFragment";
 
-    private ArrayList<ArtistReducedInfo> artistReducedInfoArrayList;
+    private ArrayList<ArtistUserRegisterSelection> artistReducedInfoArrayList = new ArrayList<>();
+    private ArrayList<String> artistsSelectedIdsArrayList = new ArrayList<>();
     private RecyclerView artistsRecyclerView;
     private CustomUserArtistsAdapter customUserArtistsAdapter;
     private CustomUserArtistsAdapter.OnArtistListener onArtistListener;
@@ -42,6 +53,7 @@ public class UserCustomArtistsLikedFragment extends Fragment implements CustomUs
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_user_custom_artists_liked, container, false);
+        context = getContext();
         onArtistListener = this;
 
         initView();
@@ -49,8 +61,40 @@ public class UserCustomArtistsLikedFragment extends Fragment implements CustomUs
     }
 
     private void initView(){
-        initArtists();
+        getArtists();
+    }
 
+    private void getArtists(){
+        artistReducedInfoArrayList = new ArrayList<>();
+        ArrayList<String> musicStylesIds = RegisterCustomLikesActivity.getMusicStylesIdsSelected();
+
+        Call<ArrayList<ArtistUserRegisterSelection>> call = Api.getInstance().getAPI().getArtistsByMusicStylesSelected(musicStylesIds);
+        call.enqueue(new Callback<ArrayList<ArtistUserRegisterSelection>>() {
+            @Override
+            public void onResponse(Call<ArrayList<ArtistUserRegisterSelection>>call, Response<ArrayList<ArtistUserRegisterSelection>> response) {
+                switch (response.code()) {
+                    case 200:
+                        Log.d(TAG, "Get artists by styles success " + response.body());
+
+                        artistReducedInfoArrayList = response.body();
+                        initArtistsView();
+                        break;
+                    default:
+                        Log.d(TAG, "Get artists by styles default " + response.code());
+                        Globals.displayShortToast(context, "Something happened, please try again in a few minutes");
+                        break;
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<ArtistUserRegisterSelection>> call, Throwable t) {
+                Log.d(TAG, "Get artists by styles failure " + t.getLocalizedMessage());
+                Globals.displayShortToast(context, "Something happened, please try again in a few minutes");
+            }
+        });
+    }
+
+    private void initArtistsView(){
         artistsRecyclerView = view.findViewById(R.id.artists_to_follow_recyclerview);
 
         customUserArtistsAdapter = new CustomUserArtistsAdapter(context, artistReducedInfoArrayList, onArtistListener);
@@ -58,23 +102,20 @@ public class UserCustomArtistsLikedFragment extends Fragment implements CustomUs
         artistsRecyclerView.setLayoutManager(gridLayoutManager);
         artistsRecyclerView.setNestedScrollingEnabled(false);
         artistsRecyclerView.setAdapter(customUserArtistsAdapter);
-
-    }
-
-    private void initArtists(){
-        artistReducedInfoArrayList = new ArrayList<>();
-
-        artistReducedInfoArrayList.add(new ArtistReducedInfo("1", "Post Malone", "https://pyxis.nymag.com/v1/imgs/f5f/3ea/3d78db572590823a4e7640ab6346c5ba30-drake.rsquare.w1200.jpg"));
-        artistReducedInfoArrayList.add(new ArtistReducedInfo("2", "Travis Scott", "https://pyxis.nymag.com/v1/imgs/f5f/3ea/3d78db572590823a4e7640ab6346c5ba30-drake.rsquare.w1200.jpg"));
-        artistReducedInfoArrayList.add(new ArtistReducedInfo("3", "Drake", "https://pyxis.nymag.com/v1/imgs/f5f/3ea/3d78db572590823a4e7640ab6346c5ba30-drake.rsquare.w1200.jpg"));
-        artistReducedInfoArrayList.add(new ArtistReducedInfo("4", "Rosalia", "https://pyxis.nymag.com/v1/imgs/f5f/3ea/3d78db572590823a4e7640ab6346c5ba30-drake.rsquare.w1200.jpg"));
-        artistReducedInfoArrayList.add(new ArtistReducedInfo("5", "The Weekend", "https://pyxis.nymag.com/v1/imgs/f5f/3ea/3d78db572590823a4e7640ab6346c5ba30-drake.rsquare.w1200.jpg"));
-        artistReducedInfoArrayList.add(new ArtistReducedInfo("7", "Robbie Williams", "https://pyxis.nymag.com/v1/imgs/f5f/3ea/3d78db572590823a4e7640ab6346c5ba30-drake.rsquare.w1200.jpg"));
-        artistReducedInfoArrayList.add(new ArtistReducedInfo("8", "Bruno Mars", "https://pyxis.nymag.com/v1/imgs/f5f/3ea/3d78db572590823a4e7640ab6346c5ba30-drake.rsquare.w1200.jpg"));
     }
 
     @Override
     public void onArtistClicked(int position) {
+        boolean isSelected = !artistReducedInfoArrayList.get(position).isSelected();
+        String artistId = artistReducedInfoArrayList.get(position).getArtistId();
+        artistReducedInfoArrayList.get(position).setSelected(isSelected);
+        customUserArtistsAdapter.notifyDataSetChanged();
 
+        if (isSelected)
+            artistsSelectedIdsArrayList.add(artistId);
+        else
+            artistsSelectedIdsArrayList.remove(artistId);
+
+        Log.d(TAG, artistsSelectedIdsArrayList.toString());
     }
 }

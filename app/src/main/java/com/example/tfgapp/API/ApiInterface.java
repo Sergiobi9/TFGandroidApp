@@ -1,10 +1,12 @@
 package com.example.tfgapp.API;
 
+import com.example.tfgapp.Entities.Artist.ArtistUserRegisterSelection;
 import com.example.tfgapp.Entities.Concert.ConcertHome;
 import com.example.tfgapp.Entities.CustomUserLikes.MusicStyle;
 import com.example.tfgapp.Entities.Login.AuthenticationData;
 import com.example.tfgapp.Entities.User.User;
 import com.example.tfgapp.Entities.User.UserExists;
+import com.example.tfgapp.Entities.User.UserPreferences;
 import com.example.tfgapp.Entities.User.UserSession;
 
 import java.util.ArrayList;
@@ -13,6 +15,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 public interface ApiInterface {
@@ -34,4 +37,10 @@ public interface ApiInterface {
 
     @GET("/music/style/all")
     Call<ArrayList<MusicStyle>> getMusicStyles();
+
+    @POST("/artist/all/styles")
+    Call<ArrayList<ArtistUserRegisterSelection>> getArtistsByMusicStylesSelected(@Body ArrayList<String> musicStylesIds);
+
+    @PUT("/user/preferences/save")
+    Call<UserPreferences> saveUserPreferences(@Body ArrayList<String> musicStylesIds);
 }

@@ -46,7 +46,7 @@ public class ArtistFragment extends Fragment {
     }
 
     private void initView() {
-        String imageUrl = "https://i0.wp.com/www.primerafila.cat/wp-content/uploads/2021/02/post-malone.jpg?fit=1024%2C768&ssl=1";
+        String imageUrl = "https://i.pinimg.com/564x/fc/4c/45/fc4c4546509202ab3d0c0fc91e8c4d69.jpg";
 
         concertsLayout = view.findViewById(R.id.concerts_layout);
         followersLayout = view.findViewById(R.id.followers_layout);

@@ -17,6 +17,7 @@ import android.widget.Button;
 import com.example.tfgapp.Activities.Register.Fragments.UserAccount.RegisterNameFragment;
 import com.example.tfgapp.Activities.Register.Fragments.UserAccount.RegisterPasswordFragment;
 import com.example.tfgapp.Activities.Register.RegisterAccountActivity;
+import com.example.tfgapp.Activities.Register.RegisterCustomLikesActivity;
 import com.example.tfgapp.Adapters.CustomUserMusicStyleAdapter;
 import com.example.tfgapp.Adapters.TicketsAdapter;
 import com.example.tfgapp.Entities.CustomUserLikes.MusicStyle;
@@ -46,12 +47,12 @@ public class UserCustomMusicStylesFragment extends Fragment implements CustomUse
     private CustomUserMusicStyleAdapter customUserMusicStyleAdapter;
     private CustomUserMusicStyleAdapter.OnMusicStyleListener onMusicStyleListener;
 
-    public UserCustomMusicStylesFragment() { }
+    public UserCustomMusicStylesFragment() {
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -66,7 +67,7 @@ public class UserCustomMusicStylesFragment extends Fragment implements CustomUse
         return view;
     }
 
-    private void initView(){
+    private void initView() {
         musicStyleRecyclerView = view.findViewById(R.id.music_style_recyclerview);
 
         getMusicStyles();
@@ -80,11 +81,11 @@ public class UserCustomMusicStylesFragment extends Fragment implements CustomUse
         });
     }
 
-    private void getMusicStyles(){
+    private void getMusicStyles() {
         Call<ArrayList<MusicStyle>> call = Api.getInstance().getAPI().getMusicStyles();
         call.enqueue(new Callback<ArrayList<MusicStyle>>() {
             @Override
-            public void onResponse(Call<ArrayList<MusicStyle>>call, Response<ArrayList<MusicStyle>> response) {
+            public void onResponse(Call<ArrayList<MusicStyle>> call, Response<ArrayList<MusicStyle>> response) {
                 switch (response.code()) {
                     case 200:
                         Log.d(TAG, "Get music styles success " + response.body());
@@ -107,7 +108,7 @@ public class UserCustomMusicStylesFragment extends Fragment implements CustomUse
         });
     }
 
-    private void initMusicStylesView(){
+    private void initMusicStylesView() {
         customUserMusicStyleAdapter = new CustomUserMusicStyleAdapter(context, musicStyleArrayList, onMusicStyleListener);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false);
         musicStyleRecyclerView.setLayoutManager(gridLayoutManager);
@@ -117,6 +118,18 @@ public class UserCustomMusicStylesFragment extends Fragment implements CustomUse
 
     @Override
     public void onMusicStyleClicked(int position) {
+        boolean isSelected = !musicStyleArrayList.get(position).isSelected();
+        String musicStyleId = musicStyleArrayList.get(position).id;
+        musicStyleArrayList.get(position).setSelected(isSelected);
+        customUserMusicStyleAdapter.notifyDataSetChanged();
 
+        ArrayList<String> musicStylesSelected = RegisterCustomLikesActivity.getMusicStylesIdsSelected();
+        if (isSelected)
+            musicStylesSelected.add(musicStyleId);
+        else
+            musicStylesSelected.remove(musicStyleId);
+
+        RegisterCustomLikesActivity.setMusicStylesIdsSelected(musicStylesSelected);
+        Log.d(TAG, musicStylesSelected.toString());
     }
 }

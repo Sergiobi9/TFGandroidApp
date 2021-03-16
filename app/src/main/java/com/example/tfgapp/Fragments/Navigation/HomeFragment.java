@@ -130,7 +130,7 @@ public class HomeFragment extends Fragment {
         suggestionArtistsArrayList.add(new ArtistInfo());
         suggestionArtistsArrayList.add(new ArtistInfo());
 
-        String imageUrl = "https://i0.wp.com/www.primerafila.cat/wp-content/uploads/2021/02/post-malone.jpg?fit=1024%2C768&ssl=1";
+        String imageUrl = "https://i.pinimg.com/564x/65/0f/d3/650fd39821139bcd064419b6f9bd3d12.jpg";
 
         if (suggestionArtistsArrayList != null && suggestionArtistsArrayList.size() != 0){
             suggestionArtistsCarousel = view.findViewById(R.id.artists_to_follow);

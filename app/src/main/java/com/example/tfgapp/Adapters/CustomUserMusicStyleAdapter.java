@@ -48,7 +48,20 @@ public class CustomUserMusicStyleAdapter extends RecyclerView.Adapter<CustomUser
         String imageUrl = currentMusicStyle.getImageUrl();
 
         Picasso.get().load(imageUrl).transform(new CircleTransform()).into(holder.image);
+
         holder.musicStyleName.setText(currentMusicStyle.getName());
+
+        holder.image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean isSelected = currentMusicStyle.isSelected();
+
+                if (isSelected)
+                    holder.image.setAlpha(0.5f);
+                else
+                    holder.image.setAlpha(1.0f);
+            }
+        });
     }
 
     @Override

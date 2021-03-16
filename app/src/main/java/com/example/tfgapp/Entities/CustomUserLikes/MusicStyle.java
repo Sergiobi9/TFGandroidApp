@@ -10,6 +10,7 @@ public class MusicStyle {
     public String name;
     @SerializedName("imageUrl")
     public String imageUrl;
+    public boolean selected;
 
     public MusicStyle() {
     }
@@ -42,5 +43,13 @@ public class MusicStyle {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
     }
 }

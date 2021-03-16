@@ -16,6 +16,7 @@ import java.util.ArrayList;
 public class RegisterCustomLikesActivity extends AppCompatActivity {
 
     private static String userId;
+    private static ArrayList<String> musicStylesIdsSelected = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,5 +24,13 @@ public class RegisterCustomLikesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register_custom_likes);
 
         getSupportFragmentManager().beginTransaction().replace(R.id.register_user_likes_fragment, new UserCustomMusicStylesFragment()).addToBackStack(null).commit();
+    }
+
+    public static ArrayList<String> getMusicStylesIdsSelected(){
+        return musicStylesIdsSelected;
+    }
+
+    public static void setMusicStylesIdsSelected(ArrayList<String> musicStylesIds){
+        musicStylesIdsSelected = musicStylesIds;
     }
 }
