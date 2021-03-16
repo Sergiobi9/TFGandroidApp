@@ -9,11 +9,13 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.tfgapp.Activities.Login.LoginActivity;
 import com.example.tfgapp.Entities.User.UserSession;
 import com.example.tfgapp.Global.CurrentUser;
+import com.example.tfgapp.Global.Utils;
 import com.example.tfgapp.R;
 
 public class UserProfileFragment extends Fragment {
@@ -23,6 +25,7 @@ public class UserProfileFragment extends Fragment {
     private Context context;
 
     private TextView logoutBtn;
+    private LinearLayout artistsFollowedLayout, musicStylesFollowedLayout;
 
     public UserProfileFragment() {
         // Required empty public constructor
@@ -45,14 +48,19 @@ public class UserProfileFragment extends Fragment {
     }
 
     private void initView(){
-        logoutBtn = view.findViewById(R.id.logout_btn);
+        artistsFollowedLayout = view.findViewById(R.id.artists_following_layout);
+        musicStylesFollowedLayout = view.findViewById(R.id.music_styles_following_layout);
+
+        Utils.responsiveViewWidth(artistsFollowedLayout, 0.5, getActivity());
+        Utils.responsiveViewWidth(musicStylesFollowedLayout, 0.5, getActivity());
+        /*logoutBtn = view.findViewById(R.id.logout_btn);
 
         logoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 goLoginScreen();
             }
-        });
+        });*/
     }
 
     private void goLoginScreen(){

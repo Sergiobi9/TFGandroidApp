@@ -3,492 +3,178 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".Fragments.Navigation.UserProfileFragment">
+    android:background="@color/white"
+    tools:context=".Fragments.Artist.ArtistFragment">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginTop="20dp"
             android:orientation="vertical">
 
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_marginTop="75dp"
-                android:layout_marginBottom="40dp"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:minHeight="200dp"
+                android:orientation="horizontal">
 
                 <LinearLayout
-                    android:layout_width="150dp"
+                    android:id="@+id/user_profile"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="20dp"
+                    android:layout_margin="30sp"
                     android:gravity="center"
                     android:background="@drawable/user_profile_rounded"
-                    android:layout_centerHorizontal="true"
-                    android:layout_height="150dp">
+                    android:orientation="vertical">
 
                     <TextView
                         android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:text="SO"
-                        android:textColor="@color/white"
-                        android:textSize="40sp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
                         android:fontFamily="@font/lato"
-                        android:layout_height="wrap_content">
+                        android:textSize="36sp"
+                        android:textColor="@color/white">
 
                     </TextView>
 
                 </LinearLayout>
 
-            </RelativeLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="10dp">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:gravity="center"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/lato_black"
+                        android:text="Sergi Obiols Olcina"
+                        android:textSize="24sp">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Sergi Obiols Olcina"
-                    android:fontFamily="@font/lato"
-                    android:textColor="@color/black"
-                    android:textSize="26sp">
-                </TextView>
+                    </TextView>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="20sp"
-                    android:layout_marginTop="5dp"
-                    android:fontFamily="@font/lato"
-                    android:textColor="@color/black"
-                    android:text="sergiobi1395@gmail.com">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:fontFamily="@font/lato"
+                        android:autoSizeMaxTextSize="18sp"
+                        android:maxLines="1"
+                        android:autoSizeMinTextSize="12sp"
+                        android:autoSizeStepGranularity="2sp"
+                        android:autoSizeTextType="uniform"
+                        android:text="sergiobiolsolcina@gmail.com"
+                        android:textSize="18sp">
 
-                </TextView>
+                    </TextView>
+
+                </LinearLayout>
 
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_marginTop="50dp"
-                android:layout_marginLeft="40dp"
-                android:layout_marginRight="20dp"
+            <Button
+                android:id="@+id/follow_btn"
+                android:visibility="visible"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:background="@drawable/unfollow_btn"
                 android:gravity="center"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:stateListAnimator="@null"
+                android:text="Editar perfil"
+                android:textColor="@color/black"></Button>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_marginTop="15dp"
                 android:orientation="horizontal">
 
-                <ImageView
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    app:tint="@color/black"
-                    android:src="@drawable/profile">
-                </ImageView>
-
-                <TextView
+                <LinearLayout
+                    android:id="@+id/artists_following_layout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="15dp"
-                    android:fontFamily="@font/lato"
-                    android:textColor="@color/black"
-                    android:textSize="18sp"
-                    android:text="My profile">
-
-                </TextView>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingBottom="20dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="15dp"
-                        android:fontFamily="@font/lato"
-
-                        android:textSize="18sp"
-                        android:text="Edit profile">
-                    </TextView>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:background="@color/grey"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginRight="15dp"
-                    android:layout_height="1dp">
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:paddingBottom="20dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="15dp"
-                        android:fontFamily="@font/lato"
-                        android:textSize="18sp"
-                        android:text="Edit password">
-                    </TextView>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:background="@color/grey"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginRight="15dp"
-                    android:layout_height="1dp">
-
-                </LinearLayout>
-
-
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_marginTop="50dp"
-                android:layout_marginLeft="40dp"
-                android:layout_marginRight="20dp"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    app:tint="@color/black"
-                    android:src="@drawable/profile">
-                </ImageView>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="15dp"
-                    android:fontFamily="@font/lato"
-                    android:textColor="@color/black"
-                    android:textSize="18sp"
-                    android:text="Events">
-
-                </TextView>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingBottom="20dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="15dp"
-                        android:fontFamily="@font/lato"
-                        android:textSize="18sp"
-                        android:text="My tickets">
-                    </TextView>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:background="@color/grey"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginRight="15dp"
-                    android:layout_height="1dp">
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:paddingBottom="20dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="15dp"
-                        android:fontFamily="@font/lato"
-                        android:textSize="18sp"
-                        android:text="Assisted events">
-                    </TextView>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:background="@color/grey"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginRight="15dp"
-                    android:layout_height="1dp">
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_marginTop="50dp"
-                android:layout_marginLeft="40dp"
-                android:layout_marginRight="20dp"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    app:tint="@color/black"
-                    android:src="@drawable/profile">
-                </ImageView>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="15dp"
-                    android:fontFamily="@font/lato"
-                    android:textSize="18sp"
-                    android:textColor="@color/black"
-                    android:text="Settings">
-
-                </TextView>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingBottom="20dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="15dp"
-                        android:fontFamily="@font/lato"
-                        android:textSize="18sp"
-                        android:text="About the app">
-                    </TextView>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:background="@color/grey"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginRight="15dp"
-                    android:layout_height="1dp">
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:paddingBottom="20dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="15dp"
-                        android:fontFamily="@font/lato"
-                        android:textSize="18sp"
-                        android:text="Privacy policy">
-                    </TextView>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:background="@color/grey"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginRight="15dp"
-                    android:layout_height="1dp">
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:paddingBottom="20dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="15dp"
-                        android:fontFamily="@font/lato"
-                        android:textSize="18sp"
-                        android:text="Terms and conditions">
-                    </TextView>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:background="@color/grey"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginRight="15dp"
-                    android:layout_height="1dp">
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_marginTop="50dp"
-                android:layout_marginLeft="40dp"
-                android:layout_marginRight="20dp"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    app:tint="@color/black"
-                    android:src="@drawable/profile">
-                </ImageView>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="15dp"
-                    android:fontFamily="@font/lato"
-                    android:textColor="@color/black"
-                    android:textSize="18sp"
-                    android:text="Notifications">
-
-                </TextView>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingBottom="20dp"
-                    android:orientation="horizontal">
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:orientation="vertical">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="15dp"
-                        android:fontFamily="@font/lato"
-                        android:textSize="18sp"
-                        android:text="Push notifications">
+                        android:layout_marginTop="5dp"
+                        android:fontFamily="@font/lato_black"
+                        android:gravity="center"
+                        android:text="Artistas seguidos"
+                        android:textSize="18sp">
+
                     </TextView>
 
-                    <Switch
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-                    </Switch>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:fontFamily="@font/lato"
+                        android:gravity="center"
+                        android:text="12"
+                        android:textSize="20sp">
 
+                    </TextView>
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:background="@color/grey"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginRight="15dp"
-                    android:layout_height="1dp">
+                    android:id="@+id/music_styles_following_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:columnCount="2"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:fontFamily="@font/lato_black"
+                        android:gravity="center"
+                        android:text="Géneros seguidos "
+                        android:textSize="18sp">
+
+                    </TextView>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:fontFamily="@font/lato"
+                        android:text="23"
+                        android:textSize="20sp">
+
+                    </TextView>
 
                 </LinearLayout>
 
 
             </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
-                android:layout_marginBottom="25sp"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/logout_btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="18sp"
-                    android:fontFamily="@font/lato"
-                    android:textColor="@color/black"
-                    android:text="Log out">
-
-                </TextView>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="16sp"
-                    android:textColor="@color/red_logout"
-                    android:fontFamily="@font/lato"
-                    android:layout_marginTop="25sp"
-                    android:text="Delete account">
-
-                </TextView>
-
-            </LinearLayout>
-
 
         </LinearLayout>
 
 
-
     </androidx.core.widget.NestedScrollView>
-
 
 </FrameLayout>
