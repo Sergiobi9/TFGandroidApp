@@ -82,14 +82,6 @@ public class UserCustomArtistsLikedFragment extends Fragment implements CustomUs
         });
     }
 
-    private void saveUserPreferences(){
-
-    }
-
-    private void goMainScreen(){
-
-    }
-
     private void getArtists(){
         artistReducedInfoArrayList = new ArrayList<>();
         ArrayList<String> musicStylesIds = RegisterCustomLikesActivity.getMusicStylesIdsSelected();

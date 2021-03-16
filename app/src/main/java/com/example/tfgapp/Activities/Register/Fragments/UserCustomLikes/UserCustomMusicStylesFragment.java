@@ -60,6 +60,7 @@ public class UserCustomMusicStylesFragment extends Fragment implements CustomUse
                              Bundle savedInstanceState) {
 
         view = inflater.inflate(R.layout.fragment_user_custom_music_styles, container, false);
+        RegisterAccountActivity.isRegisterFirstScreen(true);
         context = getContext();
         onMusicStyleListener = this;
 
@@ -78,10 +79,13 @@ public class UserCustomMusicStylesFragment extends Fragment implements CustomUse
             public void onClick(View v) {
                 ArrayList<String> musicStylesIds = RegisterCustomLikesActivity.getMusicStylesIdsSelected();
 
-                if (musicStylesIds.size() > 0)
+                if (musicStylesIds.size() > 0) {
+                    RegisterAccountActivity.isRegisterFirstScreen(false);
                     getFragmentManager().beginTransaction().replace(R.id.register_user_likes_fragment, new UserCustomArtistsLikedFragment()).addToBackStack(null).commit();
-                else
+                }
+                else {
                     Globals.displayShortToast(context, "Selecciona almenos un estilo musical");
+                }
             }
         });
     }

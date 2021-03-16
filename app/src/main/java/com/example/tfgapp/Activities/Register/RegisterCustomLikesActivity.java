@@ -31,6 +31,7 @@ public class RegisterCustomLikesActivity extends AppCompatActivity {
     private static final String TAG = "RegisterLikesActivity";
     private static ArrayList<String> musicStylesIdsSelected = new ArrayList<>();
     private static ArrayList<String> artistsSelectedIdsArrayList = new ArrayList<>();
+    private static boolean isUserPreferencesFirstScreen = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +39,12 @@ public class RegisterCustomLikesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register_custom_likes);
 
         getSupportFragmentManager().beginTransaction().replace(R.id.register_user_likes_fragment, new UserCustomMusicStylesFragment()).addToBackStack(null).commit();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        goMainScreen(getApplicationContext());
     }
 
     public static ArrayList<String> getMusicStylesIdsSelected(){
@@ -54,6 +61,10 @@ public class RegisterCustomLikesActivity extends AppCompatActivity {
 
     public static void setArtistsSelectedIdsArrayList(ArrayList<String> artistsIds) {
         artistsSelectedIdsArrayList = artistsIds;
+    }
+
+    public static void setIsUserPreferencesFirstScreen(boolean firstScreen) {
+        isUserPreferencesFirstScreen = firstScreen;
     }
 
     public static void saveUserPreferences(Context context){
@@ -85,9 +96,11 @@ public class RegisterCustomLikesActivity extends AppCompatActivity {
     }
 
     private static void goMainScreen(Context context){
-        Intent intent = new Intent(context, MainActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(intent);
+        if (isUserPreferencesFirstScreen){
+            Intent intent = new Intent(context, MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent);
+        }
     }
 
 }

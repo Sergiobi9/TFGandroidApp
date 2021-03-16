@@ -75,4 +75,8 @@ dependencies {
     /* QR Writer */
     implementation 'com.journeyapps:zxing-android-embedded:4.1.0'
     implementation 'androidx.appcompat:appcompat:1.0.2'
+
+    /* Loading */
+    implementation 'com.wang.avi:library:2.1.3'
+
 }
