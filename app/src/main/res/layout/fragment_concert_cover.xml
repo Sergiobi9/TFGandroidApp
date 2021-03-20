@@ -58,14 +58,14 @@
                 android:orientation="vertical">
 
                     <androidx.cardview.widget.CardView
-                        android:id="@+id/concert_card_view_one"
+                        android:id="@+id/concert_cover_card_view"
                         android:layout_width="match_parent"
                         android:layout_margin="5dp"
                         app:cardCornerRadius="10dp"
                         android:layout_height="wrap_content">
 
                         <ImageView
-                            android:id="@+id/concert_image_one"
+                            android:id="@+id/concert_cover_image"
                             android:layout_width="match_parent"
                             android:scaleType="centerCrop"
                             android:adjustViewBounds="true"
@@ -75,6 +75,16 @@
 
 
                     </androidx.cardview.widget.CardView>
+
+                <TextView
+                    android:id="@+id/add_new_photo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20sp"
+                    android:text="Seleccionar otra"
+                    android:textSize="18sp"
+                    android:fontFamily="@font/lato">
+                </TextView>
 
             </LinearLayout>
 
