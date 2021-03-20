@@ -23,6 +23,7 @@ import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
+import com.example.tfgapp.Activities.Concert.Fragment.ConcertCoverFragment;
 import com.example.tfgapp.Activities.Concert.Fragment.ConcertImagesFragment;
 import com.example.tfgapp.Activities.Concert.Fragment.ConcertPlaceFragment;
 import com.example.tfgapp.Entities.Concert.Concert;
@@ -67,7 +68,7 @@ public class CreateConcertActivity extends AppCompatActivity {
         createCredentialsProviders();
         setTransferUtility();
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.concert_fragment, new ConcertImagesFragment()).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.concert_fragment, new ConcertCoverFragment()).commit();
     }
 
     public static ArrayList<Uri> getConcertImagesArrayList() {

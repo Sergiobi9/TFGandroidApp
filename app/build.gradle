@@ -87,4 +87,7 @@ dependencies {
     implementation 'com.amazonaws:aws-android-sdk-core:2.6.30'
     implementation 'com.amazonaws:aws-android-sdk-ddb:2.6.30'
 
+    /* ImageCropper */
+    implementation 'com.theartofdev.edmodo:android-image-cropper:2.4.+'
+
 }
