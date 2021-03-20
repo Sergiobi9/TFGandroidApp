@@ -21,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.tfgapp.Activities.Concert.CreateConcertActivity;
 import com.example.tfgapp.Global.Globals;
 import com.example.tfgapp.Global.Helpers;
 import com.example.tfgapp.Global.Permissions;
@@ -42,6 +43,7 @@ public class ConcertImagesFragment extends Fragment {
     private final int PICK_IMAGE_MULTIPLE = 1;
     private ArrayList<ImageView> concertImages;
     private ArrayList<CardView> concertCardViews;
+    private ArrayList<Uri> concertImagesUriArrayList = new ArrayList<>();
 
 
     public ConcertImagesFragment() {
@@ -109,7 +111,9 @@ public class ConcertImagesFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 setImagesToUpload();
-                getFragmentManager().beginTransaction().replace(R.id.concert_fragment, new ConcertDescriptionFragment()).addToBackStack(null).commit();
+
+                CreateConcertActivity.createConcert(context);
+                //getFragmentManager().beginTransaction().replace(R.id.concert_fragment, new ConcertDescriptionFragment()).addToBackStack(null).commit();
             }
         });
     }
@@ -134,6 +138,7 @@ public class ConcertImagesFragment extends Fragment {
                 int width  = photosLayout.getMeasuredWidth();
 
                 if (data.getClipData() != null) {
+                    concertImagesUriArrayList = new ArrayList<>();
                     for (int i = 0; i < concertCardViews.size(); i++){
                         concertImages.get(i).setVisibility(View.GONE);
                         concertCardViews.get(i).setVisibility(View.GONE);
@@ -144,6 +149,7 @@ public class ConcertImagesFragment extends Fragment {
 
                     for (int i = 0; i < photosSize; i++) {
                         Uri imageURI = data.getClipData().getItemAt(i).getUri();
+                        concertImagesUriArrayList.add(imageURI);
                         ImageView imageView = getImageViewPhoto(i);
                         CardView cardView = getCardViewPhoto(i);
 
@@ -157,7 +163,8 @@ public class ConcertImagesFragment extends Fragment {
                     }
                 } else {
                     Uri onlyImage = data.getData();
-
+                    concertImagesUriArrayList = new ArrayList<>();
+                    concertImagesUriArrayList.add(onlyImage);
                     if (onlyImage == null){
                         Globals.displayShortToast(context, "Por favor, selecciona almenos una foto");
                     } else {
@@ -179,6 +186,8 @@ public class ConcertImagesFragment extends Fragment {
                     }
 
                 }
+
+                CreateConcertActivity.setConcertImagesArrayList(concertImagesUriArrayList);
             }
         }
     }

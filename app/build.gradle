@@ -82,5 +82,9 @@ dependencies {
     /* Hour picker */
     implementation 'com.github.ifr0z:timepickercompact:1.0'
 
+    /* Amazon S3 */
+    implementation 'com.amazonaws:aws-android-sdk-s3:2.6.30'
+    implementation 'com.amazonaws:aws-android-sdk-core:2.6.30'
+    implementation 'com.amazonaws:aws-android-sdk-ddb:2.6.30'
 
 }
