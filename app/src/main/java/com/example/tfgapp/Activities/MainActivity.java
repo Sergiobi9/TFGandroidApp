@@ -16,15 +16,15 @@ import android.view.WindowManager;
 
 import com.example.tfgapp.Activities.Login.LoginActivity;
 import com.example.tfgapp.Entities.User.UserSession;
+import com.example.tfgapp.Fragments.Navigation.Artist.Concert.ConcertFragment;
 import com.example.tfgapp.Fragments.Navigation.HomeFragment;
 import com.example.tfgapp.Fragments.Navigation.MapFragment;
 import com.example.tfgapp.Fragments.Navigation.SearchFragment;
-import com.example.tfgapp.Fragments.Navigation.TicketsFragment;
-import com.example.tfgapp.Fragments.Navigation.UserProfileFragment;
+import com.example.tfgapp.Fragments.Navigation.User.TicketsFragment;
+import com.example.tfgapp.Fragments.Navigation.User.UserProfileFragment;
 import com.example.tfgapp.Global.Constants;
 import com.example.tfgapp.Global.CurrentUser;
 import com.example.tfgapp.Global.Globals;
-import com.example.tfgapp.Global.Permissions;
 import com.example.tfgapp.R;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
@@ -110,19 +110,19 @@ public class MainActivity extends AppCompatActivity {
     private void userNavigationController(int itemPosition){
         switch (itemPosition){
             case 0:
-                goMapSecction();
+                openFragment(new MapFragment());
                 break;
             case 1:
-                goSearchFragment();
+                openFragment(new SearchFragment());
                 break;
             case 2:
-                goHomeFragment();
+                openFragment(new HomeFragment());
                 break;
             case 3:
-                goTicketsFragment();
+                openFragment(new TicketsFragment());
                 break;
             case 4:
-                goUserProfileFragment();
+                openFragment(new UserProfileFragment());
                 break;
             default:
                 break;
@@ -133,19 +133,19 @@ public class MainActivity extends AppCompatActivity {
     private void artistNavigationController(int itemPosition){
         switch (itemPosition){
             case 0:
-                goMapSecction();
+                openFragment(new MapFragment());
                 break;
             case 1:
-                goSearchFragment();
+                openFragment(new SearchFragment());
                 break;
             case 2:
-                goHomeFragment();
+                openFragment(new ConcertFragment());
                 break;
             case 3:
-                goTicketsFragment();
+                openFragment(new TicketsFragment());
                 break;
             case 4:
-                goUserProfileFragment();
+                openFragment(new UserProfileFragment());
                 break;
             default:
                 break;
@@ -157,13 +157,13 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "Selection item");
         switch (itemPosition){
             case 0:
-                goMapSecction();
+                openFragment(new MapFragment());
                 break;
             case 1:
-                goHomeFragment();
+                openFragment(new HomeFragment());
                 break;
             case 2:
-                goSearchFragment();
+                openFragment(new SearchFragment());
                 break;
             default:
                 break;
@@ -174,45 +174,6 @@ public class MainActivity extends AppCompatActivity {
     private void goLogginScreen(){
         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
         startActivity(intent);
-    }
-
-    private void goMapSecction(){
-        Log.d(TAG, "Opening map fragment");
-
-        if (Permissions.checkLocationPermission(context)){
-            openFragment(new MapFragment());
-        } else {
-            mapIntent = true;
-            requestLocationPermission();
-        }
-    }
-
-    private void goSearchFragment(){
-        Log.d(TAG, "Opening search fragment");
-
-        openFragment(new SearchFragment());
-    }
-
-    private void goUserProfileFragment(){
-        Log.d(TAG, "Opening profile fragment");
-
-        if (CurrentUser.getInstance(context).isUserLoggedIn())
-            openFragment(new UserProfileFragment());
-        else goLogginScreen();
-    }
-
-    private void goHomeFragment(){
-        Log.d(TAG, "Opening home fragment");
-
-        openFragment(new HomeFragment());
-    }
-
-    private void goTicketsFragment(){
-        Log.d(TAG, "Opening tickets fragment");
-
-        if (CurrentUser.getInstance(context).isUserLoggedIn())
-            openFragment(new TicketsFragment());
-        else goLogginScreen();
     }
 
     private void openFragment(Fragment fragmentToBeOpened){

@@ -127,7 +127,6 @@ public class MapFragment extends Fragment {
                 googleMap.getUiSettings().setCompassEnabled(true);
                 googleMap.getUiSettings().setMyLocationButtonEnabled(true);
                 googleMap.getUiSettings().setRotateGesturesEnabled(true);
-
             }
         });
     }
@@ -141,7 +140,7 @@ public class MapFragment extends Fragment {
                             .position(new LatLng(concertToShow.getLatitude(), concertToShow.getLongitude()))
                             .title(concertToShow.getName())
                             .snippet(concertToShow.getStreet())
-                            .icon(Utils.vectorToBitmap(getResources().getDrawable(R.drawable.map_marker),
+                            .icon(Utils.vectorToBitmap(context.getResources().getDrawable(R.drawable.map_marker),
                                     -1, 90, 90))
 
             );

@@ -5,10 +5,12 @@ import android.text.format.DateUtils;
 
 import com.example.tfgapp.Entities.User.UserSession;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -88,5 +90,34 @@ public class Helpers {
         int passwordLength = password.length();
 
         return passwordLength >= 8;
+    }
+
+    public static Calendar getDateAsCalendar(String dateAsString) {
+        SimpleDateFormat parser = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ");
+        Date date = null;
+        try {
+            date = parser.parse(dateAsString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+
+        return calendar;
+    }
+
+    public static String getTimeStamp(){
+        TimeZone tz = Calendar.getInstance().getTimeZone();
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ"); // Quoted "Z" to indicate UTC, no timezone offset
+        df.setTimeZone(tz);
+        return df.format(new Date());
+    }
+
+    public static String getDateWithPattern(Date dateAsString){
+        TimeZone tz = Calendar.getInstance().getTimeZone();
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ"); // Quoted "Z" to indicate UTC, no timezone offset
+        df.setTimeZone(tz);
+        return df.format(dateAsString);
     }
 }

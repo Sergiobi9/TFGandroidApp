@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activities.Register.Fragments.UserAccount.RegisterEmailFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_margin="25dp"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/which_concert_name_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/lato_black"
+            android:text="¿Dónde se va a dar lugar?"
+            android:textSize="28sp">
+        </TextView>
+
+        <EditText
+            android:id="@+id/register_concert"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/which_concert_name_tv"
+            android:paddingLeft="20dp"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
+            android:paddingRight="20dp"
+            android:maxHeight="50dp"
+            android:fontFamily="@font/lato"
+            android:inputType="number"
+            android:layout_marginTop="25dp"
+            android:background="@drawable/login_edit_text_background">
+
+        </EditText>
+
+        <Button
+            android:id="@+id/register_email_btn"
+            android:layout_width="match_parent"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:text="NEXT"
+            android:background="@drawable/black_btn"
+            android:fontFamily="@font/lato"
+            android:textColor="@color/white"
+            android:textSize="12dp"
+            android:layout_marginTop="50dp"
+            android:layout_below="@+id/register_concert"
+            android:textAllCaps="false"
+            android:layout_height="wrap_content"></Button>
+
+    </RelativeLayout>
+
+</FrameLayout>

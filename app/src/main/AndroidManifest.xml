@@ -14,8 +14,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TFGapp"
         android:usesCleartextTraffic="true">
-        <activity android:name=".Activities.Register.RegisterCustomLikesActivity">
-        </activity>
+        <activity android:name=".Activities.Concert.CreateConcertActivity"></activity>
+        <activity android:name=".Fragments.Navigation.Artist.CreateConcertFragment" />
+        <activity android:name=".Activities.Register.RegisterCustomLikesActivity" />
         <activity android:name=".Activities.Register.RegisterAccountActivity" />
         <activity android:name=".Activities.SignIn.AuthenticationActivity" />
         <activity android:name=".Activities.Login.LoginActivity" />
