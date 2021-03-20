@@ -1,5 +1,6 @@
 package com.example.tfgapp.Activities.Concert.Fragment;
 
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.example.tfgapp.Activities.Concert.CreateConcertActivity;
+import com.example.tfgapp.Entities.Concert.Concert;
 import com.example.tfgapp.Global.Helpers;
 import com.example.tfgapp.R;
 
@@ -57,9 +59,16 @@ public class ConcertHourFragment extends Fragment {
         concertHourTextView.setText(concertHourText);
 
         concertDate = CreateConcertActivity.getRegisteredConcert().getDateStarts();
-        Calendar concertDateAsCalendar = Helpers.getDateAsCalendar(concertDate);
 
         timePicker = view.findViewById(R.id.concert_time_picker);
+        Calendar concertDateAsCalendar = Helpers.getDateAsCalendar(concertDate);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            timePicker.setHour(concertDateAsCalendar.get(Calendar.HOUR_OF_DAY));
+            timePicker.setMinute(concertDateAsCalendar.get(Calendar.MINUTE));
+            timePicker.setIs24HourView(true);
+        }
+
         timePicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
             @Override
             public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
@@ -71,6 +80,7 @@ public class ConcertHourFragment extends Fragment {
                     calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
                     calendar.set(Calendar.MINUTE, minute);
                     calendar.set(Calendar.MILLISECOND, 0);
+                    calendar.set(Calendar.SECOND, 0);
                     concertDate = Helpers.getDateWithPattern(calendar.getTime());
                 } catch (ParseException e) {
                     e.printStackTrace();
@@ -83,12 +93,14 @@ public class ConcertHourFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 setConcertHour();
-                getFragmentManager().beginTransaction().replace(R.id.concert_fragment, new ConcertHourFragment()).addToBackStack(null).commit();
+                getFragmentManager().beginTransaction().replace(R.id.concert_fragment, new ConcertPriceFragment()).addToBackStack(null).commit();
             }
         });
     }
 
     private void setConcertHour(){
-
+        Concert concert = CreateConcertActivity.getRegisteredConcert();
+        concert.setDateStarts(concertDate);
+        CreateConcertActivity.setRegisteredConcert(concert);
     }
 }

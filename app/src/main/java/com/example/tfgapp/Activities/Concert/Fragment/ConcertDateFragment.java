@@ -81,6 +81,8 @@ public class ConcertDateFragment extends Fragment {
                         calendar.set(Calendar.DATE, dayOfMonth);// for 6 hour
                         calendar.set(Calendar.MONTH, monthOfYear);// for 0 min
                         calendar.set(Calendar.YEAR, year);// for 0 sec
+                        calendar.set(Calendar.MILLISECOND, 0);
+                        calendar.set(Calendar.SECOND, 0);
                         concertDate = Helpers.getDateWithPattern(calendar.getTime());
                     } catch (ParseException e) {
                         e.printStackTrace();
