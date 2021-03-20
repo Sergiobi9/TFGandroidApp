@@ -9,13 +9,16 @@ import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.example.tfgapp.Activities.Concert.Fragment.ConcertPlaceFragment;
 import com.example.tfgapp.Entities.Concert.Concert;
 import com.example.tfgapp.Activities.Concert.Fragment.ConcertNameFragment;
+import com.example.tfgapp.Entities.Concert.ConcertLocation;
 import com.example.tfgapp.R;
 
 public class CreateConcertActivity extends AppCompatActivity {
 
     private static Concert registeredConcert;
+    private static ConcertLocation registeredConcertLocation;
     private static final String TAG = "CreateConcertActivity";
 
     @Override
@@ -30,7 +33,9 @@ public class CreateConcertActivity extends AppCompatActivity {
         } else {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
+
         registeredConcert = new Concert();
+        registeredConcertLocation = new ConcertLocation();
 
         getSupportFragmentManager().beginTransaction().replace(R.id.concert_fragment, new ConcertNameFragment()).commit();
     }
@@ -40,8 +45,16 @@ public class CreateConcertActivity extends AppCompatActivity {
     }
 
     public static void setRegisteredConcert(Concert concert) {
-        Log.d(TAG, registeredConcert.toString());
-        System.out.println(registeredConcert.toString());
         registeredConcert = concert;
+        Log.d(TAG, registeredConcert.toString());
+    }
+
+    public static ConcertLocation getRegisteredConcertLocation() {
+        return registeredConcertLocation;
+    }
+
+    public static void setRegisteredConcertLocation(ConcertLocation concertLocation) {
+        registeredConcertLocation = concertLocation;
+        Log.d(TAG, registeredConcertLocation.toString());
     }
 }

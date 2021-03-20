@@ -11,7 +11,7 @@
         android:layout_height="wrap_content">
 
         <TextView
-            android:id="@+id/which_email_tv"
+            android:id="@+id/concert_price_top_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/lato_black"
@@ -20,10 +20,10 @@
         </TextView>
 
         <EditText
-            android:id="@+id/register_email"
+            android:id="@+id/concert_price"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/which_email_tv"
+            android:layout_below="@+id/concert_price_top_tv"
             android:paddingLeft="20dp"
             android:paddingTop="15dp"
             android:paddingBottom="15dp"
@@ -37,11 +37,11 @@
         </EditText>
 
         <TextView
-            android:id="@+id/confirm_email"
+            android:id="@+id/concert_price_info_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/register_email"
-            android:text="Luego tendrás que confirmar esta dirección."
+            android:layout_below="@+id/concert_price"
+            android:text="Un 5% del precio de las entradas iran destinadas a {{nombreApp}} para mejorar su funcionamiento"
             android:layout_marginTop="15dp"
             android:fontFamily="@font/lato"
             android:textSize="14sp">
@@ -49,7 +49,7 @@
 
 
         <Button
-            android:id="@+id/register_email_btn"
+            android:id="@+id/concert_price_next_btn"
             android:layout_width="match_parent"
             android:layout_marginLeft="50dp"
             android:layout_marginRight="50dp"
@@ -59,7 +59,7 @@
             android:textColor="@color/white"
             android:textSize="12dp"
             android:layout_marginTop="50dp"
-            android:layout_below="@+id/confirm_email"
+            android:layout_below="@+id/concert_price_info_tv"
             android:textAllCaps="false"
             android:layout_height="wrap_content"></Button>
 
