@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.example.tfgapp.Activities.Concert.Fragment.ConcertImagesFragment;
 import com.example.tfgapp.Activities.Concert.Fragment.ConcertPlaceFragment;
 import com.example.tfgapp.Entities.Concert.Concert;
 import com.example.tfgapp.Activities.Concert.Fragment.ConcertNameFragment;
@@ -37,7 +38,7 @@ public class CreateConcertActivity extends AppCompatActivity {
         registeredConcert = new Concert();
         registeredConcertLocation = new ConcertLocation();
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.concert_fragment, new ConcertNameFragment()).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.concert_fragment, new ConcertImagesFragment()).commit();
     }
 
     public static Concert getRegisteredConcert() {

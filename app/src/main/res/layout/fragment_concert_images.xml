@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".Activities.Register.Fragments.UserAccount.RegisterEmailFragment">
 
     <RelativeLayout
@@ -15,20 +16,150 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/lato_black"
-            android:text="Sube un máximo de 4 fotos del lugar del evento"
+            android:text="Sube un máximo de 4 fotos del lugar del evento (Opcional)"
             android:textSize="28sp">
         </TextView>
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_below="@+id/which_concert_name_tv"
             android:layout_above="@+id/register_email_btn"
-            android:layout_height="match_parent">
+            android:gravity="center"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_height="wrap_content">
 
-        </LinearLayout>
+            <LinearLayout
+                android:id="@+id/image_picker_layout"
+                android:layout_width="wrap_content"
+                android:padding="50dp"
+                android:gravity="center"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true"
+                android:visibility="visible"
+                android:background="@drawable/unfollow_btn"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="65dp"
+                    android:layout_height="65dp"
+                    android:src="@drawable/upload_icon">
+                </ImageView>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/photos_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:alpha="0"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:orientation="horizontal">
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/concert_card_view_one"
+                        android:layout_width="wrap_content"
+                        android:layout_margin="5dp"
+                        app:cardCornerRadius="10dp"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:id="@+id/concert_image_one"
+                            android:layout_width="175dp"
+                            android:scaleType="centerCrop"
+                            android:adjustViewBounds="true"
+                            android:layout_height="175dp">
+
+                        </ImageView>
+                    </androidx.cardview.widget.CardView>
+
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/concert_card_view_two"
+                        android:layout_width="wrap_content"
+                        android:layout_margin="5dp"
+                        app:cardCornerRadius="10dp"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:id="@+id/concert_image_two"
+                            android:layout_width="175dp"
+                            android:scaleType="centerCrop"
+                            android:adjustViewBounds="true"
+                            android:layout_height="175dp">
+
+                        </ImageView>
+                    </androidx.cardview.widget.CardView>
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:orientation="horizontal">
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/concert_card_view_three"
+                        android:layout_width="wrap_content"
+                        android:layout_margin="5dp"
+                        app:cardCornerRadius="10dp"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:id="@+id/concert_image_three"
+                            android:layout_width="175dp"
+                            android:scaleType="centerCrop"
+                            android:adjustViewBounds="true"
+                            android:layout_height="175dp">
+
+                        </ImageView>
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/concert_card_view_four"
+                        android:layout_width="wrap_content"
+                        android:layout_margin="5dp"
+                        app:cardCornerRadius="10dp"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:id="@+id/concert_image_four"
+                            android:layout_width="175dp"
+                            android:scaleType="centerCrop"
+                            android:adjustViewBounds="true"
+                            android:layout_height="175dp">
+
+                        </ImageView>
+                    </androidx.cardview.widget.CardView>
+
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/add_more_photos_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20sp"
+                    android:text="Seleccionar más fotos"
+                    android:textSize="18sp"
+                    android:fontFamily="@font/lato">
+                </TextView>
+
+            </LinearLayout>
+
+        </RelativeLayout>
 
         <Button
-            android:id="@+id/register_email_btn"
+            android:id="@+id/register_photos_next_btn"
             android:layout_width="match_parent"
             android:layout_marginLeft="50dp"
             android:layout_marginRight="50dp"
