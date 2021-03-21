@@ -154,8 +154,8 @@ public class ConcertCoverFragment extends Fragment {
                     imageView.getLayoutParams().width = (int) (width);
                     imageView.getLayoutParams().height = (int) (width/1.5);
                     imageView.requestLayout();
-
                     CreateConcertActivity.setCoverImage(imageUriResultCrop);
+
                 }
             }
         }
@@ -166,7 +166,7 @@ public class ConcertCoverFragment extends Fragment {
         UCrop.Options options = new UCrop.Options();
         options.setHideBottomControls(true);
         options.setFreeStyleCropEnabled(false);
-        options.setToolbarColor(ContextCompat.getColor(context,R.color.black));
+        options.setToolbarColor(ContextCompat.getColor(context,R.color.white));
         options.setStatusBarColor(ContextCompat.getColor(context,R.color.black));
 
         options.withAspectRatio(16,9);

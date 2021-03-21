@@ -2,12 +2,15 @@ package com.example.tfgapp.Activities.Concert;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.DocumentsContract;
+import android.provider.MediaStore;
 import android.provider.OpenableColumns;
 import android.util.Log;
 import android.view.Window;
@@ -145,14 +148,12 @@ public class CreateConcertActivity extends AppCompatActivity {
 
     public static void createConcert(Context context){
         String concertId = "whola";
-        //convertConcertPlaceImagesUriToFile(context, concertId);
+        convertConcertPlaceImagesUriToFile(context, concertId);
         convertCoverUriToFile(context, concertId);
     }
 
     private static void convertCoverUriToFile(Context context, String concertId){
-        File coverFileImage = null;
-        try { coverFileImage = getFile(context, coverImage); }
-        catch (IOException e) { e.printStackTrace(); }
+        File coverFileImage = new File(coverImage.getPath());//create path from uri
         uploadCoverToAWS(concertId, coverFileImage);
     }
 
@@ -205,11 +206,13 @@ public class CreateConcertActivity extends AppCompatActivity {
     private static String queryName(Context context, Uri uri) {
         Cursor returnCursor =
                 context.getContentResolver().query(uri, null, null, null, null);
+
         assert returnCursor != null;
         int nameIndex = returnCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
         returnCursor.moveToFirst();
         String name = returnCursor.getString(nameIndex);
         returnCursor.close();
+
         return name;
     }
 
