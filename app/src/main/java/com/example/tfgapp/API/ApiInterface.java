@@ -2,6 +2,7 @@ package com.example.tfgapp.API;
 
 import com.example.tfgapp.Entities.Artist.ArtistUserRegisterSelection;
 import com.example.tfgapp.Entities.Concert.ConcertHome;
+import com.example.tfgapp.Entities.Concert.ConcertRegister;
 import com.example.tfgapp.Entities.CustomUserLikes.MusicStyle;
 import com.example.tfgapp.Entities.Login.AuthenticationData;
 import com.example.tfgapp.Entities.User.User;
@@ -43,4 +44,7 @@ public interface ApiInterface {
 
     @PUT("/user/preferences/save")
     Call<UserPreferences> saveUserPreferences(@Body UserPreferences userPreferences);
+
+    @POST("/concert/create")
+    Call<String> createConcert(@Body ConcertRegister concertRegister);
 }

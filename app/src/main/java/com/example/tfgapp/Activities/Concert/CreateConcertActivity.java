@@ -2,10 +2,12 @@ package com.example.tfgapp.Activities.Concert;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Dialog;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.database.Cursor;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -13,8 +15,14 @@ import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.amazonaws.auth.CognitoCachingCredentialsProvider;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener;
@@ -28,6 +36,10 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import com.example.tfgapp.Activities.Concert.Fragment.ConcertCoverFragment;
 import com.example.tfgapp.Entities.Concert.Concert;
 import com.example.tfgapp.Entities.Concert.ConcertLocation;
+import com.example.tfgapp.Entities.Concert.ConcertRegister;
+import com.example.tfgapp.Entities.User.User;
+import com.example.tfgapp.Global.Api;
+import com.example.tfgapp.Global.Globals;
 import com.example.tfgapp.Global.Storage;
 import com.example.tfgapp.R;
 
@@ -38,6 +50,10 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class CreateConcertActivity extends AppCompatActivity {
 
     private static Concert registeredConcert;
@@ -47,6 +63,7 @@ public class CreateConcertActivity extends AppCompatActivity {
     private static TransferUtility transferUtility;
     private static ArrayList<Uri> concertImagesArrayList = new ArrayList<>();
     private static Uri coverImage = null;
+    private static Dialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,16 +134,27 @@ public class CreateConcertActivity extends AppCompatActivity {
         transferUtility = TransferUtility.builder().s3Client(s3).context(getApplicationContext()).build();
     }
 
-    private static void uploadPlaceImagesToAWS(String concertId, int photoNumber, File fileToUpload){
-        TransferObserver transferObserver = transferUtility.upload(
-                Storage.AWS_CONCERT_IMAGES_BUCKET,
-                concertId + "_" + photoNumber + ".png",
-                fileToUpload
-        );
-        transferObserverListener(transferObserver);
+    private static void uploadPlaceImagesToAWS(String concertId, int photoNumber, File fileToUpload, Context context){
+        if (concertImagesArrayList.size() > 0) {
+            String dialogMessage = "Subiendo imagen del lugar del concierto " + photoNumber + "/" + concertImagesArrayList.size();
+            updateDialogMessage(dialogMessage);
+
+            TransferObserver transferObserver = transferUtility.upload(
+                    Storage.AWS_CONCERT_IMAGES_BUCKET,
+                    concertId + "_" + photoNumber + ".png",
+                    fileToUpload
+            );
+            transferObserverListener(transferObserver, false, context, concertId);
+        }
+        else {
+            /* Finish process */
+        }
     }
 
-    private static void transferObserverListener(TransferObserver transferObserver){
+    private static void transferObserverListener(TransferObserver transferObserver,
+                                                      boolean isUploadingCover,
+                                                        Context context,
+                                                        String concertId){
 
         transferObserver.setTransferListener(new TransferListener() {
             @Override
@@ -137,6 +165,10 @@ public class CreateConcertActivity extends AppCompatActivity {
             @Override
             public void onProgressChanged(int id, long bytesCurrent, long bytesTotal) {
                 Log.d(TAG, "percentage " + (int)(bytesCurrent/bytesTotal * 100));
+                int percentage = (int)(bytesCurrent/bytesTotal * 100);
+                if (isUploadingCover && percentage == 100){
+                    convertConcertPlaceImagesUriToFile(context, concertId);
+                }
             }
 
             @Override
@@ -146,24 +178,55 @@ public class CreateConcertActivity extends AppCompatActivity {
         });
     }
 
+
     public static void createConcert(Context context){
-        String concertId = "whola";
-        convertConcertPlaceImagesUriToFile(context, concertId);
-        convertCoverUriToFile(context, concertId);
+        showCreatingConcertDialog(context, "Por favor espera, se esta publicando tu concierto");
+
+        ConcertRegister concertRegister = new ConcertRegister(registeredConcert, registeredConcertLocation, concertImagesArrayList.size());
+        Call<String> call = Api.getInstance().getAPI().createConcert(concertRegister);
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                switch (response.code()) {
+                    case 200:
+                        Log.d(TAG, "Concert created success " + response.body());
+
+                        String concertId = response.body();
+
+                        updateDialogMessage("Subiendo la cover de tu concierto a la nube");
+                        convertCoverUriToFile(concertId, context);
+                        break;
+                    default:
+                        Log.d(TAG, "Concert created default " + response.code());
+                        Globals.displayShortToast(context, "Something happened, please try again in a few minutes");
+                        break;
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                Log.d(TAG, "Concert created failure " + t.getLocalizedMessage());
+                Globals.displayShortToast(context, "Something happened, please try again in a few minutes");
+            }
+        });
+
+        //convertConcertPlaceImagesUriToFile(context, concertId);
     }
 
-    private static void convertCoverUriToFile(Context context, String concertId){
+
+
+    private static void convertCoverUriToFile(String concertId, Context context){
         File coverFileImage = new File(coverImage.getPath());//create path from uri
-        uploadCoverToAWS(concertId, coverFileImage);
+        uploadCoverToAWS(context, concertId, coverFileImage);
     }
 
-    private static void uploadCoverToAWS(String concertId, File coverFileImage){
+    private static void uploadCoverToAWS(Context context, String concertId, File coverFileImage){
         TransferObserver transferObserver = transferUtility.upload(
                 Storage.AWS_CONCERT_IMAGES_BUCKET,
                 concertId + "_cover" + ".png",
                 coverFileImage
         );
-        transferObserverListener(transferObserver);
+        transferObserverListener(transferObserver, true, context, concertId);
     }
 
 
@@ -174,7 +237,7 @@ public class CreateConcertActivity extends AppCompatActivity {
             try { photoFile = getFile(context, fileUri); }
             catch (IOException e) { e.printStackTrace(); }
 
-            uploadPlaceImagesToAWS(concertId, i, photoFile);
+            uploadPlaceImagesToAWS(concertId, i, photoFile, context);
         }
     }
 
@@ -188,6 +251,32 @@ public class CreateConcertActivity extends AppCompatActivity {
         }
         return destinationFilename;
     }
+
+    private static TextView dialogMessage;
+
+    private static void showCreatingConcertDialog(Context context, String message){
+        dialog = new Dialog(context);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(false);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        View view = LayoutInflater.from(context).inflate(R.layout.dialog_loading, null);
+        dialog.setContentView(view);
+
+        dialogMessage = view.findViewById(R.id.title);
+        dialogMessage.setText(message);
+
+        Animation alhpa = AnimationUtils.loadAnimation(context, R.anim.fade_in);
+
+        RelativeLayout all = view.findViewById(R.id.body);
+        all.startAnimation(alhpa);
+
+        dialog.show();
+    }
+
+    private static void updateDialogMessage(String message){
+        dialogMessage.setText(message);
+    }
+
 
     public static void createFileFromStream(InputStream ins, File destination) {
         try (OutputStream os = new FileOutputStream(destination)) {
