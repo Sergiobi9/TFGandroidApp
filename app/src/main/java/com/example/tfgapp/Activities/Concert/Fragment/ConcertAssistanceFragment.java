@@ -14,6 +14,7 @@ import android.widget.EditText;
 import com.example.tfgapp.Activities.Concert.CreateConcertActivity;
 import com.example.tfgapp.Entities.Concert.Concert;
 import com.example.tfgapp.Fragments.Artist.ArtistFragment;
+import com.example.tfgapp.Global.Globals;
 import com.example.tfgapp.R;
 
 public class ConcertAssistanceFragment extends Fragment {
@@ -51,6 +52,10 @@ public class ConcertAssistanceFragment extends Fragment {
         nextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (concertAssistance.getText().toString().isEmpty()){
+                    Globals.displayShortToast(context, "Por favor, especifica el numero de asistentes");
+                    return;
+                }
                 int concertAssistanceVal = Integer.parseInt(concertAssistance.getText().toString());
 
                 setConcertAssistance(concertAssistanceVal);

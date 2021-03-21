@@ -139,8 +139,7 @@ public class CreateConcertActivity extends AppCompatActivity {
     }
 
     private static void uploadPlaceImagesToAWS(String concertId, int photoNumber, File fileToUpload, Context context) {
-        if (concertImagesArrayList.size() > 0) {
-            String dialogMessage = "Subiendo imagen del lugar del concierto " + photoNumber + 1 + "/" + concertImagesArrayList.size();
+            String dialogMessage = "Subiendo imagen del lugar del concierto " + (photoNumber + 1) + "/" + concertImagesArrayList.size();
             updateDialogMessage(dialogMessage);
 
             TransferObserver transferObserver = transferUtility.upload(
@@ -149,9 +148,6 @@ public class CreateConcertActivity extends AppCompatActivity {
                     fileToUpload
             );
             transferObserverListener(transferObserver, false, context, concertId, photoNumber + 1 );
-        } else {
-            /* Finish process */
-        }
     }
 
     private static void transferObserverListener(TransferObserver transferObserver,
@@ -172,8 +168,8 @@ public class CreateConcertActivity extends AppCompatActivity {
                 int percentage = (int) (bytesCurrent / bytesTotal * 100);
                 if (isUploadingCover && percentage == 100) {
                     convertConcertPlaceImagesUriToFile(context, concertId);
-                } else if (photoNumber == concertImagesArrayList.size() && percentage == 100) {
-                    Globals.displayShortToast(context, "Concierto publicado correctamente");
+                } else if (photoNumber == concertImagesArrayList.size() && percentage == 100 && !isUploadingCover) {
+                    updateDialogMessage("Concierto publicado correctamente");
                     goMainScreen(context);
                 }
             }
@@ -240,16 +236,21 @@ public class CreateConcertActivity extends AppCompatActivity {
 
 
     private static void convertConcertPlaceImagesUriToFile(Context context, String concertId) {
-        for (int i = 0; i < concertImagesArrayList.size(); i++) {
-            Uri fileUri = concertImagesArrayList.get(i);
-            File photoFile = null;
-            try {
-                photoFile = getFile(context, fileUri);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        if (concertImagesArrayList.size() > 0) {
+            for (int i = 0; i < concertImagesArrayList.size(); i++) {
+                Uri fileUri = concertImagesArrayList.get(i);
+                File photoFile = null;
+                try {
+                    photoFile = getFile(context, fileUri);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
-            uploadPlaceImagesToAWS(concertId, i, photoFile, context);
+                uploadPlaceImagesToAWS(concertId, i, photoFile, context);
+            }
+        } else {
+                updateDialogMessage("Concierto publicado correctamente");
+                goMainScreen(context);
         }
     }
 

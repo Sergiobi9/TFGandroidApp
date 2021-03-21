@@ -40,7 +40,7 @@
             android:layout_marginTop="20dp"
             android:layout_marginBottom="20dp"
             android:layout_below="@+id/concert_artists_search"
-            android:layout_above="@+id/register_artists_btn"
+            android:layout_above="@+id/concert_artists_btn"
             android:layout_height="match_parent">
 
             <RelativeLayout
