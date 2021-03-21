@@ -1,6 +1,7 @@
 package com.example.tfgapp.Activities.Concert.Fragment;
 
 import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -11,7 +12,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.SearchView;
 
+import com.example.tfgapp.Activities.Concert.CreateConcertActivity;
 import com.example.tfgapp.Activities.Register.RegisterCustomLikesActivity;
 import com.example.tfgapp.Adapters.CustomUserArtistsAdapter;
 import com.example.tfgapp.Entities.Artist.ArtistSimplified;
@@ -31,12 +35,15 @@ public class ConcertArtistsFragment extends Fragment implements CustomUserArtist
 
     private View view;
     private Context context;
+    private SearchView artistSearch;
+    private Button nextBtn;
 
     private final String TAG = "ConcertArtistsFragment";
     private ArrayList<ArtistSimplified> artistReducedInfoArrayList = new ArrayList<>();
     private RecyclerView artistsRecyclerView;
     private CustomUserArtistsAdapter customUserArtistsAdapter;
     private CustomUserArtistsAdapter.OnArtistListener onArtistListener;
+
 
     public ConcertArtistsFragment() {
         // Required empty public constructor
@@ -54,8 +61,44 @@ public class ConcertArtistsFragment extends Fragment implements CustomUserArtist
         view = inflater.inflate(R.layout.fragment_concert_artists, container, false);
         context = getContext();
 
+        onArtistListener = this;
+
+        initView();
         getArtists();
+        registerCurrentUserToConcert();
         return view;
+    }
+
+    private void registerCurrentUserToConcert(){
+        ArrayList<String> artistsIdsSelected = CreateConcertActivity.getArtistsIds();
+        String userId = CurrentUser.getInstance(context).getCurrentUser().getUser().getId();
+        artistsIdsSelected.add(userId);
+        CreateConcertActivity.setArtistsIds(artistsIdsSelected);
+    }
+
+    private void initView(){
+        artistSearch = view.findViewById(R.id.concert_artists_search);
+        artistSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String arg0) {
+                customUserArtistsAdapter.filter(arg0);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String arg0) {
+                customUserArtistsAdapter.filter(arg0);
+                return false;
+            }
+        });
+
+        nextBtn = view.findViewById(R.id.concert_artists_btn);
+        nextBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getFragmentManager().beginTransaction().replace(R.id.concert_fragment, new ConcertPlaceFragment()).addToBackStack(null).commit();
+            }
+        });
     }
 
     private void getArtists(){
@@ -104,13 +147,13 @@ public class ConcertArtistsFragment extends Fragment implements CustomUserArtist
         String artistId = artistReducedInfoArrayList.get(position).getArtistId();
         artistReducedInfoArrayList.get(position).setSelected(isSelected);
 
-        ArrayList<String> artistsIdsSelected = RegisterCustomLikesActivity.getArtistsSelectedIdsArrayList();
+        ArrayList<String> artistsIdsSelected = CreateConcertActivity.getArtistsIds();
         if (isSelected)
             artistsIdsSelected.add(artistId);
         else
             artistsIdsSelected.remove(artistId);
 
-        RegisterCustomLikesActivity.setArtistsSelectedIdsArrayList(artistsIdsSelected);
+        CreateConcertActivity.setArtistsIds(artistsIdsSelected);
         customUserArtistsAdapter.notifyItemChanged(position);
     }
 }

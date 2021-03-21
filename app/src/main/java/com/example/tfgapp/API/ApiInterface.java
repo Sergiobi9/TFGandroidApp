@@ -48,7 +48,7 @@ public interface ApiInterface {
     @POST("/concert/create")
     Call<String> createConcert(@Body ConcertRegister concertRegister);
 
-    @POST("/artist/all/{userId}")
+    @GET("/artist/all/{userId}")
     Call<ArrayList<ArtistSimplified>> getAllArtists(@Path("userId") String userId);
 
 }

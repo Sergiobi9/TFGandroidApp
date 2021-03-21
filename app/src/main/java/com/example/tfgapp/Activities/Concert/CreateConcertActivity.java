@@ -64,6 +64,7 @@ public class CreateConcertActivity extends AppCompatActivity {
     private static AmazonS3 s3;
     private static TransferUtility transferUtility;
     private static ArrayList<Uri> concertImagesArrayList = new ArrayList<>();
+    private static ArrayList<String> artistsIds = new ArrayList<>();
     private static Uri coverImage = null;
     private static Dialog dialog;
 
@@ -86,7 +87,7 @@ public class CreateConcertActivity extends AppCompatActivity {
         createCredentialsProviders();
         setTransferUtility();
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.concert_fragment, new ConcertArtistsFragment()).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.concert_fragment, new ConcertNameFragment()).commit();
     }
 
     public static void setConcertImagesArrayList(ArrayList<Uri> newConcertImagesArrayList) {
@@ -180,6 +181,13 @@ public class CreateConcertActivity extends AppCompatActivity {
         });
     }
 
+    public static ArrayList<String> getArtistsIds() {
+        return artistsIds;
+    }
+
+    public static void setArtistsIds(ArrayList<String> artistsArray) {
+        artistsIds = artistsArray;
+    }
 
     public static void createConcert(Context context){
         showCreatingConcertDialog(context, "Por favor espera, se esta publicando tu concierto");

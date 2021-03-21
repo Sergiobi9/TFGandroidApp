@@ -20,7 +20,7 @@
         </TextView>
 
         <SearchView
-            android:id="@+id/concert_artists"
+            android:id="@+id/concert_artists_search"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/which_concert_name_tv"
@@ -28,8 +28,9 @@
             android:paddingBottom="5dp"
             android:maxHeight="50dp"
             android:fontFamily="@font/lato"
-            android:inputType="number"
-            android:hint="Buscar artistas"
+            android:queryHint="Buscar artistas"
+            android:iconifiedByDefault="false"
+            android:queryBackground="@android:color/transparent"
             android:layout_marginTop="25dp"
             android:background="@drawable/login_edit_text_background">
         </SearchView>
@@ -38,7 +39,7 @@
             android:layout_width="match_parent"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="20dp"
-            android:layout_below="@+id/concert_artists"
+            android:layout_below="@+id/concert_artists_search"
             android:layout_above="@+id/register_artists_btn"
             android:layout_height="match_parent">
 
@@ -59,7 +60,7 @@
 
 
         <Button
-            android:id="@+id/register_artists_btn"
+            android:id="@+id/concert_artists_btn"
             android:layout_width="match_parent"
             android:layout_marginLeft="50dp"
             android:layout_marginRight="50dp"

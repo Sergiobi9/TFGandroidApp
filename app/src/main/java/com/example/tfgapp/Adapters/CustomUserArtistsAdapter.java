@@ -2,6 +2,7 @@ package com.example.tfgapp.Adapters;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,10 +20,13 @@ import com.squareup.picasso.Picasso;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class CustomUserArtistsAdapter extends RecyclerView.Adapter<CustomUserArtistsAdapter.ViewHolder> {
 
     private ArrayList<ArtistSimplified> artistSimplifiedArrayList;
+    private ArrayList<ArtistSimplified> artistInitArrayList = new ArrayList<>();
     private final String TAG = "CustomUserArtistsAdapter";
     private Context context;
     private CustomUserArtistsAdapter.OnArtistListener onArtistListener;
@@ -31,6 +35,7 @@ public class CustomUserArtistsAdapter extends RecyclerView.Adapter<CustomUserArt
         this.context = context;
         this.onArtistListener = onArtistListener;
         this.artistSimplifiedArrayList = artistSimplifiedArrayList;
+        this.artistInitArrayList.addAll(artistSimplifiedArrayList);
     }
 
     @NonNull
@@ -64,6 +69,27 @@ public class CustomUserArtistsAdapter extends RecyclerView.Adapter<CustomUserArt
             musicStyleCover.setAlpha(1.0f);
             musicStyleName.setTypeface(null, Typeface.NORMAL);
         }
+    }
+
+    public void filter(String searchStr){
+        artistSimplifiedArrayList.clear();
+        if (searchStr.isEmpty()){
+            artistSimplifiedArrayList.addAll(artistInitArrayList);
+        } else {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
+                List<ArtistSimplified> collected = artistInitArrayList.stream().
+                        filter(i -> i.getArtistName().toLowerCase().contains(searchStr))
+                        .collect(Collectors.toList());
+                artistSimplifiedArrayList.addAll(collected);
+            } else {
+                for (ArtistSimplified artistSimplified : artistInitArrayList){
+                    if (artistSimplified.getArtistName().toLowerCase().contains(searchStr)){
+                        artistSimplifiedArrayList.add(artistSimplified);
+                    }
+                }
+            }
+        }
+        notifyDataSetChanged();
     }
 
     @Override
