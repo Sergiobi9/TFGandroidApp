@@ -68,6 +68,8 @@ public class CreateConcertActivity extends AppCompatActivity {
     private static ArrayList<Uri> concertImagesArrayList = new ArrayList<>();
     private static Uri coverImage = null;
     private static Dialog dialog;
+    private static boolean dialogHasShown = false;
+    public static CreateConcertActivity activity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +89,8 @@ public class CreateConcertActivity extends AppCompatActivity {
 
         createCredentialsProviders();
         setTransferUtility();
+
+        activity = this;
 
         getSupportFragmentManager().beginTransaction().replace(R.id.concert_fragment, new ConcertNameFragment()).commit();
     }
@@ -168,7 +172,8 @@ public class CreateConcertActivity extends AppCompatActivity {
                 int percentage = (int) (bytesCurrent / bytesTotal * 100);
                 if (isUploadingCover && percentage == 100) {
                     convertConcertPlaceImagesUriToFile(context, concertId);
-                } else if (photoNumber == concertImagesArrayList.size() && percentage == 100 && !isUploadingCover) {
+                } else if (photoNumber == concertImagesArrayList.size() && percentage == 100 && !isUploadingCover && !dialogHasShown) {
+                    dialogHasShown = true;
                     updateDialogMessage("Concierto publicado correctamente");
                     goMainScreen(context);
                 }
@@ -217,6 +222,7 @@ public class CreateConcertActivity extends AppCompatActivity {
 
     private static void goMainScreen(Context context) {
         context.startActivity(new Intent(context, MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+        activity.finish();
     }
 
 
@@ -249,8 +255,11 @@ public class CreateConcertActivity extends AppCompatActivity {
                 uploadPlaceImagesToAWS(concertId, i, photoFile, context);
             }
         } else {
+            if (!dialogHasShown){
+                dialogHasShown = true;
                 updateDialogMessage("Concierto publicado correctamente");
                 goMainScreen(context);
+            }
         }
     }
 
