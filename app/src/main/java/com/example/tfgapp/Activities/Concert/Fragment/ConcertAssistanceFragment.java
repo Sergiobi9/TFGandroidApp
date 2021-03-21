@@ -1,5 +1,6 @@
 package com.example.tfgapp.Activities.Concert.Fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -20,6 +21,7 @@ public class ConcertAssistanceFragment extends Fragment {
     private View view;
     private EditText concertAssistance;
     private Button nextBtn;
+    private Context context;
 
     public ConcertAssistanceFragment() {
         // Required empty public constructor
@@ -36,6 +38,8 @@ public class ConcertAssistanceFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         view = inflater.inflate(R.layout.fragment_concert_assistance, container, false);
+        context = getContext();
+
         initView();
         return view;
     }
@@ -50,9 +54,13 @@ public class ConcertAssistanceFragment extends Fragment {
                 int concertAssistanceVal = Integer.parseInt(concertAssistance.getText().toString());
 
                 setConcertAssistance(concertAssistanceVal);
-                getFragmentManager().beginTransaction().replace(R.id.concert_fragment, new ConcertArtistsFragment()).addToBackStack(null).commit();
+                registerConcert();
             }
         });
+    }
+
+    private void registerConcert(){
+        CreateConcertActivity.createConcert(context);
     }
 
     private void setConcertAssistance(int concertAssistanceVal){
