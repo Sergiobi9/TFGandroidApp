@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.Dialog;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.graphics.drawable.ColorDrawable;
@@ -36,6 +37,7 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import com.example.tfgapp.Activities.Concert.Fragment.ConcertArtistsFragment;
 import com.example.tfgapp.Activities.Concert.Fragment.ConcertCoverFragment;
 import com.example.tfgapp.Activities.Concert.Fragment.ConcertNameFragment;
+import com.example.tfgapp.Activities.MainActivity;
 import com.example.tfgapp.Entities.Concert.Concert;
 import com.example.tfgapp.Entities.Concert.ConcertLocation;
 import com.example.tfgapp.Entities.Concert.ConcertRegister;
@@ -64,7 +66,6 @@ public class CreateConcertActivity extends AppCompatActivity {
     private static AmazonS3 s3;
     private static TransferUtility transferUtility;
     private static ArrayList<Uri> concertImagesArrayList = new ArrayList<>();
-    private static ArrayList<String> artistsIds = new ArrayList<>();
     private static Uri coverImage = null;
     private static Dialog dialog;
 
@@ -120,7 +121,7 @@ public class CreateConcertActivity extends AppCompatActivity {
         Log.d(TAG, registeredConcertLocation.toString());
     }
 
-    private void createCredentialsProviders(){
+    private void createCredentialsProviders() {
         CognitoCachingCredentialsProvider cognitoCachingCredentialsProvider = new CognitoCachingCredentialsProvider(getApplicationContext(),
                 "us-east-2:973c9e9f-c633-448d-8e99-91b3d61ad7d2", // ID del grupo de identidades
                 Regions.US_EAST_2);
@@ -128,18 +129,18 @@ public class CreateConcertActivity extends AppCompatActivity {
         setAmazonS3Client(cognitoCachingCredentialsProvider);
     }
 
-    private void setAmazonS3Client(CognitoCachingCredentialsProvider cognitoCachingCredentialsProvider){
+    private void setAmazonS3Client(CognitoCachingCredentialsProvider cognitoCachingCredentialsProvider) {
         s3 = new AmazonS3Client(cognitoCachingCredentialsProvider);
         s3.setRegion(Region.getRegion(Regions.US_EAST_2));
     }
 
-    private void setTransferUtility(){
+    private void setTransferUtility() {
         transferUtility = TransferUtility.builder().s3Client(s3).context(getApplicationContext()).build();
     }
 
-    private static void uploadPlaceImagesToAWS(String concertId, int photoNumber, File fileToUpload, Context context){
+    private static void uploadPlaceImagesToAWS(String concertId, int photoNumber, File fileToUpload, Context context) {
         if (concertImagesArrayList.size() > 0) {
-            String dialogMessage = "Subiendo imagen del lugar del concierto " + photoNumber + "/" + concertImagesArrayList.size();
+            String dialogMessage = "Subiendo imagen del lugar del concierto " + photoNumber + 1 + "/" + concertImagesArrayList.size();
             updateDialogMessage(dialogMessage);
 
             TransferObserver transferObserver = transferUtility.upload(
@@ -147,17 +148,17 @@ public class CreateConcertActivity extends AppCompatActivity {
                     concertId + "_" + photoNumber + ".png",
                     fileToUpload
             );
-            transferObserverListener(transferObserver, false, context, concertId);
-        }
-        else {
+            transferObserverListener(transferObserver, false, context, concertId, photoNumber + 1 );
+        } else {
             /* Finish process */
         }
     }
 
     private static void transferObserverListener(TransferObserver transferObserver,
-                                                      boolean isUploadingCover,
-                                                        Context context,
-                                                        String concertId){
+                                                 boolean isUploadingCover,
+                                                 Context context,
+                                                 String concertId,
+                                                 int photoNumber) {
 
         transferObserver.setTransferListener(new TransferListener() {
             @Override
@@ -167,10 +168,13 @@ public class CreateConcertActivity extends AppCompatActivity {
 
             @Override
             public void onProgressChanged(int id, long bytesCurrent, long bytesTotal) {
-                Log.d(TAG, "percentage " + (int)(bytesCurrent/bytesTotal * 100));
-                int percentage = (int)(bytesCurrent/bytesTotal * 100);
-                if (isUploadingCover && percentage == 100){
+                Log.d(TAG, "percentage " + (int) (bytesCurrent / bytesTotal * 100));
+                int percentage = (int) (bytesCurrent / bytesTotal * 100);
+                if (isUploadingCover && percentage == 100) {
                     convertConcertPlaceImagesUriToFile(context, concertId);
+                } else if (photoNumber == concertImagesArrayList.size() && percentage == 100) {
+                    Globals.displayShortToast(context, "Concierto publicado correctamente");
+                    goMainScreen(context);
                 }
             }
 
@@ -181,27 +185,19 @@ public class CreateConcertActivity extends AppCompatActivity {
         });
     }
 
-    public static ArrayList<String> getArtistsIds() {
-        return artistsIds;
-    }
-
-    public static void setArtistsIds(ArrayList<String> artistsArray) {
-        artistsIds = artistsArray;
-    }
-
-    public static void createConcert(Context context){
+    public static void createConcert(Context context) {
         showCreatingConcertDialog(context, "Por favor espera, se esta publicando tu concierto");
 
         ConcertRegister concertRegister = new ConcertRegister(registeredConcert, registeredConcertLocation, concertImagesArrayList.size());
-        Call<String> call = Api.getInstance().getAPI().createConcert(concertRegister);
-        call.enqueue(new Callback<String>() {
+        Call<Concert> call = Api.getInstance().getAPI().createConcert(concertRegister);
+        call.enqueue(new Callback<Concert>() {
             @Override
-            public void onResponse(Call<String> call, Response<String> response) {
+            public void onResponse(Call<Concert> call, Response<Concert> response) {
                 switch (response.code()) {
                     case 200:
                         Log.d(TAG, "Concert created success " + response.body());
 
-                        String concertId = response.body();
+                        String concertId = response.body().getId();
 
                         updateDialogMessage("Subiendo la cover de tu concierto a la nube");
                         convertCoverUriToFile(concertId, context);
@@ -214,7 +210,7 @@ public class CreateConcertActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<String> call, Throwable t) {
+            public void onFailure(Call<Concert> call, Throwable t) {
                 Log.d(TAG, "Concert created failure " + t.getLocalizedMessage());
                 Globals.displayShortToast(context, "Something happened, please try again in a few minutes");
             }
@@ -223,29 +219,35 @@ public class CreateConcertActivity extends AppCompatActivity {
         //convertConcertPlaceImagesUriToFile(context, concertId);
     }
 
+    private static void goMainScreen(Context context) {
+        context.startActivity(new Intent(context, MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+    }
 
 
-    private static void convertCoverUriToFile(String concertId, Context context){
+    private static void convertCoverUriToFile(String concertId, Context context) {
         File coverFileImage = new File(coverImage.getPath());//create path from uri
         uploadCoverToAWS(context, concertId, coverFileImage);
     }
 
-    private static void uploadCoverToAWS(Context context, String concertId, File coverFileImage){
+    private static void uploadCoverToAWS(Context context, String concertId, File coverFileImage) {
         TransferObserver transferObserver = transferUtility.upload(
                 Storage.AWS_CONCERT_IMAGES_BUCKET,
                 concertId + "_cover" + ".png",
                 coverFileImage
         );
-        transferObserverListener(transferObserver, true, context, concertId);
+        transferObserverListener(transferObserver, true, context, concertId, 0);
     }
 
 
-    private static void convertConcertPlaceImagesUriToFile(Context context, String concertId){
-        for (int i = 0; i < concertImagesArrayList.size(); i++){
+    private static void convertConcertPlaceImagesUriToFile(Context context, String concertId) {
+        for (int i = 0; i < concertImagesArrayList.size(); i++) {
             Uri fileUri = concertImagesArrayList.get(i);
             File photoFile = null;
-            try { photoFile = getFile(context, fileUri); }
-            catch (IOException e) { e.printStackTrace(); }
+            try {
+                photoFile = getFile(context, fileUri);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
             uploadPlaceImagesToAWS(concertId, i, photoFile, context);
         }
@@ -264,7 +266,7 @@ public class CreateConcertActivity extends AppCompatActivity {
 
     private static TextView dialogMessage;
 
-    private static void showCreatingConcertDialog(Context context, String message){
+    private static void showCreatingConcertDialog(Context context, String message) {
         dialog = new Dialog(context);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(false);
@@ -283,7 +285,7 @@ public class CreateConcertActivity extends AppCompatActivity {
         dialog.show();
     }
 
-    private static void updateDialogMessage(String message){
+    private static void updateDialogMessage(String message) {
         dialogMessage.setText(message);
     }
 

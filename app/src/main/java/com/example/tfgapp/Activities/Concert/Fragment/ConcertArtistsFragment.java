@@ -70,10 +70,16 @@ public class ConcertArtistsFragment extends Fragment implements CustomUserArtist
     }
 
     private void registerCurrentUserToConcert(){
-        ArrayList<String> artistsIdsSelected = CreateConcertActivity.getArtistsIds();
+        ArrayList<String> artistsIdsSelected = CreateConcertActivity.getRegisteredConcert().getArtistsIds();
         String userId = CurrentUser.getInstance(context).getCurrentUser().getUser().getId();
-        artistsIdsSelected.add(userId);
-        CreateConcertActivity.setArtistsIds(artistsIdsSelected);
+
+        if (artistsIdsSelected == null) artistsIdsSelected = new ArrayList<>();
+
+        if (!artistsIdsSelected.contains(userId)){
+            artistsIdsSelected.add(userId);
+            CreateConcertActivity.getRegisteredConcert().setArtistsIds(artistsIdsSelected);
+        }
+
     }
 
     private void initView(){
@@ -147,13 +153,13 @@ public class ConcertArtistsFragment extends Fragment implements CustomUserArtist
         String artistId = artistReducedInfoArrayList.get(position).getArtistId();
         artistReducedInfoArrayList.get(position).setSelected(isSelected);
 
-        ArrayList<String> artistsIdsSelected = CreateConcertActivity.getArtistsIds();
+        ArrayList<String> artistsIdsSelected = CreateConcertActivity.getRegisteredConcert().getArtistsIds();
         if (isSelected)
             artistsIdsSelected.add(artistId);
         else
             artistsIdsSelected.remove(artistId);
 
-        CreateConcertActivity.setArtistsIds(artistsIdsSelected);
+        CreateConcertActivity.getRegisteredConcert().setArtistsIds(artistsIdsSelected);
         customUserArtistsAdapter.notifyItemChanged(position);
     }
 }
