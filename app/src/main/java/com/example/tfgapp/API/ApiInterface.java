@@ -1,6 +1,6 @@
 package com.example.tfgapp.API;
 
-import com.example.tfgapp.Entities.Artist.ArtistUserRegisterSelection;
+import com.example.tfgapp.Entities.Artist.ArtistSimplified;
 import com.example.tfgapp.Entities.Concert.ConcertHome;
 import com.example.tfgapp.Entities.Concert.ConcertRegister;
 import com.example.tfgapp.Entities.CustomUserLikes.MusicStyle;
@@ -40,11 +40,15 @@ public interface ApiInterface {
     Call<ArrayList<MusicStyle>> getMusicStyles();
 
     @POST("/artist/all/styles")
-    Call<ArrayList<ArtistUserRegisterSelection>> getArtistsByMusicStylesSelected(@Body ArrayList<String> musicStylesIds);
+    Call<ArrayList<ArtistSimplified>> getArtistsByMusicStylesSelected(@Body ArrayList<String> musicStylesIds);
 
     @PUT("/user/preferences/save")
     Call<UserPreferences> saveUserPreferences(@Body UserPreferences userPreferences);
 
     @POST("/concert/create")
     Call<String> createConcert(@Body ConcertRegister concertRegister);
+
+    @POST("/artist/all/{userId}")
+    Call<ArrayList<ArtistSimplified>> getAllArtists(@Path("userId") String userId);
+
 }

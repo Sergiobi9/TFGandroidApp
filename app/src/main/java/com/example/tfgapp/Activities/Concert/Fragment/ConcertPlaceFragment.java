@@ -88,7 +88,7 @@ public class ConcertPlaceFragment extends Fragment {
                 }
 
                 setConcertPlace();
-                getFragmentManager().beginTransaction().replace(R.id.concert_fragment, new ConcertDateFragment()).addToBackStack(null).commit();
+                getFragmentManager().beginTransaction().replace(R.id.concert_fragment, new ConcertImagesFragment()).addToBackStack(null).commit();
             }
         });
     }

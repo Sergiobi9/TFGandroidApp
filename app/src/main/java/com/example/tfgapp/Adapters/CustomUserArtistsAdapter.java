@@ -11,9 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.tfgapp.Entities.Artist.ArtistReducedInfo;
-import com.example.tfgapp.Entities.Artist.ArtistUserRegisterSelection;
-import com.example.tfgapp.Entities.CustomUserLikes.MusicStyle;
+import com.example.tfgapp.Entities.Artist.ArtistSimplified;
 import com.example.tfgapp.Global.CircleTransform;
 import com.example.tfgapp.R;
 import com.squareup.picasso.Picasso;
@@ -24,15 +22,15 @@ import java.util.ArrayList;
 
 public class CustomUserArtistsAdapter extends RecyclerView.Adapter<CustomUserArtistsAdapter.ViewHolder> {
 
-    private ArrayList<ArtistUserRegisterSelection> artistUserRegisterSelectionArrayList;
+    private ArrayList<ArtistSimplified> artistSimplifiedArrayList;
     private final String TAG = "CustomUserArtistsAdapter";
     private Context context;
     private CustomUserArtistsAdapter.OnArtistListener onArtistListener;
 
-    public CustomUserArtistsAdapter(Context context, ArrayList<ArtistUserRegisterSelection> artistUserRegisterSelectionArrayList, OnArtistListener onArtistListener) {
+    public CustomUserArtistsAdapter(Context context, ArrayList<ArtistSimplified> artistSimplifiedArrayList, OnArtistListener onArtistListener) {
         this.context = context;
         this.onArtistListener = onArtistListener;
-        this.artistUserRegisterSelectionArrayList = artistUserRegisterSelectionArrayList;
+        this.artistSimplifiedArrayList = artistSimplifiedArrayList;
     }
 
     @NonNull
@@ -46,7 +44,7 @@ public class CustomUserArtistsAdapter extends RecyclerView.Adapter<CustomUserArt
 
     @Override
     public void onBindViewHolder(@NonNull CustomUserArtistsAdapter.ViewHolder holder, int position) {
-        ArtistUserRegisterSelection currentArtist = artistUserRegisterSelectionArrayList.get(position);
+        ArtistSimplified currentArtist = artistSimplifiedArrayList.get(position);
 
         String imageUrl = currentArtist.getProfileUrl();
 
@@ -70,7 +68,7 @@ public class CustomUserArtistsAdapter extends RecyclerView.Adapter<CustomUserArt
 
     @Override
     public int getItemCount() {
-        return artistUserRegisterSelectionArrayList.size();
+        return artistSimplifiedArrayList.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

@@ -12,6 +12,7 @@ import android.widget.EditText;
 
 import com.example.tfgapp.Activities.Concert.CreateConcertActivity;
 import com.example.tfgapp.Entities.Concert.Concert;
+import com.example.tfgapp.Fragments.Artist.ArtistFragment;
 import com.example.tfgapp.R;
 
 public class ConcertAssistanceFragment extends Fragment {
@@ -49,7 +50,7 @@ public class ConcertAssistanceFragment extends Fragment {
                 int concertAssistanceVal = Integer.parseInt(concertAssistance.getText().toString());
 
                 setConcertAssistance(concertAssistanceVal);
-                getFragmentManager().beginTransaction().replace(R.id.concert_fragment, new ConcertImagesFragment()).addToBackStack(null).commit();
+                getFragmentManager().beginTransaction().replace(R.id.concert_fragment, new ConcertArtistsFragment()).addToBackStack(null).commit();
             }
         });
     }

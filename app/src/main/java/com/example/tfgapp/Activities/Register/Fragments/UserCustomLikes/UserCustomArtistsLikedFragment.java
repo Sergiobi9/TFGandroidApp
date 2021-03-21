@@ -15,12 +15,7 @@ import android.widget.Button;
 
 import com.example.tfgapp.Activities.Register.RegisterCustomLikesActivity;
 import com.example.tfgapp.Adapters.CustomUserArtistsAdapter;
-import com.example.tfgapp.Adapters.CustomUserMusicStyleAdapter;
-import com.example.tfgapp.Entities.Artist.ArtistReducedInfo;
-import com.example.tfgapp.Entities.Artist.ArtistUserRegisterSelection;
-import com.example.tfgapp.Entities.CustomUserLikes.MusicStyle;
-import com.example.tfgapp.Entities.User.User;
-import com.example.tfgapp.Entities.User.UserPreferences;
+import com.example.tfgapp.Entities.Artist.ArtistSimplified;
 import com.example.tfgapp.Global.Api;
 import com.example.tfgapp.Global.Globals;
 import com.example.tfgapp.R;
@@ -37,8 +32,7 @@ public class UserCustomArtistsLikedFragment extends Fragment implements CustomUs
     private Context context;
     private final String TAG = "ArtistLikesFragment";
 
-    private ArrayList<ArtistUserRegisterSelection> artistReducedInfoArrayList = new ArrayList<>();
-    private ArrayList<String> artistsSelectedIdsArrayList = new ArrayList<>();
+    private ArrayList<ArtistSimplified> artistReducedInfoArrayList = new ArrayList<>();
     private RecyclerView artistsRecyclerView;
     private CustomUserArtistsAdapter customUserArtistsAdapter;
     private CustomUserArtistsAdapter.OnArtistListener onArtistListener;
@@ -86,10 +80,10 @@ public class UserCustomArtistsLikedFragment extends Fragment implements CustomUs
         artistReducedInfoArrayList = new ArrayList<>();
         ArrayList<String> musicStylesIds = RegisterCustomLikesActivity.getMusicStylesIdsSelected();
 
-        Call<ArrayList<ArtistUserRegisterSelection>> call = Api.getInstance().getAPI().getArtistsByMusicStylesSelected(musicStylesIds);
-        call.enqueue(new Callback<ArrayList<ArtistUserRegisterSelection>>() {
+        Call<ArrayList<ArtistSimplified>> call = Api.getInstance().getAPI().getArtistsByMusicStylesSelected(musicStylesIds);
+        call.enqueue(new Callback<ArrayList<ArtistSimplified>>() {
             @Override
-            public void onResponse(Call<ArrayList<ArtistUserRegisterSelection>>call, Response<ArrayList<ArtistUserRegisterSelection>> response) {
+            public void onResponse(Call<ArrayList<ArtistSimplified>>call, Response<ArrayList<ArtistSimplified>> response) {
                 switch (response.code()) {
                     case 200:
                         Log.d(TAG, "Get artists by styles success " + response.body());
@@ -105,7 +99,7 @@ public class UserCustomArtistsLikedFragment extends Fragment implements CustomUs
             }
 
             @Override
-            public void onFailure(Call<ArrayList<ArtistUserRegisterSelection>> call, Throwable t) {
+            public void onFailure(Call<ArrayList<ArtistSimplified>> call, Throwable t) {
                 Log.d(TAG, "Get artists by styles failure " + t.getLocalizedMessage());
                 Globals.displayShortToast(context, "Something happened, please try again in a few minutes");
             }

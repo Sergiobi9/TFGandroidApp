@@ -2,7 +2,7 @@ package com.example.tfgapp.Entities.Artist;
 
 import com.google.gson.annotations.SerializedName;
 
-public class ArtistUserRegisterSelection {
+public class ArtistSimplified {
 
     @SerializedName("artistId")
     private String artistId;
@@ -14,7 +14,7 @@ public class ArtistUserRegisterSelection {
     private String musicalStyle;
     private boolean selected;
 
-    public ArtistUserRegisterSelection() {
+    public ArtistSimplified() {
     }
 
     public String getArtistId() {

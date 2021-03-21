@@ -58,7 +58,7 @@ public class ConcertNameFragment extends Fragment {
                 }
 
                 setConcertName(concertNameStr);
-                getFragmentManager().beginTransaction().replace(R.id.concert_fragment, new ConcertPlaceFragment()).addToBackStack(null).commit();
+                getFragmentManager().beginTransaction().replace(R.id.concert_fragment, new ConcertCoverFragment()).addToBackStack(null).commit();
             }
         });
     }

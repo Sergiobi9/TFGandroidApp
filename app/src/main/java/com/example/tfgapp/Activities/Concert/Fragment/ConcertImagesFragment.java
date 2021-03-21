@@ -112,8 +112,7 @@ public class ConcertImagesFragment extends Fragment {
             public void onClick(View v) {
                 setImagesToUpload();
 
-                CreateConcertActivity.createConcert(context);
-                //getFragmentManager().beginTransaction().replace(R.id.concert_fragment, new ConcertDescriptionFragment()).addToBackStack(null).commit();
+                getFragmentManager().beginTransaction().replace(R.id.concert_fragment, new ConcertDateFragment()).addToBackStack(null).commit();
             }
         });
     }

@@ -19,36 +19,57 @@
             android:textSize="28sp">
         </TextView>
 
-        <EditText
-            android:id="@+id/register_concert"
+        <SearchView
+            android:id="@+id/concert_artists"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/which_concert_name_tv"
-            android:paddingLeft="20dp"
-            android:paddingTop="15dp"
-            android:paddingBottom="15dp"
-            android:paddingRight="20dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
             android:maxHeight="50dp"
             android:fontFamily="@font/lato"
             android:inputType="number"
             android:hint="Buscar artistas"
             android:layout_marginTop="25dp"
             android:background="@drawable/login_edit_text_background">
+        </SearchView>
 
-        </EditText>
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_below="@+id/concert_artists"
+            android:layout_above="@+id/register_artists_btn"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/concerts_artist_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                </androidx.recyclerview.widget.RecyclerView>
+
+            </RelativeLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
 
         <Button
-            android:id="@+id/register_email_btn"
+            android:id="@+id/register_artists_btn"
             android:layout_width="match_parent"
             android:layout_marginLeft="50dp"
             android:layout_marginRight="50dp"
             android:text="NEXT"
+            android:layout_alignParentBottom="true"
             android:background="@drawable/black_btn"
             android:fontFamily="@font/lato"
             android:textColor="@color/white"
             android:textSize="12dp"
             android:layout_marginTop="50dp"
-            android:layout_below="@+id/register_concert"
             android:textAllCaps="false"
             android:layout_height="wrap_content"></Button>
 
