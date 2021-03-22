@@ -12,14 +12,14 @@
         android:orientation="vertical">
 
         <androidx.cardview.widget.CardView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cardCornerRadius="10dp"
-            app:cardElevation="5dp">
+            android:elevation="5dp">
 
             <ImageView
                 android:id="@+id/concert_image"
-                android:layout_width="350dp"
+                android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:scaleType="centerCrop"
                 app:layout_constraintDimensionRatio="1:1"
@@ -27,27 +27,71 @@
 
         </androidx.cardview.widget.CardView>
 
-        <TextView
-            android:id="@+id/concert_name"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Astroworld"
-            android:layout_marginTop="10dp"
-            android:gravity="left"
-            android:fontFamily="@font/lato"
-            android:textSize="26sp"></TextView>
+            android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/concert_artists"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Post Malone ft. Travis Scott"
-            android:layout_marginTop="10dp"
-            android:gravity="left"
-            android:fontFamily="@font/lato"
-            android:textSize="18sp"></TextView>
+            <LinearLayout
+                android:id="@+id/concert_info_layout"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-    </LinearLayout>
+                <TextView
+                    android:id="@+id/concert_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Astroworld"
+                    android:layout_marginTop="10dp"
+                    android:gravity="left"
+                    android:fontFamily="@font/lato"
+                    android:textSize="22sp"></TextView>
+
+                <TextView
+                    android:id="@+id/concert_artists"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Post Malone ft. Travis Scott"
+                    android:layout_marginTop="5dp"
+                    android:gravity="left"
+                    android:fontFamily="@font/lato"
+                    android:textSize="14sp"></TextView>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/concert_day"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Sep 10"
+                        android:layout_marginTop="10dp"
+                        android:gravity="right"
+                        android:fontFamily="@font/lato"
+                        android:textSize="22sp"></TextView>
+
+                    <TextView
+                        android:id="@+id/concert_year"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="2021"
+                        android:layout_marginTop="5dp"
+                        android:gravity="right"
+                        android:fontFamily="@font/lato"
+                        android:textSize="14sp"></TextView>
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+
+        </LinearLayout>
 
 
 </RelativeLayout>

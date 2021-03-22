@@ -15,6 +15,8 @@ import androidx.core.graphics.drawable.DrawableCompat;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 
+import java.util.ArrayList;
+
 public class Utils {
 
     public static BitmapDescriptor vectorToBitmap(Drawable vectorDrawable, @ColorInt int color, int width, int height) {
@@ -37,6 +39,24 @@ public class Utils {
         ViewGroup.LayoutParams params = view.getLayoutParams();
         params.width = (int) (screenWidth * appliedWidth);
         view.setLayoutParams(params);
+    }
+
+    public static String getMonthSimplified(int position){
+        ArrayList<String> months = new ArrayList<String>();
+        months.add("Ene");
+        months.add("Feb");
+        months.add("Mar");
+        months.add("Abr");
+        months.add("May");
+        months.add("Jun");
+        months.add("Jul");
+        months.add("Ago");
+        months.add("Sep");
+        months.add("Oct");
+        months.add("Nov");
+        months.add("Dic");
+
+        return months.get(position);
     }
 
     public static void responsiveView(View view, double appliedWidth, double appliedHeight, Activity activity){

@@ -99,6 +99,7 @@ public class SearchFragment extends Fragment implements ConcertSearchAdapter.OnC
                 switch (response.code()) {
                     case 200:
                         Log.d(TAG, "Get concerts for search success " + response.body());
+                        concertsReducedArrayList = response.body();
                         initConcertsView();
                         break;
                     default:
@@ -117,7 +118,7 @@ public class SearchFragment extends Fragment implements ConcertSearchAdapter.OnC
     }
 
     private void initConcertsView(){
-        concertSearchAdapter = new ConcertSearchAdapter(context, concertsReducedArrayList, onConcertListener);
+        concertSearchAdapter = new ConcertSearchAdapter(context, concertsReducedArrayList, onConcertListener, getActivity());
         concertsRecyclerView.setAdapter(concertSearchAdapter);
     }
 

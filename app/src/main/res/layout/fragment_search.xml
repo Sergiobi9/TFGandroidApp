@@ -25,7 +25,7 @@
                 android:layout_marginTop="20sp"
                 android:maxHeight="50dp"
                 android:fontFamily="@font/lato"
-                android:queryHint="Buscar artistas"
+                android:queryHint="Buscar conciertos"
                 android:iconifiedByDefault="false"
                 android:queryBackground="@android:color/transparent"
                 android:background="@drawable/login_edit_text_background">
@@ -42,6 +42,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
+
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/searched_concerts_recycler_view"

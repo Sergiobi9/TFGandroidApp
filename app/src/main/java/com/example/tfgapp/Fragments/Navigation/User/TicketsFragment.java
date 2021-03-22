@@ -1,16 +1,12 @@
 package com.example.tfgapp.Fragments.Navigation.User;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.os.Bundle;
 
-import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,12 +14,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.example.tfgapp.Adapters.TicketsAdapter;
-import com.example.tfgapp.Entities.Concert.ConcertHome;
+import com.example.tfgapp.Entities.Concert.ConcertReduced;
 import com.example.tfgapp.Global.Api;
 import com.example.tfgapp.R;
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.common.BitMatrix;
-import com.google.zxing.qrcode.QRCodeWriter;
 
 import java.util.ArrayList;
 
@@ -38,7 +31,7 @@ public class TicketsFragment extends Fragment implements TicketsAdapter.OnConcer
     private Context context;
     private ImageView ticketQR;
 
-    private ArrayList<ConcertHome> ticketsArrayList;
+    private ArrayList<ConcertReduced> ticketsArrayList;
     private RecyclerView ticketsRecyclerView;
     private TicketsAdapter ticketsAdapter;
     private TicketsAdapter.OnConcertTicketListener onTicketListener;
@@ -76,10 +69,10 @@ public class TicketsFragment extends Fragment implements TicketsAdapter.OnConcer
     }
 
     private void getTickets(){
-        Call<ArrayList<ConcertHome>> call = Api.getInstance().getAPI().getHomeConcerts("hello");
-        call.enqueue(new Callback<ArrayList<ConcertHome>>() {
+        Call<ArrayList<ConcertReduced>> call = Api.getInstance().getAPI().getHomeConcerts("hello");
+        call.enqueue(new Callback<ArrayList<ConcertReduced>>() {
             @Override
-            public void onResponse(Call<ArrayList<ConcertHome>> call, Response<ArrayList<ConcertHome>> response) {
+            public void onResponse(Call<ArrayList<ConcertReduced>> call, Response<ArrayList<ConcertReduced>> response) {
                 switch (response.code()) {
                     case 200:
                         Log.d(TAG, "Tickets concerts success " + response.body());
@@ -93,7 +86,7 @@ public class TicketsFragment extends Fragment implements TicketsAdapter.OnConcer
             }
 
             @Override
-            public void onFailure(Call<ArrayList<ConcertHome>> call, Throwable t) {
+            public void onFailure(Call<ArrayList<ConcertReduced>> call, Throwable t) {
                 Log.d(TAG, "Tickets concerts failure " + t.getLocalizedMessage());
             }
         });

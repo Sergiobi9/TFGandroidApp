@@ -16,13 +16,11 @@ import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
@@ -31,7 +29,7 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.example.tfgapp.Broadcasts.UserLocationBroadcast;
-import com.example.tfgapp.Entities.Concert.ConcertHome;
+import com.example.tfgapp.Entities.Concert.ConcertReduced;
 import com.example.tfgapp.Global.Api;
 import com.example.tfgapp.Global.Globals;
 import com.example.tfgapp.Global.Permissions;
@@ -75,7 +73,7 @@ public class MapFragment extends Fragment {
     private LocationRequest locationRequest;
 
     private CarouselView concertsCarousel;
-    private ArrayList<ConcertHome> concertsArrayList;
+    private ArrayList<ConcertReduced> concertsArrayList;
     private int radius = 1000;
 
     private UserLocation userLocation;
@@ -133,13 +131,13 @@ public class MapFragment extends Fragment {
 
     private void showPoints(){
         for (int i = 0; i < concertsArrayList.size(); i++) {
-            ConcertHome concertToShow = concertsArrayList.get(i);
+            ConcertReduced concertToShow = concertsArrayList.get(i);
 
             googleMap.addMarker(
                     new MarkerOptions()
-                            .position(new LatLng(concertToShow.getLatitude(), concertToShow.getLongitude()))
+                            .position(new LatLng(concertToShow.getPlaceLatitude(), concertToShow.getPlaceLongitude()))
                             .title(concertToShow.getName())
-                            .snippet(concertToShow.getStreet())
+                            .snippet(concertToShow.getPlaceAddress())
                             .icon(Utils.vectorToBitmap(context.getResources().getDrawable(R.drawable.map_marker),
                                     -1, 90, 90))
 
@@ -227,10 +225,10 @@ public class MapFragment extends Fragment {
     }
 
     private void focusConcertOnCarouselScrolled(int position) {
-        ConcertHome concertHome = concertsArrayList.get(position);
+        ConcertReduced concertHome = concertsArrayList.get(position);
 
         if (googleMap != null) {
-            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(concertHome.getLatitude(), concertHome.getLongitude()), 16));
+            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(concertHome.getPlaceLatitude(), concertHome.getPlaceLongitude()), 16));
         }
     }
 
@@ -270,10 +268,10 @@ public class MapFragment extends Fragment {
     }
 
     private void createPoints(){
-        Call<ArrayList<ConcertHome>> call = Api.getInstance().getAPI().getConcertsNearby(Double.parseDouble(userLocation.latitude), Double.parseDouble(userLocation.longitude), radius);
-        call.enqueue(new Callback<ArrayList<ConcertHome>>() {
+        Call<ArrayList<ConcertReduced>> call = Api.getInstance().getAPI().getConcertsNearby(Double.parseDouble(userLocation.latitude), Double.parseDouble(userLocation.longitude), radius);
+        call.enqueue(new Callback<ArrayList<ConcertReduced>>() {
             @Override
-            public void onResponse(@NonNull Call<ArrayList<ConcertHome>> call, Response<ArrayList<ConcertHome>> response) {
+            public void onResponse(@NonNull Call<ArrayList<ConcertReduced>> call, Response<ArrayList<ConcertReduced>> response) {
                 switch (response.code()) {
                     case 200:
                         Log.d(TAG, "Nearby concerts successful");
@@ -287,7 +285,7 @@ public class MapFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(@NonNull Call<ArrayList<ConcertHome>> call, Throwable t) {
+            public void onFailure(@NonNull Call<ArrayList<ConcertReduced>> call, Throwable t) {
                 Log.d(TAG, "Nearby concerts onFailure " + t.getLocalizedMessage());
             }
         });

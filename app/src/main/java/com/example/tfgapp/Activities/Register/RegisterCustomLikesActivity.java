@@ -1,8 +1,6 @@
 package com.example.tfgapp.Activities.Register;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
@@ -13,16 +11,11 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.tfgapp.Activities.MainActivity;
-import com.example.tfgapp.Activities.Register.Fragments.UserAccount.RegisterEmailFragment;
 import com.example.tfgapp.Activities.Register.Fragments.UserCustomLikes.UserCustomMusicStylesFragment;
-import com.example.tfgapp.Adapters.TicketsAdapter;
-import com.example.tfgapp.Entities.Concert.ConcertHome;
 import com.example.tfgapp.Entities.User.UserPreferences;
-import com.example.tfgapp.Entities.User.UserSession;
 import com.example.tfgapp.Global.Api;
 import com.example.tfgapp.Global.CurrentUser;
 import com.example.tfgapp.Global.Globals;

@@ -2,7 +2,6 @@ package com.example.tfgapp.API;
 
 import com.example.tfgapp.Entities.Artist.ArtistSimplified;
 import com.example.tfgapp.Entities.Concert.Concert;
-import com.example.tfgapp.Entities.Concert.ConcertHome;
 import com.example.tfgapp.Entities.Concert.ConcertReduced;
 import com.example.tfgapp.Entities.Concert.ConcertRegister;
 import com.example.tfgapp.Entities.CustomUserLikes.MusicStyle;
@@ -24,10 +23,10 @@ import retrofit2.http.Path;
 public interface ApiInterface {
 
     @GET("/concert/home/{userId}")
-    Call<ArrayList<ConcertHome>> getHomeConcerts(@Path("userId") String userId);
+    Call<ArrayList<ConcertReduced>> getHomeConcerts(@Path("userId") String userId);
 
     @GET("/concert/map/{userLatitude}/{userLongitude}/{radius}")
-    Call<ArrayList<ConcertHome>> getConcertsNearby(@Path("userLatitude") double userLatitude, @Path("userLongitude") double userLongitude, @Path("radius") double radius);
+    Call<ArrayList<ConcertReduced>> getConcertsNearby(@Path("userLatitude") double userLatitude, @Path("userLongitude") double userLongitude, @Path("radius") double radius);
 
     @POST("/auth/login")
     Call<UserSession> doUserLogin(@Body AuthenticationData authenticationData);
@@ -52,6 +51,9 @@ public interface ApiInterface {
 
     @GET("/artist/all/{userId}")
     Call<ArrayList<ArtistSimplified>> getAllArtists(@Path("userId") String userId);
+
+    @GET("/artist/home/suggested/{userId}")
+    Call<ArrayList<ArtistSimplified>> getSuggestedArtists(@Path("userId") String userId);
 
     @GET("/concert/all/{currentDate}")
     Call<ArrayList<ConcertReduced>> getAllConcertsActiveByCurrentDate(@Path("currentDate") String currentDate);

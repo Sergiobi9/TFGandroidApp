@@ -1,5 +1,6 @@
 package com.example.tfgapp.Adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Build;
@@ -7,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -17,12 +19,15 @@ import com.example.tfgapp.Entities.Artist.ArtistInfo;
 import com.example.tfgapp.Entities.Artist.ArtistSimplified;
 import com.example.tfgapp.Entities.Concert.ConcertReduced;
 import com.example.tfgapp.Global.CircleTransform;
+import com.example.tfgapp.Global.Helpers;
+import com.example.tfgapp.Global.Utils;
 import com.example.tfgapp.R;
 import com.squareup.picasso.Picasso;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,13 +37,15 @@ public class ConcertSearchAdapter extends RecyclerView.Adapter<ConcertSearchAdap
     private ArrayList<ConcertReduced> concertsInitArrayList = new ArrayList<>();
     private final String TAG = "ConcertSearchAdapter";
     private Context context;
+    private Activity activity;
     private OnConcertListener onConcertListener;
 
-    public ConcertSearchAdapter(Context context, ArrayList<ConcertReduced> concertsArrayList, OnConcertListener onConcertListener) {
+    public ConcertSearchAdapter(Context context, ArrayList<ConcertReduced> concertsArrayList, OnConcertListener onConcertListener, Activity activity) {
         this.context = context;
         this.onConcertListener = onConcertListener;
         this.concertsArrayList = concertsArrayList;
         this.concertsInitArrayList.addAll(concertsArrayList);
+        this.activity = activity;
     }
 
     @NonNull
@@ -56,20 +63,30 @@ public class ConcertSearchAdapter extends RecyclerView.Adapter<ConcertSearchAdap
 
         String imageUrl = currentConcert.getConcertCoverImage();
         ImageView concertCover = holder.concertImage;
-        int width  = concertCover.getMeasuredWidth();
-
+        Utils.responsiveView(concertCover, 1, 0.5, activity);
         Picasso.get().load(imageUrl).into(holder.concertImage);
-        concertCover.getLayoutParams().width = (int) (width);
-        concertCover.getLayoutParams().height = (int) (width/1.5);
-        concertCover.requestLayout();
 
         TextView concertName = (TextView) holder.concertName;
         TextView concertArtists = (TextView) holder.concertArtists;
+        LinearLayout concertInfoLayout = (LinearLayout) holder.concertInfoLayout;
+
+        Utils.responsiveViewWidth(concertInfoLayout, 0.55, activity);
+
+
+        Calendar concertDate = Helpers.getDateAsCalendar(currentConcert.getDateStarts());
+        TextView concertDay = (TextView) holder.concertDay;
+        TextView concertYear = (TextView) holder.concertYear;
 
         concertName.setText(currentConcert.getName());
 
         String concertArtistsStr = getCurrentArtist(currentConcert.getArtists());
         concertArtists.setText(concertArtistsStr);
+
+        String concertDayStr = Utils.getMonthSimplified(concertDate.get(Calendar.MONTH)) + " " + concertDate.get(Calendar.DATE);
+        concertDay.setText(concertDayStr);
+
+        String concertYearStr = String.valueOf(concertDate.get(Calendar.YEAR));
+        concertYear.setText(concertYearStr);
     }
 
     private String getCurrentArtist(ArrayList<ArtistInfo> artists) {
@@ -79,7 +96,7 @@ public class ConcertSearchAdapter extends RecyclerView.Adapter<ConcertSearchAdap
             if (i == 0){
                 artistsToReturn = artistsToReturn + artistName;
             } else if (i == 1){
-                artistsToReturn = artistsToReturn + " ft. " + artistName;
+                artistsToReturn = artistsToReturn + " ft " + artistName;
             } else {
                 artistsToReturn = artistsToReturn + ", " + artistName;
             }
@@ -116,7 +133,8 @@ public class ConcertSearchAdapter extends RecyclerView.Adapter<ConcertSearchAdap
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private ImageView concertImage;
-        private TextView concertName, concertArtists;
+        private TextView concertName, concertArtists, concertDay, concertYear;
+        private LinearLayout concertInfoLayout;
         public OnConcertListener onConcertListener;
 
         public ViewHolder(@NotNull View view, OnConcertListener onConcertListener) {
@@ -125,7 +143,10 @@ public class ConcertSearchAdapter extends RecyclerView.Adapter<ConcertSearchAdap
             this.concertImage = (ImageView) view.findViewById(R.id.concert_image);
             this.concertName = (TextView) view.findViewById(R.id.concert_name);
             this.concertArtists = (TextView) view.findViewById(R.id.concert_artists);
+            this.concertDay = (TextView) view.findViewById(R.id.concert_day);
+            this.concertYear = (TextView) view.findViewById(R.id.concert_year);
             this.onConcertListener = onConcertListener;
+            this.concertInfoLayout = view.findViewById(R.id.concert_info_layout);
             itemView.setOnClickListener(this);
         }
 

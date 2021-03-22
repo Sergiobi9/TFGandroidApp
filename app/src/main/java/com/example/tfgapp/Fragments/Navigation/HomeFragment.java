@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,8 +24,8 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.example.tfgapp.Activities.Login.LoginActivity;
-import com.example.tfgapp.Entities.Artist.ArtistInfo;
-import com.example.tfgapp.Entities.Concert.ConcertHome;
+import com.example.tfgapp.Entities.Artist.ArtistSimplified;
+import com.example.tfgapp.Entities.Concert.ConcertReduced;
 import com.example.tfgapp.Entities.User.UserSession;
 import com.example.tfgapp.Fragments.Artist.ArtistFragment;
 import com.example.tfgapp.Global.Api;
@@ -57,9 +56,9 @@ public class HomeFragment extends Fragment {
     private CarouselView suggestionConcertsCarousel;
     private CarouselView suggestionArtistsCarousel;
     private CarouselView mostSearchedCarousel;
-    private ArrayList<ConcertHome> suggestionConcertsArrayList;
-    private ArrayList<ArtistInfo> suggestionArtistsArrayList;
-    private ArrayList<ConcertHome> mostSearchedArrayList;
+    private ArrayList<ConcertReduced> suggestionConcertsArrayList;
+    private ArrayList<ArtistSimplified> suggestionArtistsArrayList;
+    private ArrayList<ConcertReduced> mostSearchedArrayList;
 
     private ImageView viralImageView;
     private ImageView loginIcon;
@@ -122,16 +121,36 @@ public class HomeFragment extends Fragment {
     }
 
     private void getSuggestedArtists(){
-        suggestionArtistsArrayList = new ArrayList<>();
-        suggestionArtistsArrayList.add(new ArtistInfo());
-        suggestionArtistsArrayList.add(new ArtistInfo());
-        suggestionArtistsArrayList.add(new ArtistInfo());
-        suggestionArtistsArrayList.add(new ArtistInfo());
-        suggestionArtistsArrayList.add(new ArtistInfo());
-        suggestionArtistsArrayList.add(new ArtistInfo());
+        String userId = "";
+        if (userSession != null){
+            userId = userSession.getUser().getId();
+        }
 
-        String imageUrl = "https://i.pinimg.com/564x/65/0f/d3/650fd39821139bcd064419b6f9bd3d12.jpg";
+        Call<ArrayList<ArtistSimplified>> call = Api.getInstance().getAPI().getSuggestedArtists(userId);
+        call.enqueue(new Callback<ArrayList<ArtistSimplified>>() {
+            @Override
+            public void onResponse(Call<ArrayList<ArtistSimplified>> call, Response<ArrayList<ArtistSimplified>> response) {
+                switch (response.code()) {
+                    case 200:
+                        Log.d(TAG, "Get artists suggested success " + response.body());
+                        suggestionArtistsArrayList = response.body();
+                        initSuggestedArtistsCarousel();
+                        break;
+                    default:
+                        Log.d(TAG, "Get artists suggested default " + response.code());
+                        break;
+                }
+            }
 
+            @Override
+            public void onFailure(Call<ArrayList<ArtistSimplified>> call, Throwable t) {
+                Log.d(TAG, "Get artists suggested failure " + t.getLocalizedMessage());
+            }
+        });
+
+    }
+
+    private void initSuggestedArtistsCarousel(){
         if (suggestionArtistsArrayList != null && suggestionArtistsArrayList.size() != 0){
             suggestionArtistsCarousel = view.findViewById(R.id.artists_to_follow);
 
@@ -153,9 +172,13 @@ public class HomeFragment extends Fragment {
                     if (position != suggestionArtistsArrayList.size() - 1){
                         ImageView artistImageView = view.findViewById(R.id.imageView);
 
+                        artistName.setText(suggestionArtistsArrayList.get(position).getArtistName());
+
+                        String artistImageUrl = suggestionArtistsArrayList.get(position).getProfileUrl();
+
                         Utils.responsiveView(artistImageView, 0.3, 0.3, getActivity());
 
-                        Picasso.get().load(imageUrl).transform(new CircleTransform()).into(artistImageView);
+                        Picasso.get().load(artistImageUrl).transform(new CircleTransform()).into(artistImageView);
 
                         artistContainerLayout.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -184,6 +207,7 @@ public class HomeFragment extends Fragment {
 
             suggestionArtistsCarousel.show();
         }
+
     }
 
     private void getMostWantedConcert() {
@@ -214,10 +238,10 @@ public class HomeFragment extends Fragment {
 
     private void getSuggestedConcerts() {
 
-        Call<ArrayList<ConcertHome>> call = Api.getInstance().getAPI().getHomeConcerts("hello");
-        call.enqueue(new Callback<ArrayList<ConcertHome>>() {
+        Call<ArrayList<ConcertReduced>> call = Api.getInstance().getAPI().getHomeConcerts("hello");
+        call.enqueue(new Callback<ArrayList<ConcertReduced>>() {
             @Override
-            public void onResponse(Call<ArrayList<ConcertHome>> call, Response<ArrayList<ConcertHome>> response) {
+            public void onResponse(Call<ArrayList<ConcertReduced>> call, Response<ArrayList<ConcertReduced>> response) {
                 switch (response.code()) {
                     case 200:
                         Log.d(TAG, "Home concerts success " + response.body());
@@ -231,7 +255,7 @@ public class HomeFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<ArrayList<ConcertHome>> call, Throwable t) {
+            public void onFailure(Call<ArrayList<ConcertReduced>> call, Throwable t) {
                 Log.d(TAG, "Home concerts failure " + t.getLocalizedMessage());
             }
         });
@@ -264,8 +288,16 @@ public class HomeFragment extends Fragment {
                     CardView concertImageLayout = view.findViewById(R.id.concert_cards);
                     Utils.responsiveView(concertImageLayout, 0.7, 0.7 / 1.714, getActivity());
 
+                    TextView concertName = view.findViewById(R.id.concert_name);
+                    TextView concertPlace = view.findViewById(R.id.concert_place);
+
+                    concertName.setText(suggestionConcertsArrayList.get(position).getName());
+                    concertPlace.setText(suggestionConcertsArrayList.get(position).getPlaceName());
+
                     ImageView imageView = view.findViewById(R.id.imageView);
                     String imageUrl = suggestionConcertsArrayList.get(position).getConcertCoverImage();
+
+                    System.out.println(imageUrl);
 
                     Glide.with(context).load(imageUrl)
                             .diskCacheStrategy(DiskCacheStrategy.NONE)

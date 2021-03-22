@@ -18,7 +18,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
-import com.example.tfgapp.Entities.Concert.ConcertHome;
+import com.example.tfgapp.Entities.Concert.ConcertReduced;
 import com.example.tfgapp.R;
 
 import org.jetbrains.annotations.NotNull;
@@ -27,12 +27,12 @@ import java.util.ArrayList;
 
 public class TicketsAdapter extends RecyclerView.Adapter<TicketsAdapter.ViewHolder> {
 
-    private ArrayList<ConcertHome> ticketsArrayList;
+    private ArrayList<ConcertReduced> ticketsArrayList;
     private final String TAG = "TicketsAdapter";
     private Context context;
     private TicketsAdapter.OnConcertTicketListener onLoyaltyCardClicked;
 
-    public TicketsAdapter(Context context, ArrayList<ConcertHome> ticketsArrayList, OnConcertTicketListener onLoyaltyCardClicked) {
+    public TicketsAdapter(Context context, ArrayList<ConcertReduced> ticketsArrayList, OnConcertTicketListener onLoyaltyCardClicked) {
         this.context = context;
         this.onLoyaltyCardClicked = onLoyaltyCardClicked;
         this.ticketsArrayList = ticketsArrayList;
@@ -49,7 +49,7 @@ public class TicketsAdapter extends RecyclerView.Adapter<TicketsAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull TicketsAdapter.ViewHolder holder, int position) {
-        ConcertHome currentConcert = ticketsArrayList.get(position);
+        ConcertReduced currentConcert = ticketsArrayList.get(position);
 
         String imageUrl = currentConcert.getConcertCoverImage();
 
