@@ -16,7 +16,7 @@
             android:layout_height="wrap_content">
 
             <SearchView
-                android:id="@+id/concert_artists_search"
+                android:id="@+id/concerts_search"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/which_concert_name_tv"

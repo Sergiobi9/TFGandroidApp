@@ -1,19 +1,47 @@
 package com.example.tfgapp.Fragments.Navigation;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SearchView;
 
+import com.example.tfgapp.Adapters.ConcertSearchAdapter;
+import com.example.tfgapp.Adapters.CustomUserArtistsAdapter;
+import com.example.tfgapp.Adapters.TicketsAdapter;
+import com.example.tfgapp.Entities.Artist.ArtistSimplified;
+import com.example.tfgapp.Entities.Concert.Concert;
+import com.example.tfgapp.Entities.Concert.ConcertReduced;
+import com.example.tfgapp.Entities.User.User;
+import com.example.tfgapp.Global.Api;
+import com.example.tfgapp.Global.Globals;
+import com.example.tfgapp.Global.Helpers;
 import com.example.tfgapp.R;
 
-public class SearchFragment extends Fragment {
+import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+public class SearchFragment extends Fragment implements ConcertSearchAdapter.OnConcertListener {
 
     private final String TAG = "SearchFragment";
     private View view;
+    private Context context;
+    private SearchView concertsSearch;
+
+    private ArrayList<ConcertReduced> concertsReducedArrayList = new ArrayList<>();
+    private RecyclerView concertsRecyclerView;
+    private ConcertSearchAdapter concertSearchAdapter;
+    private ConcertSearchAdapter.OnConcertListener onConcertListener;
 
     public SearchFragment() {
         // Required empty public constructor
@@ -30,9 +58,73 @@ public class SearchFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         view = inflater.inflate(R.layout.fragment_search, container, false);
+        context = getContext();
 
+        initView();
         return view;
     }
 
+    private void initView(){
+        onConcertListener = this;
 
+        concertsRecyclerView = view.findViewById(R.id.searched_concerts_recycler_view);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
+        concertsRecyclerView.setLayoutManager(mLayoutManager);
+        concertsRecyclerView.setNestedScrollingEnabled(false);
+
+        concertsSearch = view.findViewById(R.id.concerts_search);
+        concertsSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String arg0) {
+                concertSearchAdapter.filter(arg0);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String arg0) {
+                concertSearchAdapter.filter(arg0);
+                return false;
+            }
+        });
+
+        getConcerts();
+    }
+
+    private void getConcerts(){
+        String currentDate = Helpers.getTimeStamp();
+        Call<ArrayList<ConcertReduced>> call = Api.getInstance().getAPI().getAllConcertsActiveByCurrentDate(currentDate);
+        call.enqueue(new Callback<ArrayList<ConcertReduced>>() {
+            @Override
+            public void onResponse(Call<ArrayList<ConcertReduced>> call, Response<ArrayList<ConcertReduced>> response) {
+                switch (response.code()) {
+                    case 200:
+                        Log.d(TAG, "Get concerts for search success " + response.body());
+                        initConcertsView();
+                        break;
+                    default:
+                        Log.d(TAG, "Get concerts for search default " + response.code());
+                        Globals.displayShortToast(context, "Something happened, please try again in a few minutes");
+                        break;
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<ConcertReduced>> call, Throwable t) {
+                Log.d(TAG, "Get concerts for search failure " + t.getLocalizedMessage());
+                Globals.displayShortToast(context, "Something happened, please try again in a few minutes");
+            }
+        });
+    }
+
+    private void initConcertsView(){
+        concertSearchAdapter = new ConcertSearchAdapter(context, concertsReducedArrayList, onConcertListener);
+        concertsRecyclerView.setAdapter(concertSearchAdapter);
+    }
+
+
+    @Override
+    public void onConcertClicked(int position) {
+        /* Open fragment specific concert info */
+        Globals.displayShortToast(context, "Concert clicked at position " + position);
+    }
 }
