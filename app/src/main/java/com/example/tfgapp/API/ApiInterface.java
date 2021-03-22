@@ -3,6 +3,7 @@ package com.example.tfgapp.API;
 import com.example.tfgapp.Entities.Artist.ArtistSimplified;
 import com.example.tfgapp.Entities.Concert.Concert;
 import com.example.tfgapp.Entities.Concert.ConcertHome;
+import com.example.tfgapp.Entities.Concert.ConcertReduced;
 import com.example.tfgapp.Entities.Concert.ConcertRegister;
 import com.example.tfgapp.Entities.CustomUserLikes.MusicStyle;
 import com.example.tfgapp.Entities.Login.AuthenticationData;
@@ -51,5 +52,8 @@ public interface ApiInterface {
 
     @GET("/artist/all/{userId}")
     Call<ArrayList<ArtistSimplified>> getAllArtists(@Path("userId") String userId);
+
+    @GET("/concert/all/{currentDate}")
+    Call<ArrayList<ConcertReduced>> getAllConcertsActiveByCurrentDate(@Path("currentDate") String currentDate);
 
 }

@@ -25,6 +25,7 @@ import com.example.tfgapp.Fragments.Navigation.User.UserProfileFragment;
 import com.example.tfgapp.Global.Constants;
 import com.example.tfgapp.Global.CurrentUser;
 import com.example.tfgapp.Global.Globals;
+import com.example.tfgapp.Global.Helpers;
 import com.example.tfgapp.R;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
@@ -60,6 +61,8 @@ public class MainActivity extends AppCompatActivity {
         } else {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
+
+        System.out.println(Helpers.getTimeStamp());
 
         context = getApplicationContext();
 
