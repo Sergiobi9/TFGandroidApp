@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.example.tfgapp.Global.CircleTransform;
+import com.example.tfgapp.Global.Globals;
 import com.example.tfgapp.Global.Utils;
 import com.example.tfgapp.R;
 import com.squareup.picasso.Picasso;
@@ -25,6 +26,7 @@ public class ArtistFragment extends Fragment {
 
     private LinearLayout concertsLayout, followersLayout, sinceLayout;
     private Button followBtn, unfollowBtn;
+    private String artistId;
 
     public ArtistFragment() {
 
@@ -40,6 +42,9 @@ public class ArtistFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         view = inflater.inflate(R.layout.fragment_artist, container, false);
+        artistId = this.getArguments().getString("artistId");
+
+        Globals.displayShortToast(getContext(), artistId);
 
         initView();
         return view;
@@ -80,5 +85,11 @@ public class ArtistFragment extends Fragment {
                 followBtn.setVisibility(View.VISIBLE);
             }
         });
+
+        getArtistInfo();
+    }
+
+    private void getArtistInfo(){
+
     }
 }

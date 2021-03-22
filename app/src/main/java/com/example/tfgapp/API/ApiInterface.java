@@ -1,5 +1,7 @@
 package com.example.tfgapp.API;
 
+import com.amazonaws.http.HttpResponse;
+import com.example.tfgapp.Entities.Artist.ArtistProfileInfo;
 import com.example.tfgapp.Entities.Artist.ArtistSimplified;
 import com.example.tfgapp.Entities.Concert.Concert;
 import com.example.tfgapp.Entities.Concert.ConcertReduced;
@@ -57,5 +59,11 @@ public interface ApiInterface {
 
     @GET("/concert/all/{currentDate}")
     Call<ArrayList<ConcertReduced>> getAllConcertsActiveByCurrentDate(@Path("currentDate") String currentDate);
+
+    @GET("/artist/follow/{artistId}/{userId}/{follow}")
+    Call<HttpResponse> followArtist(@Path("artistId") String currentDate, @Path("userId") String userId, @Path("follow") boolean follow);
+
+    @GET("/artist/info/{artistId}/{userId}")
+    Call<ArtistProfileInfo> getArtistInfo(@Path("artistId") String currentDate, @Path("userId") String userId);
 
 }

@@ -24,6 +24,7 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.example.tfgapp.Activities.Login.LoginActivity;
+import com.example.tfgapp.Entities.Artist.ArtistInfo;
 import com.example.tfgapp.Entities.Artist.ArtistSimplified;
 import com.example.tfgapp.Entities.Concert.ConcertReduced;
 import com.example.tfgapp.Entities.User.UserSession;
@@ -183,7 +184,12 @@ public class HomeFragment extends Fragment {
                         artistContainerLayout.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                getFragmentManager().beginTransaction().replace(R.id.main_fragment, new ArtistFragment()).addToBackStack(null).commit();
+                                Bundle bundle = new Bundle();
+                                String artistId = suggestionArtistsArrayList.get(position).getArtistId();
+                                bundle.putString("artistId", artistId);
+                                ArtistFragment artistFragment = new ArtistFragment();
+                                artistFragment.setArguments(bundle);
+                                getFragmentManager().beginTransaction().replace(R.id.main_fragment, artistFragment).addToBackStack(null).commit();
                             }
                         });
                     } else {
