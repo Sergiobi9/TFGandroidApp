@@ -1,5 +1,7 @@
 package com.example.tfgapp.Entities.Artist;
 
+import java.util.ArrayList;
+
 public class ArtistProfileInfo {
 
     private String artistId;
@@ -16,8 +18,9 @@ public class ArtistProfileInfo {
     private String youtubeLink;
     private String snapchatLink;
     private int followers;
+    private String musicStyleName;
     private String memberSince;
-    private int numberOfConcerts;
+    private ArrayList<ArtistProfileConcertInfo> numberOfConcerts;
     private boolean following;
 
     public ArtistProfileInfo(){}
@@ -126,20 +129,20 @@ public class ArtistProfileInfo {
         this.snapchatLink = snapchatLink;
     }
 
-    public boolean isFollowing() {
-        return following;
-    }
-
-    public void setFollowing(boolean following) {
-        this.following = following;
-    }
-
     public int getFollowers() {
         return followers;
     }
 
     public void setFollowers(int followers) {
         this.followers = followers;
+    }
+
+    public String getMusicStyleName() {
+        return musicStyleName;
+    }
+
+    public void setMusicStyleName(String musicStyleName) {
+        this.musicStyleName = musicStyleName;
     }
 
     public String getMemberSince() {
@@ -150,11 +153,19 @@ public class ArtistProfileInfo {
         this.memberSince = memberSince;
     }
 
-    public int getNumberOfConcerts() {
+    public ArrayList<ArtistProfileConcertInfo> getNumberOfConcerts() {
         return numberOfConcerts;
     }
 
-    public void setNumberOfConcerts(int numberOfConcerts) {
+    public void setNumberOfConcerts(ArrayList<ArtistProfileConcertInfo> numberOfConcerts) {
         this.numberOfConcerts = numberOfConcerts;
+    }
+
+    public boolean isFollowing() {
+        return following;
+    }
+
+    public void setFollowing(boolean following) {
+        this.following = following;
     }
 }

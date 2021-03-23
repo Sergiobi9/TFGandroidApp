@@ -17,6 +17,7 @@ import java.util.regex.Pattern;
 public class Helpers {
 
     private static Helpers instance;
+    public static SimpleDateFormat timePattern = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ");
 
     public static synchronized Helpers getInstance(Context contextParam) {
         if (instance == null) {
@@ -57,7 +58,7 @@ public class Helpers {
         Date userBirthdayDate = null;
 
         try {
-            userBirthdayDate = new SimpleDateFormat("dd/MM/yyyy").parse(userBirthday);
+            userBirthdayDate = timePattern.parse(userBirthday);
             specifiedDate.setTime(userBirthdayDate);
         } catch (ParseException e) {
             e.printStackTrace();
@@ -93,10 +94,9 @@ public class Helpers {
     }
 
     public static Calendar getDateAsCalendar(String dateAsString) {
-        SimpleDateFormat parser = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ");
         Date date = null;
         try {
-            date = parser.parse(dateAsString);
+            date = timePattern.parse(dateAsString);
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -109,15 +109,13 @@ public class Helpers {
 
     public static String getTimeStamp(){
         TimeZone tz = Calendar.getInstance().getTimeZone();
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ"); // Quoted "Z" to indicate UTC, no timezone offset
-        df.setTimeZone(tz);
-        return df.format(new Date());
+        timePattern.setTimeZone(tz);
+        return timePattern.format(new Date());
     }
 
     public static String getDateWithPattern(Date dateAsString){
         TimeZone tz = Calendar.getInstance().getTimeZone();
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ"); // Quoted "Z" to indicate UTC, no timezone offset
-        df.setTimeZone(tz);
-        return df.format(dateAsString);
+        timePattern.setTimeZone(tz);
+        return timePattern.format(dateAsString);
     }
 }

@@ -75,7 +75,7 @@ public class ConcertDateFragment extends Fragment {
                 public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                     Date date = null;
                     try {
-                        date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(concertDate);
+                        date = Helpers.timePattern.parse(concertDate);
                         Calendar calendar = Calendar.getInstance();
                         calendar.setTime(date);
                         calendar.set(Calendar.DATE, dayOfMonth);// for 6 hour

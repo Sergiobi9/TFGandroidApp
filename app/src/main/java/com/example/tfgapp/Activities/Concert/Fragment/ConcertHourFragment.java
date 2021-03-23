@@ -74,7 +74,7 @@ public class ConcertHourFragment extends Fragment {
             public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
                 Date date = null;
                 try {
-                    date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(concertDate);
+                    date = Helpers.timePattern.parse(concertDate);
                     Calendar calendar = Calendar.getInstance();
                     calendar.setTime(date);
                     calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
