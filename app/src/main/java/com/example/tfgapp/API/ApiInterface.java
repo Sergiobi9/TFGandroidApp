@@ -15,6 +15,7 @@ import com.example.tfgapp.Entities.User.UserSession;
 
 import java.util.ArrayList;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -61,7 +62,7 @@ public interface ApiInterface {
     Call<ArrayList<ConcertReduced>> getAllConcertsActiveByCurrentDate(@Path("currentDate") String currentDate);
 
     @GET("/artist/follow/{artistId}/{userId}/{follow}")
-    Call<HttpResponse> followArtist(@Path("artistId") String currentDate, @Path("userId") String userId, @Path("follow") boolean follow);
+    Call<ResponseBody> followArtist(@Path("artistId") String artistId, @Path("userId") String userId, @Path("follow") boolean follow);
 
     @GET("/artist/info/{currentDate}/{artistId}/{userId}")
     Call<ArtistProfileInfo> getArtistInfo(@Path("currentDate") String currentDate, @Path("artistId") String artistId, @Path("userId") String userId);

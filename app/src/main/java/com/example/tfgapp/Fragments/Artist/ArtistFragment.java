@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.amazonaws.http.HttpResponse;
 import com.example.tfgapp.Entities.Artist.ArtistProfileInfo;
 import com.example.tfgapp.Global.Api;
 import com.example.tfgapp.Global.CircleTransform;
@@ -26,6 +27,7 @@ import com.example.tfgapp.Global.Utils;
 import com.example.tfgapp.R;
 import com.squareup.picasso.Picasso;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -40,7 +42,8 @@ public class ArtistFragment extends Fragment {
     private LinearLayout concertsLayout, followersLayout, sinceLayout;
     private Button followBtn, unfollowBtn;
     private String artistId;
-    private TextView artistName, artistMusicStyle, artistFollowers, artistConcertsMade, artistSince, artistBio;
+    private TextView artistName, artistMusicStyle, artistFollowers, artistConcertsMade,
+            artistSince, artistBio, noRecentConcerts;
     private ImageView spotifyLink, facebookLink, twitterLink, instagramLink, youtubeLink, snapchatLink;
 
     public ArtistFragment() {
@@ -62,7 +65,6 @@ public class ArtistFragment extends Fragment {
         context = getContext();
 
         initView();
-        getArtistProfileInfo();
         return view;
     }
 
@@ -108,6 +110,18 @@ public class ArtistFragment extends Fragment {
         setSocialMediaLinks(instagramLink, artistProfileInfo.getInstagramLink());
         setSocialMediaLinks(youtubeLink, artistProfileInfo.getYoutubeLink());
         setSocialMediaLinks(snapchatLink, artistProfileInfo.getSnapchatLink());
+
+        if (artistProfileInfo.getNumberOfConcerts() == null || artistProfileInfo.getNumberOfConcerts().size() <= 0){
+            noRecentConcerts.setVisibility(View.VISIBLE);
+        }
+
+        if (artistProfileInfo.isFollowing()){
+            unfollowBtn.setVisibility(View.VISIBLE);
+            followBtn.setVisibility(View.GONE);
+        } else {
+            unfollowBtn.setVisibility(View.GONE);
+            followBtn.setVisibility(View.VISIBLE);
+        }
     }
 
     private void setSocialMediaLinks(ImageView socialMediaIcon, String link){
@@ -148,16 +162,14 @@ public class ArtistFragment extends Fragment {
         followBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                followBtn.setVisibility(View.GONE);
-                unfollowBtn.setVisibility(View.VISIBLE);
+                followArtist(true);
             }
         });
 
         unfollowBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                unfollowBtn.setVisibility(View.GONE);
-                followBtn.setVisibility(View.VISIBLE);
+                followArtist(false);
             }
         });
 
@@ -174,5 +186,40 @@ public class ArtistFragment extends Fragment {
         instagramLink = view.findViewById(R.id.instagram_link);
         youtubeLink = view.findViewById(R.id.youtube_link);
         snapchatLink = view.findViewById(R.id.snapchat_link);
+
+        noRecentConcerts = view.findViewById(R.id.no_concerts_text_view);
+
+        getArtistProfileInfo();
+    }
+
+    private void followArtist(boolean follow){
+        String userId = CurrentUser.getInstance(context).getCurrentUser().getUser().getId();
+
+        Call<ResponseBody> call = Api.getInstance().getAPI().followArtist(artistId, userId, follow);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                switch (response.code()) {
+                    case 200:
+                        Log.d(TAG, "Follow artist success " + response.body());
+                        if(follow){
+                            followBtn.setVisibility(View.GONE);
+                            unfollowBtn.setVisibility(View.VISIBLE);
+                        } else {
+                            followBtn.setVisibility(View.VISIBLE);
+                            unfollowBtn.setVisibility(View.GONE);
+                        }
+                        break;
+                    default:
+                        Log.d(TAG, "Follow artist default " + response.code());
+                        break;
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.d(TAG, "Follow artist onFaulure " + t.getLocalizedMessage());
+            }
+        });
     }
 }
