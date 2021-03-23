@@ -23,6 +23,8 @@ public class ConcertRegister {
     private String dateCreated;
     @SerializedName("dateStarts")
     private String dateStarts;
+    @SerializedName("userId")
+    private String userId;
     @SerializedName("price")
     private double price;
     @SerializedName("numberAssistants")
@@ -47,6 +49,7 @@ public class ConcertRegister {
         this.placeDescription = concertLocation.getPlaceDescription();
         this.dateCreated = Helpers.getTimeStamp();
         this.dateStarts = concert.getDateStarts();
+        this.userId = concert.getUserId();
         this.price = concert.getPrice();
         this.numberAssistants = concert.getNumberAssistants();
         this.description = concert.getDescription();
@@ -118,6 +121,14 @@ public class ConcertRegister {
 
     public void setDateStarts(String dateStarts) {
         this.dateStarts = dateStarts;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public double getPrice() {

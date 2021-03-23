@@ -14,6 +14,8 @@ public class Concert {
     public String dateCreated;
     @SerializedName("dateStarts")
     public String dateStarts;
+    @SerializedName("userId")
+    public String userId;
     @SerializedName("price")
     public double price;
     @SerializedName("numberAssistants")
@@ -77,6 +79,14 @@ public class Concert {
 
     public void setDateStarts(String dateStarts) {
         this.dateStarts = dateStarts;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public double getPrice() {

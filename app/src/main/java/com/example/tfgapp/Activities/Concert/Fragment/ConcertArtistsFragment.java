@@ -65,21 +65,7 @@ public class ConcertArtistsFragment extends Fragment implements CustomUserArtist
 
         initView();
         getArtists();
-        registerCurrentUserToConcert();
         return view;
-    }
-
-    private void registerCurrentUserToConcert(){
-        ArrayList<String> artistsIdsSelected = CreateConcertActivity.getRegisteredConcert().getArtistsIds();
-        String userId = CurrentUser.getInstance(context).getCurrentUser().getUser().getId();
-
-        if (artistsIdsSelected == null) artistsIdsSelected = new ArrayList<>();
-
-        if (!artistsIdsSelected.contains(userId)){
-            artistsIdsSelected.add(userId);
-            CreateConcertActivity.getRegisteredConcert().setArtistsIds(artistsIdsSelected);
-        }
-
     }
 
     private void initView(){

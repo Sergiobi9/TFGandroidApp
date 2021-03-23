@@ -1,32 +1,50 @@
 package com.example.tfgapp.Fragments.Artist;
 
+import android.content.Context;
 import android.media.Image;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
+import com.example.tfgapp.Entities.Artist.ArtistProfileInfo;
+import com.example.tfgapp.Entities.Artist.ArtistReducedInfo;
+import com.example.tfgapp.Entities.Concert.ConcertReduced;
+import com.example.tfgapp.Entities.User.UserSession;
+import com.example.tfgapp.Global.Api;
 import com.example.tfgapp.Global.CircleTransform;
+import com.example.tfgapp.Global.CurrentUser;
 import com.example.tfgapp.Global.Globals;
 import com.example.tfgapp.Global.Utils;
 import com.example.tfgapp.R;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class ArtistFragment extends Fragment {
 
     private View view;
     private ImageView artistImage;
+    private Context context;
+    private final String TAG = "ArtistFragment";
 
     private LinearLayout concertsLayout, followersLayout, sinceLayout;
     private Button followBtn, unfollowBtn;
     private String artistId;
+    private TextView artistName;
 
     public ArtistFragment() {
 
@@ -44,10 +62,42 @@ public class ArtistFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_artist, container, false);
         artistId = this.getArguments().getString("artistId");
 
+        context = getContext();
+
         Globals.displayShortToast(getContext(), artistId);
 
         initView();
+        getArtistProfileInfo();
         return view;
+    }
+
+    private void getArtistProfileInfo(){
+        String userId = CurrentUser.getInstance(context).getCurrentUser().getUser().getId();
+
+        Call<ArtistProfileInfo> call = Api.getInstance().getAPI().getArtistInfo(artistId, userId);
+        call.enqueue(new Callback<ArtistProfileInfo>() {
+            @Override
+            public void onResponse(Call<ArtistProfileInfo> call, Response<ArtistProfileInfo> response) {
+                switch (response.code()) {
+                    case 200:
+                        Log.d(TAG, "Get artist profile info success " + response.body());
+                        loadArtistInfoView();
+                        break;
+                    default:
+                        Log.d(TAG, "Get artist profile info default " + response.code());
+                        break;
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ArtistProfileInfo> call, Throwable t) {
+                Log.d(TAG, "Get artist profile info failure " + t.getLocalizedMessage());
+            }
+        });
+    }
+
+    private void loadArtistInfoView(){
+
     }
 
     private void initView() {
@@ -85,11 +135,5 @@ public class ArtistFragment extends Fragment {
                 followBtn.setVisibility(View.VISIBLE);
             }
         });
-
-        getArtistInfo();
-    }
-
-    private void getArtistInfo(){
-
     }
 }

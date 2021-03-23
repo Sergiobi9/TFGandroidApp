@@ -43,6 +43,7 @@ import com.example.tfgapp.Entities.Concert.ConcertLocation;
 import com.example.tfgapp.Entities.Concert.ConcertRegister;
 import com.example.tfgapp.Entities.User.User;
 import com.example.tfgapp.Global.Api;
+import com.example.tfgapp.Global.CurrentUser;
 import com.example.tfgapp.Global.Globals;
 import com.example.tfgapp.Global.Storage;
 import com.example.tfgapp.R;
@@ -188,6 +189,9 @@ public class CreateConcertActivity extends AppCompatActivity {
 
     public static void createConcert(Context context) {
         showCreatingConcertDialog(context, "Por favor espera, se esta publicando tu concierto");
+
+        String userId = CurrentUser.getInstance(context).getCurrentUser().getUser().getId();
+        registeredConcert.setUserId(userId);
 
         ConcertRegister concertRegister = new ConcertRegister(registeredConcert, registeredConcertLocation, concertImagesArrayList.size());
         Call<Concert> call = Api.getInstance().getAPI().createConcert(concertRegister);

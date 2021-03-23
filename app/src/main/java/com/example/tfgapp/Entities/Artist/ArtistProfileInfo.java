@@ -15,6 +15,9 @@ public class ArtistProfileInfo {
     private String instagramLink;
     private String youtubeLink;
     private String snapchatLink;
+    private int followers;
+    private String memberSince;
+    private int numberOfConcerts;
     private boolean following;
 
     public ArtistProfileInfo(){}
@@ -129,5 +132,29 @@ public class ArtistProfileInfo {
 
     public void setFollowing(boolean following) {
         this.following = following;
+    }
+
+    public int getFollowers() {
+        return followers;
+    }
+
+    public void setFollowers(int followers) {
+        this.followers = followers;
+    }
+
+    public String getMemberSince() {
+        return memberSince;
+    }
+
+    public void setMemberSince(String memberSince) {
+        this.memberSince = memberSince;
+    }
+
+    public int getNumberOfConcerts() {
+        return numberOfConcerts;
+    }
+
+    public void setNumberOfConcerts(int numberOfConcerts) {
+        this.numberOfConcerts = numberOfConcerts;
     }
 }

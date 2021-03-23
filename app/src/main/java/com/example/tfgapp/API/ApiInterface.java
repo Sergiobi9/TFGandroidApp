@@ -64,6 +64,6 @@ public interface ApiInterface {
     Call<HttpResponse> followArtist(@Path("artistId") String currentDate, @Path("userId") String userId, @Path("follow") boolean follow);
 
     @GET("/artist/info/{artistId}/{userId}")
-    Call<ArtistProfileInfo> getArtistInfo(@Path("artistId") String currentDate, @Path("userId") String userId);
+    Call<ArtistProfileInfo> getArtistInfo(@Path("artistId") String artistId, @Path("userId") String userId);
 
 }
