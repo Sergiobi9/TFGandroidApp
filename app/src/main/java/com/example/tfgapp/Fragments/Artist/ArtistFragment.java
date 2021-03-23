@@ -98,9 +98,9 @@ public class ArtistFragment extends Fragment {
         Picasso.get().load(artistProfileInfo.getProfileUrl()).transform(new CircleTransform()).into(artistImage);
 
         artistName.setText(artistProfileInfo.getArtistName());
-        artistMusicStyle.setText(artistProfileInfo.getMusicalStyle() + " artist");
-        artistFollowers.setText(artistProfileInfo.getFollowers());
-        artistConcertsMade.setText(artistProfileInfo.getNumberOfConcerts().size());
+        artistMusicStyle.setText(artistProfileInfo.getMusicStyleName() + " artist");
+        artistFollowers.setText(String.valueOf(artistProfileInfo.getFollowers()));
+        artistConcertsMade.setText(String.valueOf(artistProfileInfo.getNumberOfConcerts().size()));
         artistSince.setText(Helpers.getDateSince(artistProfileInfo.getMemberSince(), context));
         artistBio.setText(artistProfileInfo.getBio());
 

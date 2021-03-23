@@ -42,7 +42,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/lato_black"
-                        android:text="Post Malone"
                         android:textSize="24sp">
 
                     </TextView>
@@ -53,7 +52,6 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:fontFamily="@font/lato"
-                        android:text="Trap artist"
                         android:textSize="18sp">
 
                     </TextView>
@@ -96,7 +94,6 @@
                         android:layout_marginTop="10dp"
                         android:fontFamily="@font/lato"
                         android:gravity="center"
-                        android:text="1M"
                         android:textSize="18sp">
 
                     </TextView>
@@ -128,7 +125,6 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:fontFamily="@font/lato"
-                        android:text="Feb 2021"
                         android:textSize="18sp">
 
                     </TextView>
@@ -161,7 +157,6 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:fontFamily="@font/lato"
-                        android:text="23"
                         android:textSize="18sp">
 
                     </TextView>
