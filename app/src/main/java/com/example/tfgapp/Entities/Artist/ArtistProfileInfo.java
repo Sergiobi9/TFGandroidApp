@@ -168,4 +168,28 @@ public class ArtistProfileInfo {
     public void setFollowing(boolean following) {
         this.following = following;
     }
+
+    @Override
+    public String toString() {
+        return "ArtistProfileInfo{" +
+                "artistId='" + artistId + '\'' +
+                ", artistName='" + artistName + '\'' +
+                ", country='" + country + '\'' +
+                ", gender=" + gender +
+                ", profileUrl='" + profileUrl + '\'' +
+                ", bio='" + bio + '\'' +
+                ", musicalStyle='" + musicalStyle + '\'' +
+                ", spotifyLink='" + spotifyLink + '\'' +
+                ", facebookLink='" + facebookLink + '\'' +
+                ", twitterLink='" + twitterLink + '\'' +
+                ", instagramLink='" + instagramLink + '\'' +
+                ", youtubeLink='" + youtubeLink + '\'' +
+                ", snapchatLink='" + snapchatLink + '\'' +
+                ", followers=" + followers +
+                ", musicStyleName='" + musicStyleName + '\'' +
+                ", memberSince='" + memberSince + '\'' +
+                ", numberOfConcerts=" + numberOfConcerts +
+                ", following=" + following +
+                '}';
+    }
 }

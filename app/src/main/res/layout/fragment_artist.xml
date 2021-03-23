@@ -28,8 +28,7 @@
                     android:id="@+id/artist_image"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:layout_margin="30sp"
-                    android:src="@drawable/google_login"></ImageView>
+                    android:layout_margin="30sp"></ImageView>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -39,7 +38,7 @@
                     android:padding="10dp">
 
                     <TextView
-                        android:id="artist_name"
+                        android:id="@+id/artist_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/lato_black"
@@ -49,6 +48,7 @@
                     </TextView>
 
                     <TextView
+                        android:id="@+id/artist_music_style"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
@@ -90,6 +90,7 @@
                     </TextView>
 
                     <TextView
+                        android:id="@+id/artist_followers"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
@@ -122,6 +123,7 @@
                     </TextView>
 
                     <TextView
+                        android:id="@+id/artist_since"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
@@ -154,6 +156,7 @@
                     </TextView>
 
                     <TextView
+                        android:id="@+id/concerts_made"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
@@ -175,6 +178,7 @@
                 android:orientation="horizontal">
 
                 <ImageView
+                    android:id="@+id/spotify_link"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_margin="10dp"
@@ -183,6 +187,7 @@
                 </ImageView>
 
                 <ImageView
+                    android:id="@+id/facebook_link"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_margin="10dp"
@@ -191,6 +196,7 @@
                 </ImageView>
 
                 <ImageView
+                    android:id="@+id/twitter_link"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_margin="10dp"
@@ -199,6 +205,7 @@
                 </ImageView>
 
                 <ImageView
+                    android:id="@+id/instagram_link"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_margin="10dp"
@@ -207,6 +214,7 @@
                 </ImageView>
 
                 <ImageView
+                    android:id="@+id/youtube_link"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_margin="10dp"
@@ -215,6 +223,7 @@
                 </ImageView>
 
                 <ImageView
+                    android:id="@+id/snapchat_link"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_margin="10dp"
@@ -268,6 +277,7 @@
                     android:textSize="22sp" />
 
                 <TextView
+                    android:id="@+id/artist_bio"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
@@ -293,6 +303,7 @@
                     android:layout_marginTop="20sp" />
 
                 <TextView
+                    android:id="@+id/no_concerts_text_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="16sp"

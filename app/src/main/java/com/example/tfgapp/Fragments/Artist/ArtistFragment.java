@@ -1,12 +1,12 @@
 package com.example.tfgapp.Fragments.Artist;
 
 import android.content.Context;
-import android.media.Image;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,18 +17,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.tfgapp.Entities.Artist.ArtistProfileInfo;
-import com.example.tfgapp.Entities.Artist.ArtistReducedInfo;
-import com.example.tfgapp.Entities.Concert.ConcertReduced;
-import com.example.tfgapp.Entities.User.UserSession;
 import com.example.tfgapp.Global.Api;
 import com.example.tfgapp.Global.CircleTransform;
 import com.example.tfgapp.Global.CurrentUser;
 import com.example.tfgapp.Global.Globals;
+import com.example.tfgapp.Global.Helpers;
 import com.example.tfgapp.Global.Utils;
 import com.example.tfgapp.R;
 import com.squareup.picasso.Picasso;
-
-import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -44,7 +40,8 @@ public class ArtistFragment extends Fragment {
     private LinearLayout concertsLayout, followersLayout, sinceLayout;
     private Button followBtn, unfollowBtn;
     private String artistId;
-    private TextView artistName;
+    private TextView artistName, artistMusicStyle, artistFollowers, artistConcertsMade, artistSince, artistBio;
+    private ImageView spotifyLink, facebookLink, twitterLink, instagramLink, youtubeLink, snapchatLink;
 
     public ArtistFragment() {
 
@@ -64,8 +61,6 @@ public class ArtistFragment extends Fragment {
 
         context = getContext();
 
-        Globals.displayShortToast(getContext(), artistId);
-
         initView();
         getArtistProfileInfo();
         return view;
@@ -73,15 +68,16 @@ public class ArtistFragment extends Fragment {
 
     private void getArtistProfileInfo(){
         String userId = CurrentUser.getInstance(context).getCurrentUser().getUser().getId();
+        String currentDate = Helpers.getTimeStamp();
 
-        Call<ArtistProfileInfo> call = Api.getInstance().getAPI().getArtistInfo(artistId, userId);
+        Call<ArtistProfileInfo> call = Api.getInstance().getAPI().getArtistInfo(currentDate, artistId, userId);
         call.enqueue(new Callback<ArtistProfileInfo>() {
             @Override
             public void onResponse(Call<ArtistProfileInfo> call, Response<ArtistProfileInfo> response) {
                 switch (response.code()) {
                     case 200:
                         Log.d(TAG, "Get artist profile info success " + response.body());
-                        loadArtistInfoView();
+                        loadArtistInfoView(response.body());
                         break;
                     default:
                         Log.d(TAG, "Get artist profile info default " + response.code());
@@ -96,13 +92,44 @@ public class ArtistFragment extends Fragment {
         });
     }
 
-    private void loadArtistInfoView(){
+    private void loadArtistInfoView(ArtistProfileInfo artistProfileInfo){
+        Picasso.get().load(artistProfileInfo.getProfileUrl()).transform(new CircleTransform()).into(artistImage);
 
+        artistName.setText(artistProfileInfo.getArtistName());
+        artistMusicStyle.setText(artistProfileInfo.getMusicalStyle() + " artist");
+        artistFollowers.setText(artistProfileInfo.getFollowers());
+        artistConcertsMade.setText(artistProfileInfo.getNumberOfConcerts().size());
+        artistSince.setText(Helpers.getDateSince(artistProfileInfo.getMemberSince(), context));
+        artistBio.setText(artistProfileInfo.getBio());
+
+        setSocialMediaLinks(spotifyLink, artistProfileInfo.getSpotifyLink());
+        setSocialMediaLinks(facebookLink, artistProfileInfo.getFacebookLink());
+        setSocialMediaLinks(twitterLink, artistProfileInfo.getTwitterLink());
+        setSocialMediaLinks(instagramLink, artistProfileInfo.getInstagramLink());
+        setSocialMediaLinks(youtubeLink, artistProfileInfo.getYoutubeLink());
+        setSocialMediaLinks(snapchatLink, artistProfileInfo.getSnapchatLink());
+    }
+
+    private void setSocialMediaLinks(ImageView socialMediaIcon, String link){
+        if (link == null){
+            socialMediaIcon.setVisibility(View.GONE);
+        } else {
+            socialMediaIcon.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    openLink(link);
+                }
+            });
+        }
+    }
+
+    private void openLink(String link){
+        Intent i = new Intent(Intent.ACTION_VIEW);
+        i.setData(Uri.parse(link));
+        startActivity(i);
     }
 
     private void initView() {
-        String imageUrl = "https://i.pinimg.com/564x/fc/4c/45/fc4c4546509202ab3d0c0fc91e8c4d69.jpg";
-
         concertsLayout = view.findViewById(R.id.concerts_layout);
         followersLayout = view.findViewById(R.id.followers_layout);
         sinceLayout = view.findViewById(R.id.since_layout);
@@ -110,8 +137,6 @@ public class ArtistFragment extends Fragment {
         artistImage = view.findViewById(R.id.artist_image);
 
         Utils.responsiveView(artistImage, 0.3, 0.3, getActivity());
-
-        Picasso.get().load(imageUrl).transform(new CircleTransform()).into(artistImage);
 
         Utils.responsiveViewWidth(concertsLayout, 0.3, getActivity());
         Utils.responsiveViewWidth(followersLayout, 0.3, getActivity());
@@ -135,5 +160,19 @@ public class ArtistFragment extends Fragment {
                 followBtn.setVisibility(View.VISIBLE);
             }
         });
+
+        artistName = view.findViewById(R.id.artist_name);
+        artistMusicStyle = view.findViewById(R.id.artist_music_style);
+        artistFollowers = view.findViewById(R.id.artist_followers);
+        artistConcertsMade = view.findViewById(R.id.concerts_made);
+        artistSince = view.findViewById(R.id.artist_since);
+        artistBio = view.findViewById(R.id.artist_bio);
+
+        spotifyLink = view.findViewById(R.id.spotify_link);
+        facebookLink = view.findViewById(R.id.facebook_link);
+        twitterLink = view.findViewById(R.id.twitter_link);
+        instagramLink = view.findViewById(R.id.instagram_link);
+        youtubeLink = view.findViewById(R.id.youtube_link);
+        snapchatLink = view.findViewById(R.id.snapchat_link);
     }
 }

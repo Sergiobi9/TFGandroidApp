@@ -8,6 +8,7 @@ import com.example.tfgapp.Entities.User.UserSession;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
@@ -117,5 +118,19 @@ public class Helpers {
         TimeZone tz = Calendar.getInstance().getTimeZone();
         timePattern.setTimeZone(tz);
         return timePattern.format(dateAsString);
+    }
+
+    public static String getDateSince(String sinceDate, Context context){
+        Calendar sinceDateCalendar = getDateAsCalendar(sinceDate);
+        int year = sinceDateCalendar.get(Calendar.YEAR);
+        String month = getMonth(sinceDateCalendar.get(Calendar.MONTH), context);
+
+        return month + " " + year;
+    }
+
+    private static String getMonth(int month, Context context){
+        String[] monts = {"Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dec"};
+
+        return monts[month];
     }
 }
