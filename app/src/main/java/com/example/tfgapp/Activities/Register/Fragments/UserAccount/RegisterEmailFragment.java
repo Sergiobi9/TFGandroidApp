@@ -17,7 +17,7 @@ import android.widget.EditText;
 import com.example.tfgapp.Activities.Login.LoginActivity;
 import com.example.tfgapp.Activities.Register.RegisterAccountActivity;
 import com.example.tfgapp.Entities.User.User;
-import com.example.tfgapp.Entities.User.UserExists;
+import com.example.tfgapp.Entities.InfoResponse.InfoResponse;
 import com.example.tfgapp.Global.Api;
 import com.example.tfgapp.Global.Constants;
 import com.example.tfgapp.Global.Globals;
@@ -92,10 +92,10 @@ public class RegisterEmailFragment extends Fragment {
     }
 
     private void checkEmailExists(String userEmail){
-        Call<UserExists> call = Api.getInstance().getAPI().checkUserAlreadyExists(userEmail);
-        call.enqueue(new Callback<UserExists>() {
+        Call<InfoResponse> call = Api.getInstance().getAPI().checkUserAlreadyExists(userEmail);
+        call.enqueue(new Callback<InfoResponse>() {
             @Override
-            public void onResponse(Call<UserExists> call, Response<UserExists> response) {
+            public void onResponse(Call<InfoResponse> call, Response<InfoResponse> response) {
                 switch (response.code()) {
                     case 200:
                         Log.d(TAG, "User exists by email success " + response.body());
@@ -119,7 +119,7 @@ public class RegisterEmailFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<UserExists> call, Throwable t) {
+            public void onFailure(Call<InfoResponse> call, Throwable t) {
                 Log.d(TAG, "User exists by email failure " + t.getLocalizedMessage());
                 Globals.displayShortToast(context, "Something happened, please try again in a few minutes");
             }

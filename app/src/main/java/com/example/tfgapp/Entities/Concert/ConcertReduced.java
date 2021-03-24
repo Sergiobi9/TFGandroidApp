@@ -1,25 +1,41 @@
 package com.example.tfgapp.Entities.Concert;
 
 import com.example.tfgapp.Entities.Artist.ArtistInfo;
+import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 
 public class ConcertReduced {
 
+    @SerializedName("concertId")
     private String concertId;
+    @SerializedName("name")
     private String name;
+    @SerializedName("placeLatitude")
     private double placeLatitude;
+    @SerializedName("placeLongitude")
     private double placeLongitude;
+    @SerializedName("placeName")
     private String placeName;
+    @SerializedName("placeAddress")
     private String placeAddress;
+    @SerializedName("price")
     private double price;
+    @SerializedName("dateStarts")
     private String dateStarts;
+    @SerializedName("numberAssistants")
     private int numberAssistants;
+    @SerializedName("description")
     private String description;
+    @SerializedName("placeDescription")
     private String placeDescription;
+    @SerializedName("extraDescription")
     private String extraDescription;
+    @SerializedName("concertCoverImage")
     private String concertCoverImage;
+    @SerializedName("imagesUrls")
     private ArrayList<String> imagesUrls;
+    @SerializedName("artists")
     private ArrayList<ArtistInfo> artists;
 
     public ConcertReduced() { }

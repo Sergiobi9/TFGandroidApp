@@ -86,6 +86,7 @@ public class CreateConcertActivity extends AppCompatActivity {
         }
 
         registeredConcert = new Concert();
+        registeredConcert.setArtistsIds(new ArrayList<>());
         registeredConcertLocation = new ConcertLocation();
 
         createCredentialsProviders();

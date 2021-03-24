@@ -5,7 +5,6 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
@@ -14,17 +13,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.example.tfgapp.Activities.Register.Fragments.UserAccount.RegisterNameFragment;
-import com.example.tfgapp.Activities.Register.Fragments.UserAccount.RegisterPasswordFragment;
-import com.example.tfgapp.Activities.Register.RegisterAccountActivity;
 import com.example.tfgapp.Activities.Register.RegisterCustomLikesActivity;
 import com.example.tfgapp.Adapters.CustomUserMusicStyleAdapter;
-import com.example.tfgapp.Adapters.TicketsAdapter;
 import com.example.tfgapp.Entities.CustomUserLikes.MusicStyle;
-import com.example.tfgapp.Entities.User.User;
-import com.example.tfgapp.Entities.User.UserExists;
 import com.example.tfgapp.Global.Api;
-import com.example.tfgapp.Global.Constants;
 import com.example.tfgapp.Global.Globals;
 import com.example.tfgapp.R;
 

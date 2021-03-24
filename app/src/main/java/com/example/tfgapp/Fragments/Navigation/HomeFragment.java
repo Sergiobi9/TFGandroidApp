@@ -29,6 +29,7 @@ import com.example.tfgapp.Entities.Artist.ArtistSimplified;
 import com.example.tfgapp.Entities.Concert.ConcertReduced;
 import com.example.tfgapp.Entities.User.UserSession;
 import com.example.tfgapp.Fragments.Artist.ArtistFragment;
+import com.example.tfgapp.Fragments.Navigation.User.ConcertInfoFragment;
 import com.example.tfgapp.Global.Api;
 import com.example.tfgapp.Global.CircleTransform;
 import com.example.tfgapp.Global.CurrentUser;
@@ -304,6 +305,18 @@ public class HomeFragment extends Fragment {
                     String imageUrl = suggestionConcertsArrayList.get(position).getConcertCoverImage();
 
                     System.out.println(imageUrl);
+
+                    view.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Bundle bundle = new Bundle();
+                            String artistId = suggestionConcertsArrayList.get(position).getConcertId();
+                            bundle.putString("concertId", artistId);
+                            ConcertInfoFragment concertInfoFragment = new ConcertInfoFragment();
+                            concertInfoFragment.setArguments(bundle);
+                            getFragmentManager().beginTransaction().replace(R.id.main_fragment, concertInfoFragment).addToBackStack(null).commit();
+                        }
+                    });
 
                     Glide.with(context).load(imageUrl)
                             .diskCacheStrategy(DiskCacheStrategy.NONE)

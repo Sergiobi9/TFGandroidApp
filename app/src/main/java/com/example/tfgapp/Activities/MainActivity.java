@@ -121,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
                 openFragment(new SearchFragment());
                 break;
             case 2:
-                openFragment(new ConcertInfoFragment());
+                openFragment(new HomeFragment());
                 break;
             case 3:
                 openFragment(new TicketsFragment());
@@ -165,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
                 openFragment(new MapFragment());
                 break;
             case 1:
-                openFragment(new ConcertInfoFragment());
+                openFragment(new HomeFragment());
                 break;
             case 2:
                 openFragment(new SearchFragment());
