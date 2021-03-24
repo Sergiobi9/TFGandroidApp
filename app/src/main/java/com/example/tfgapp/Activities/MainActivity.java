@@ -14,12 +14,14 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.example.tfgapp.Activities.Concert.Fragment.ConcertImagesFragment;
 import com.example.tfgapp.Activities.Login.LoginActivity;
 import com.example.tfgapp.Entities.User.UserSession;
 import com.example.tfgapp.Fragments.Navigation.Artist.Concert.ConcertFragment;
 import com.example.tfgapp.Fragments.Navigation.HomeFragment;
 import com.example.tfgapp.Fragments.Navigation.MapFragment;
 import com.example.tfgapp.Fragments.Navigation.SearchFragment;
+import com.example.tfgapp.Fragments.Navigation.User.ConcertInfoFragment;
 import com.example.tfgapp.Fragments.Navigation.User.TicketsFragment;
 import com.example.tfgapp.Fragments.Navigation.User.UserProfileFragment;
 import com.example.tfgapp.Global.Constants;
@@ -119,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
                 openFragment(new SearchFragment());
                 break;
             case 2:
-                openFragment(new HomeFragment());
+                openFragment(new ConcertInfoFragment());
                 break;
             case 3:
                 openFragment(new TicketsFragment());
@@ -163,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
                 openFragment(new MapFragment());
                 break;
             case 1:
-                openFragment(new HomeFragment());
+                openFragment(new ConcertInfoFragment());
                 break;
             case 2:
                 openFragment(new SearchFragment());
