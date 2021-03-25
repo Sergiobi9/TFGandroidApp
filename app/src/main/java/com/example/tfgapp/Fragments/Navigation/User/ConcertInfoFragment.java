@@ -71,7 +71,7 @@ public class ConcertInfoFragment extends Fragment {
 
     private ImageView concertCover;
     private TextView concertAddress, concertArtistsNames, concertDescription, concertExtraDescription,
-    concertPrice, concertTicketsRemaining, howManyTicketsBought;
+    concertPrice, concertTicketsRemaining, howManyTicketsBought, ticketsCounter;
     private CarouselView artistsCarousel, placeImagesCarousel;
     private Button goPlaceIndicationsBtn, bookTickets, updateTickets;
 
@@ -194,14 +194,17 @@ public class ConcertInfoFragment extends Fragment {
         } else {
             userTicketsNoBoughtLayout.setVisibility(View.GONE);
             userTicketsBoughtLayout.setVisibility(View.VISIBLE);
-            howManyTicketsBought.setText("Tienes" + ticketsBought + " entradas para este concierto");
+            howManyTicketsBought.setText("Tienes " + ticketsBought + " entradas para este concierto");
         }
+
+        ticketsCounter = view.findViewById(R.id.current_tickets_counter_to_book);
 
         addTickets = view.findViewById(R.id.add_tickets);
         addTickets.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 howManyTicketsToBookCounter++;
+                ticketsCounter.setText(String.valueOf(howManyTicketsToBookCounter));
             }
         });
 
@@ -212,6 +215,8 @@ public class ConcertInfoFragment extends Fragment {
                 if (howManyTicketsToBookCounter - 1 <= 1)
                     howManyTicketsToBookCounter = 1;
                 else howManyTicketsToBookCounter--;
+
+                ticketsCounter.setText(String.valueOf(howManyTicketsToBookCounter));
             }
         });
 
