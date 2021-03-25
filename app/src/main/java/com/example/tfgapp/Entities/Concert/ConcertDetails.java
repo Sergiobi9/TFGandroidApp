@@ -14,6 +14,8 @@ public class ConcertDetails {
     private String extraDescription;
     @SerializedName("concertDate")
     private String concertDate;
+    @SerializedName("concertCover")
+    private String concertCover;
     @SerializedName("price")
     private double price;
 
@@ -58,6 +60,14 @@ public class ConcertDetails {
 
     public void setConcertDate(String concertDate) {
         this.concertDate = concertDate;
+    }
+
+    public String getConcertCover() {
+        return concertCover;
+    }
+
+    public void setConcertCover(String concertCover) {
+        this.concertCover = concertCover;
     }
 
     public double getPrice() {
