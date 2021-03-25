@@ -175,7 +175,7 @@ public class RegisterAccountActivity extends AppCompatActivity {
                         break;
                     default:
                         Log.d(TAG, "User registered default " + response.code());
-                        Globals.displayShortToast(context, "Something happened, please try again in a few minutes");
+                        Globals.displayShortToast(context, "Algo ha pasado, prueba de nuevo en unos minutos");
                         break;
                 }
             }
@@ -183,7 +183,7 @@ public class RegisterAccountActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<User> call, Throwable t) {
                 Log.d(TAG, "User registered failure " + t.getLocalizedMessage());
-                Globals.displayShortToast(context, "Something happened, please try again in a few minutes");
+                Globals.displayShortToast(context, "Algo ha pasado, prueba de nuevo en unos minutos");
             }
         });
     }
@@ -218,7 +218,7 @@ public class RegisterAccountActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<UserSession> call, Throwable t) {
                 Log.d(TAG, "User login failure " + t.getLocalizedMessage());
-                Globals.displayShortToast(context, "Something happened, please try again in a few minutes");
+                Globals.displayShortToast(context, "Algo ha pasado, prueba de nuevo en unos minutos");
                 dismissDialog();
             }
         });

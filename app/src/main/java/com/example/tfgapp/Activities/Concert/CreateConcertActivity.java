@@ -210,7 +210,7 @@ public class CreateConcertActivity extends AppCompatActivity {
                         break;
                     default:
                         Log.d(TAG, "Concert created default " + response.code());
-                        Globals.displayShortToast(context, "Something happened, please try again in a few minutes");
+                        Globals.displayShortToast(context, "Algo ha pasado, prueba de nuevo en unos minutos");
                         break;
                 }
             }
@@ -218,7 +218,7 @@ public class CreateConcertActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<Concert> call, Throwable t) {
                 Log.d(TAG, "Concert created failure " + t.getLocalizedMessage());
-                Globals.displayShortToast(context, "Something happened, please try again in a few minutes");
+                Globals.displayShortToast(context, "Algo ha pasado, prueba de nuevo en unos minutos");
             }
         });
 

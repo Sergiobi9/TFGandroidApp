@@ -82,7 +82,7 @@ public class AuthenticationActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<UserSession> call, Throwable t) {
                 Log.d(TAG, "User login failure " + t.getLocalizedMessage());
-                Globals.displayShortToast(context, "Something happened, please try again in a few minutes");
+                Globals.displayShortToast(context, "Algo ha pasado, prueba de nuevo en unos minutos");
             }
         });
     }

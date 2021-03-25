@@ -113,7 +113,7 @@ public class RegisterEmailFragment extends Fragment {
                         break;
                     default:
                         Log.d(TAG, "User exists by email default " + response.code());
-                        Globals.displayShortToast(context, "Something happened, please try again in a few minutes");
+                        Globals.displayShortToast(context, "Algo ha pasado, prueba de nuevo en unos minutos");
                         break;
                 }
             }
@@ -121,7 +121,7 @@ public class RegisterEmailFragment extends Fragment {
             @Override
             public void onFailure(Call<InfoResponse> call, Throwable t) {
                 Log.d(TAG, "User exists by email failure " + t.getLocalizedMessage());
-                Globals.displayShortToast(context, "Something happened, please try again in a few minutes");
+                Globals.displayShortToast(context, "Algo ha pasado, prueba de nuevo en unos minutos");
             }
         });
     }

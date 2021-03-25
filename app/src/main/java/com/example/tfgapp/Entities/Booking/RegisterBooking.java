@@ -1,5 +1,8 @@
 package com.example.tfgapp.Entities.Booking;
 
+import android.text.format.DateUtils;
+
+import com.example.tfgapp.Global.Helpers;
 import com.google.gson.annotations.SerializedName;
 
 public class RegisterBooking {
@@ -14,6 +17,13 @@ public class RegisterBooking {
     private String dateBooked;
 
     public RegisterBooking() { }
+
+    public RegisterBooking(String userId, String concertId, int bookings) {
+        this.userId = userId;
+        this.concertId = concertId;
+        this.bookings = bookings;
+        this.dateBooked = Helpers.getTimeStamp();
+    }
 
     public String getUserId() {
         return userId;

@@ -110,7 +110,7 @@ public class ConcertArtistsFragment extends Fragment implements CustomUserArtist
                         break;
                     default:
                         Log.d(TAG, "Get artists by styles default " + response.code());
-                        Globals.displayShortToast(context, "Something happened, please try again in a few minutes");
+                        Globals.displayShortToast(context, "Algo ha pasado, prueba de nuevo en unos minutos");
                         break;
                 }
             }
@@ -118,7 +118,7 @@ public class ConcertArtistsFragment extends Fragment implements CustomUserArtist
             @Override
             public void onFailure(Call<ArrayList<ArtistSimplified>> call, Throwable t) {
                 Log.d(TAG, "Get artists by styles failure " + t.getLocalizedMessage());
-                Globals.displayShortToast(context, "Something happened, please try again in a few minutes");
+                Globals.displayShortToast(context, "Algo ha pasado, prueba de nuevo en unos minutos");
             }
         });
     }

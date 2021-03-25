@@ -104,7 +104,7 @@ public class SearchFragment extends Fragment implements ConcertSearchAdapter.OnC
                         break;
                     default:
                         Log.d(TAG, "Get concerts for search default " + response.code());
-                        Globals.displayShortToast(context, "Something happened, please try again in a few minutes");
+                        Globals.displayShortToast(context, "Algo ha pasado, prueba de nuevo en unos minutos");
                         break;
                 }
             }
@@ -112,7 +112,7 @@ public class SearchFragment extends Fragment implements ConcertSearchAdapter.OnC
             @Override
             public void onFailure(Call<ArrayList<ConcertReduced>> call, Throwable t) {
                 Log.d(TAG, "Get concerts for search failure " + t.getLocalizedMessage());
-                Globals.displayShortToast(context, "Something happened, please try again in a few minutes");
+                Globals.displayShortToast(context, "Algo ha pasado, prueba de nuevo en unos minutos");
             }
         });
     }

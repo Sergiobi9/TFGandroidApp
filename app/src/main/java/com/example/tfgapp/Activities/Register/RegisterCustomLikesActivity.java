@@ -108,7 +108,7 @@ public class RegisterCustomLikesActivity extends AppCompatActivity {
                         break;
                     default:
                         Log.d(TAG, "Save user preferences default " + response.code());
-                        Globals.displayShortToast(context, "Something happened, please try again in a few minutes");
+                        Globals.displayShortToast(context, "Algo ha pasado, prueba de nuevo en unos minutos");
                         break;
                 }
             }
@@ -116,7 +116,7 @@ public class RegisterCustomLikesActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<UserPreferences> call, Throwable t) {
                 Log.d(TAG, "Save user preferences failure " + t.getLocalizedMessage());
-                Globals.displayShortToast(context, "Something happened, please try again in a few minutes");
+                Globals.displayShortToast(context, "Algo ha pasado, prueba de nuevo en unos minutos");
             }
         });
     }

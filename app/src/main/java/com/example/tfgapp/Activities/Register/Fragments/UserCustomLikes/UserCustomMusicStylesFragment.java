@@ -96,7 +96,7 @@ public class UserCustomMusicStylesFragment extends Fragment implements CustomUse
                         break;
                     default:
                         Log.d(TAG, "Get music styles default " + response.code());
-                        Globals.displayShortToast(context, "Something happened, please try again in a few minutes");
+                        Globals.displayShortToast(context, "Algo ha pasado, prueba de nuevo en unos minutos");
                         break;
                 }
             }
@@ -104,7 +104,7 @@ public class UserCustomMusicStylesFragment extends Fragment implements CustomUse
             @Override
             public void onFailure(Call<ArrayList<MusicStyle>> call, Throwable t) {
                 Log.d(TAG, "Get music styles failure " + t.getLocalizedMessage());
-                Globals.displayShortToast(context, "Something happened, please try again in a few minutes");
+                Globals.displayShortToast(context, "Algo ha pasado, prueba de nuevo en unos minutos");
             }
         });
     }

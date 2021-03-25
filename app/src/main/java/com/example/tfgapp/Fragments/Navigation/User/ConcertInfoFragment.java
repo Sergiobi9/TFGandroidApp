@@ -1,8 +1,11 @@
 package com.example.tfgapp.Fragments.Navigation.User;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -15,9 +18,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -26,16 +33,20 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+import com.example.tfgapp.Activities.Concert.Fragment.ConcertHourFragment;
 import com.example.tfgapp.Entities.Artist.ArtistInfo;
 import com.example.tfgapp.Entities.Artist.ArtistProfileInfo;
 import com.example.tfgapp.Entities.Artist.ArtistReducedInfo;
 import com.example.tfgapp.Entities.Artist.ArtistSimplified;
+import com.example.tfgapp.Entities.Booking.RegisterBooking;
 import com.example.tfgapp.Entities.Concert.ConcertLocationReduced;
 import com.example.tfgapp.Entities.Concert.FullConcertDetails;
+import com.example.tfgapp.Entities.InfoResponse.InfoResponse;
 import com.example.tfgapp.Entities.User.UserSession;
 import com.example.tfgapp.Fragments.Artist.ArtistFragment;
 import com.example.tfgapp.Global.Api;
 import com.example.tfgapp.Global.CircleTransform;
+import com.example.tfgapp.Global.Constants;
 import com.example.tfgapp.Global.CurrentUser;
 import com.example.tfgapp.Global.Globals;
 import com.example.tfgapp.Global.Utils;
@@ -80,8 +91,6 @@ public class ConcertInfoFragment extends Fragment {
     private int howManyTicketsToBookCounter = 1;
 
     private String concertId;
-
-
 
     public ConcertInfoFragment() {
         // Required empty public constructor
@@ -224,7 +233,7 @@ public class ConcertInfoFragment extends Fragment {
         bookTickets.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Globals.displayShortToast(context, "Ready to book " + howManyTicketsToBookCounter + " tickets");
+                bookTickets(price);
             }
         });
 
@@ -254,6 +263,115 @@ public class ConcertInfoFragment extends Fragment {
                 showMarker(concertLocationReduced);
             }
         });
+    }
+
+    private void bookTickets(double price){
+        String userId = CurrentUser.getInstance(context).getCurrentUser().getUser().getId();
+
+        dialogPurchasingTickets();
+
+        getTickets(userId);
+
+        /*if (price == 0.0){
+            getTickets(userId);
+        } else {
+            Globals.displayShortToast(context, "Payment in process");
+        }*/
+    }
+
+    private Dialog dialogPurchasing;
+
+    private void dialogPurchasingTickets(){
+        dialogPurchasing = new Dialog(context);
+        dialogPurchasing.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialogPurchasing.setCancelable(false);
+        dialogPurchasing.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        View view = LayoutInflater.from(context).inflate(R.layout.dialog_loading, null);
+        dialogPurchasing.setContentView(view);
+
+        TextView textView = view.findViewById(R.id.title);
+        textView.setText("Comprando tickets para este concierto");
+
+        Animation alhpa = AnimationUtils.loadAnimation(context, R.anim.fade_in);
+
+        RelativeLayout all = view.findViewById(R.id.body);
+        all.startAnimation(alhpa);
+
+        dialogPurchasing.show();
+    }
+
+    private void getTickets(String userId){
+        RegisterBooking registerBooking = new RegisterBooking(userId, concertId, howManyTicketsToBookCounter);
+        Call<InfoResponse> call = Api.getInstance().getAPI().bookConcertTickets(registerBooking);
+        call.enqueue(new Callback<InfoResponse>() {
+            @Override
+            public void onResponse(Call<InfoResponse> call, Response<InfoResponse> response) {
+                switch (response.code()) {
+                    case 200:
+                        Log.d(TAG, "Purchase tickets success " + response.body());
+                        String info = response.body().getInfo();
+                        dialogPurchasing.dismiss();
+                        if (info.equals(Constants.BOOKING_SUCCEEDED)){
+                            loadTicketsPurchasedDialog();
+                        } else if (info.equals(Constants.BOOKING_EXCEEDED)){
+                            Globals.displayShortToast(context, "No hay entradas disponibles para este concierto");
+                        }
+                        break;
+                    default:
+                        Log.d(TAG, "Purchase tickets default " + response.code());
+                        dialogPurchasing.dismiss();
+                        Globals.displayShortToast(context, "Algo ha pasado, prueba de nuevo en unos minutos");
+                        break;
+                }
+            }
+
+            @Override
+            public void onFailure(Call<InfoResponse> call, Throwable t) {
+                Log.d(TAG, "Purchase tickets failure " + t.getLocalizedMessage());
+                dialogPurchasing.dismiss();
+                Globals.displayShortToast(context, "Algo ha pasado, prueba de nuevo en unos minutos");
+            }
+        });
+    }
+
+    private void loadTicketsPurchasedDialog(){
+        Dialog dialog = new Dialog(context);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(false);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        View view = LayoutInflater.from(context).inflate(R.layout.dialog_tickets_purchased, null);
+        dialog.setContentView(view);
+
+        TextView textView = view.findViewById(R.id.title);
+        textView.setText("Has comprado " + howManyTicketsToBookCounter + " entradas");
+
+        Animation alhpa = AnimationUtils.loadAnimation(context, R.anim.fade_in);
+
+        Button accept = view.findViewById(R.id.accept);
+        accept.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                goTickets();
+            }
+        });
+
+        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                dialog.dismiss();
+                goTickets();
+            }
+        });
+
+        RelativeLayout all = view.findViewById(R.id.body);
+        all.startAnimation(alhpa);
+
+        dialog.show();
+    }
+
+    private void goTickets(){
+        getFragmentManager().beginTransaction().replace(R.id.main_fragment, new TicketsFragment()).addToBackStack(null).commit();
     }
 
     private void showMarker(ConcertLocationReduced concertLocationReduced){
