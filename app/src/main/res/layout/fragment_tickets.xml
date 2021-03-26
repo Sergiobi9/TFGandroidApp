@@ -22,7 +22,7 @@
                 android:id="@+id/my_tickets"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Mis tickets"
+                android:text="Mis entradas"
                 android:fontFamily="@font/lato"
                 android:gravity="center"
                 android:textSize="26sp"
