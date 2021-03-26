@@ -18,10 +18,23 @@
             android:paddingRight="20dp"
             android:layout_height="match_parent">
 
+            <TextView
+                android:id="@+id/my_tickets"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Mis tickets"
+                android:fontFamily="@font/lato"
+                android:gravity="center"
+                android:textSize="26sp"
+                android:layout_marginBottom="25dp">
+
+            </TextView>
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/tickets_recycler_view"
                 android:layout_marginTop="20sp"
                 android:layout_width="match_parent"
+                android:layout_below="@+id/my_tickets"
                 android:layout_height="wrap_content" />
         </RelativeLayout>
 
