@@ -1,7 +1,9 @@
 package com.example.tfgapp.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,21 +20,26 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+import com.example.tfgapp.Entities.Booking.BookingTicketsList;
 import com.example.tfgapp.Entities.Concert.ConcertReduced;
+import com.example.tfgapp.Global.Helpers;
+import com.example.tfgapp.Global.Utils;
 import com.example.tfgapp.R;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Random;
 
 public class TicketsAdapter extends RecyclerView.Adapter<TicketsAdapter.ViewHolder> {
 
-    private ArrayList<ConcertReduced> ticketsArrayList;
+    private ArrayList<BookingTicketsList> ticketsArrayList;
     private final String TAG = "TicketsAdapter";
     private Context context;
     private TicketsAdapter.OnConcertTicketListener onLoyaltyCardClicked;
 
-    public TicketsAdapter(Context context, ArrayList<ConcertReduced> ticketsArrayList, OnConcertTicketListener onLoyaltyCardClicked) {
+    public TicketsAdapter(Context context, ArrayList<BookingTicketsList> ticketsArrayList, OnConcertTicketListener onLoyaltyCardClicked) {
         this.context = context;
         this.onLoyaltyCardClicked = onLoyaltyCardClicked;
         this.ticketsArrayList = ticketsArrayList;
@@ -49,14 +56,13 @@ public class TicketsAdapter extends RecyclerView.Adapter<TicketsAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull TicketsAdapter.ViewHolder holder, int position) {
-        ConcertReduced currentConcert = ticketsArrayList.get(position);
+        BookingTicketsList booking = ticketsArrayList.get(position);
 
-        String imageUrl = currentConcert.getConcertCoverImage();
+        String imageUrl = booking.getConcertCover();
 
         Glide.with(context).load(imageUrl)
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .skipMemoryCache(true)
-                .circleCrop()
                 .listener(new RequestListener<Drawable>() {
                     @Override
                     public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
@@ -68,6 +74,29 @@ public class TicketsAdapter extends RecyclerView.Adapter<TicketsAdapter.ViewHold
                         return false;
                     }
                 }).into(holder.concertCover);
+
+        holder.ticketsPurchased.setText("x" + booking.getBookings().size());
+
+        String concertDateStr = booking.getConcertStarts();
+
+        Calendar concertDate = Helpers.getDateAsCalendar(concertDateStr);
+        holder.concertDate.setText(concertDate.get(Calendar.DATE) + " " + Utils.getMonthSimplified(concertDate.get(Calendar.MONTH)) + " " +  concertDate.get(Calendar.YEAR));
+
+        holder.concertStreet.setText(booking.getConcertPlaceName());
+        holder.concertName.setText(booking.getConcertName());
+        holder.directionsImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    Uri gmmIntentUri = Uri.parse(String.format("google.navigation:q=%s,%s&mode=d", booking.getConcertLatitude(), booking.getConcertLongitude()));
+                    Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                    mapIntent.setPackage("com.google.android.apps.maps");
+                    context.startActivity(mapIntent);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     @Override
@@ -90,7 +119,6 @@ public class TicketsAdapter extends RecyclerView.Adapter<TicketsAdapter.ViewHold
             super(view);
 
             this.concertCover = (ImageView) view.findViewById(R.id.concert_cover);
-            this.ticketReference = (TextView) view.findViewById(R.id.ticket_reference);
             this.ticketsPurchased = (TextView) view.findViewById(R.id.concert_tickets_purchased);
             this.concertName = (TextView) view.findViewById(R.id.concert_name);
             this.concertStreet = (TextView) view.findViewById(R.id.concert_place);

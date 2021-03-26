@@ -2,6 +2,7 @@ package com.example.tfgapp.API;
 
 import com.example.tfgapp.Entities.Artist.ArtistProfileInfo;
 import com.example.tfgapp.Entities.Artist.ArtistSimplified;
+import com.example.tfgapp.Entities.Booking.BookingTicketsList;
 import com.example.tfgapp.Entities.Booking.RegisterBooking;
 import com.example.tfgapp.Entities.Concert.Concert;
 import com.example.tfgapp.Entities.Concert.ConcertReduced;
@@ -73,5 +74,8 @@ public interface ApiInterface {
 
     @POST("/booking/create")
     Call<InfoResponse> bookConcertTickets(@Body RegisterBooking registerBooking);
+
+    @GET("/booking/all/user/{userId}/{currentDate}")
+    Call<ArrayList<BookingTicketsList>> getUserTicketsBooked(@Path("userId") String userId, @Path("currentDate") String currentDate);
 
 }

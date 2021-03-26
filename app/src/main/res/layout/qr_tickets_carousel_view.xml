@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white">
+
+    <LinearLayout
+        android:id="@+id/ticket_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
+
+
+        <TextView
+            android:id="@+id/ticket_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Entrada 1/4"
+            android:gravity="center"
+            android:fontFamily="@font/lato"
+            android:textSize="22sp">
+
+        </TextView>
+
+        <TextView
+            android:id="@+id/ticket_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="sffs6fsf6sf6s"
+            android:gravity="center"
+            android:fontFamily="@font/lato"
+            android:textSize="18sp"
+            android:paddingTop="10dp"
+            android:paddingBottom="20sp">
+
+        </TextView>
+
+        <ImageView
+            android:id="@+id/qr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_gravity="center">
+
+        </ImageView>
+
+        <TextView
+            android:id="@+id/ticket_concert_place"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Palau Sant Jordi"
+            android:gravity="center"
+            android:fontFamily="@font/lato"
+            android:textSize="18sp"
+            android:paddingTop="20sp"
+            android:paddingBottom="10dp">
+
+        </TextView>
+
+        <TextView
+            android:id="@+id/ticket_concert_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Astroworld"
+            android:gravity="center"
+            android:textSize="26sp">
+
+        </TextView>
+
+
+
+    </LinearLayout>
+
+
+</RelativeLayout>

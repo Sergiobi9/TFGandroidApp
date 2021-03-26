@@ -14,15 +14,13 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
-import com.example.tfgapp.Activities.Concert.Fragment.ConcertImagesFragment;
 import com.example.tfgapp.Activities.Login.LoginActivity;
 import com.example.tfgapp.Entities.User.UserSession;
 import com.example.tfgapp.Fragments.Navigation.Artist.Concert.ConcertFragment;
 import com.example.tfgapp.Fragments.Navigation.HomeFragment;
 import com.example.tfgapp.Fragments.Navigation.MapFragment;
 import com.example.tfgapp.Fragments.Navigation.SearchFragment;
-import com.example.tfgapp.Fragments.Navigation.User.ConcertInfoFragment;
-import com.example.tfgapp.Fragments.Navigation.User.TicketsFragment;
+import com.example.tfgapp.Fragments.Navigation.User.Tickets.TicketsFragment;
 import com.example.tfgapp.Fragments.Navigation.User.UserProfileFragment;
 import com.example.tfgapp.Global.Constants;
 import com.example.tfgapp.Global.CurrentUser;

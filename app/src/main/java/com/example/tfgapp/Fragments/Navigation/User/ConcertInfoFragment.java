@@ -11,7 +11,6 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
-import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -33,22 +32,19 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
-import com.example.tfgapp.Activities.Concert.Fragment.ConcertHourFragment;
-import com.example.tfgapp.Entities.Artist.ArtistInfo;
-import com.example.tfgapp.Entities.Artist.ArtistProfileInfo;
-import com.example.tfgapp.Entities.Artist.ArtistReducedInfo;
 import com.example.tfgapp.Entities.Artist.ArtistSimplified;
 import com.example.tfgapp.Entities.Booking.RegisterBooking;
 import com.example.tfgapp.Entities.Concert.ConcertLocationReduced;
 import com.example.tfgapp.Entities.Concert.FullConcertDetails;
 import com.example.tfgapp.Entities.InfoResponse.InfoResponse;
-import com.example.tfgapp.Entities.User.UserSession;
 import com.example.tfgapp.Fragments.Artist.ArtistFragment;
+import com.example.tfgapp.Fragments.Navigation.User.Tickets.TicketsFragment;
 import com.example.tfgapp.Global.Api;
 import com.example.tfgapp.Global.CircleTransform;
 import com.example.tfgapp.Global.Constants;
 import com.example.tfgapp.Global.CurrentUser;
 import com.example.tfgapp.Global.Globals;
+import com.example.tfgapp.Global.Helpers;
 import com.example.tfgapp.Global.Utils;
 import com.example.tfgapp.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -66,6 +62,7 @@ import com.squareup.picasso.Picasso;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -81,8 +78,8 @@ public class ConcertInfoFragment extends Fragment {
     private GoogleMap googleMap;
 
     private ImageView concertCover;
-    private TextView concertAddress, concertArtistsNames, concertDescription, concertExtraDescription,
-    concertPrice, concertTicketsRemaining, howManyTicketsBought, ticketsCounter;
+    private TextView concertName, concertArtistsNames, concertDescription, concertExtraDescription,
+    concertPrice, concertTicketsRemaining, howManyTicketsBought, ticketsCounter, concertDay, concertYear;
     private CarouselView artistsCarousel, placeImagesCarousel;
     private Button goPlaceIndicationsBtn, bookTickets, updateTickets;
 
@@ -162,12 +159,23 @@ public class ConcertInfoFragment extends Fragment {
                     }
                 }).into(concertCover);
 
-        concertAddress = view.findViewById(R.id.concert_address);
+        concertName = view.findViewById(R.id.concert_name);
         concertArtistsNames = view.findViewById(R.id.concert_artists);
 
-        concertAddress.setText(fullConcertDetails.getConcertLocation().getPlaceName());
+        concertName.setText(fullConcertDetails.getConcertDetails().getConcertName());
         ArrayList<ArtistSimplified> artists = fullConcertDetails.getConcertArtists();
         concertArtistsNames.setText(getCurrentArtist(artists));
+
+        Calendar concertDate = Helpers.getDateAsCalendar(fullConcertDetails.getConcertDetails().getConcertDate());
+
+        concertDay = view.findViewById(R.id.concert_day);
+        concertYear = view.findViewById(R.id.concert_year);
+
+        String concertDayStr = Utils.getMonthSimplified(concertDate.get(Calendar.MONTH)) + " " + concertDate.get(Calendar.DATE);
+        concertDay.setText(concertDayStr);
+
+        String concertYearStr = String.valueOf(concertDate.get(Calendar.YEAR));
+        concertYear.setText(concertYearStr);
 
         concertDescription = view.findViewById(R.id.concert_description);
         String description = fullConcertDetails.getConcertDetails().getDescription();
