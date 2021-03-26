@@ -57,7 +57,7 @@
             android:fontFamily="@font/lato"
             android:textSize="18sp"
             android:paddingTop="20sp"
-            android:paddingBottom="10dp">
+            android:paddingBottom="5dp">
 
         </TextView>
 
@@ -70,6 +70,17 @@
             android:textSize="26sp">
 
         </TextView>
+
+        <TextView
+            android:id="@+id/concert_hour"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:fontFamily="@font/lato"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"
+            android:layout_marginTop="5dp"
+            android:text="El concierto empieza a las 20:00h"></TextView>
 
 
 

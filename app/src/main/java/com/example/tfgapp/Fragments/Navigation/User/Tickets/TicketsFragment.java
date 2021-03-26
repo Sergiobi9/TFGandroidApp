@@ -110,14 +110,16 @@ public class TicketsFragment extends Fragment implements TicketsAdapter.OnConcer
         ArrayList<Booking> bookings = ticketsArrayList.get(position).getBookings();
         String concertName = ticketsArrayList.get(position).getConcertName();
         String concertPlace = ticketsArrayList.get(position).getConcertPlaceName();
-        goTicketsQR(bookings, concertName, concertPlace);
+        String concertDate = ticketsArrayList.get(position).getConcertStarts();
+        goTicketsQR(bookings, concertName, concertPlace, concertDate);
     }
 
-    private void goTicketsQR(ArrayList<Booking> bookings, String concertName, String concertPlace){
+    private void goTicketsQR(ArrayList<Booking> bookings, String concertName, String concertPlace, String concertDate){
         Bundle bundle = new Bundle();
         bundle.putSerializable("bookings", bookings);
         bundle.putString("concertName", concertName);
         bundle.putString("concertPlace", concertPlace);
+        bundle.putString("concertDate", concertDate);
 
         TicketsQRFragment ticketsQRFragment = new TicketsQRFragment();
         ticketsQRFragment.setArguments(bundle);

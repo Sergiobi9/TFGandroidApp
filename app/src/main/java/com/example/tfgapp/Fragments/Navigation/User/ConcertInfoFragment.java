@@ -79,7 +79,8 @@ public class ConcertInfoFragment extends Fragment {
 
     private ImageView concertCover;
     private TextView concertName, concertArtistsNames, concertDescription, concertExtraDescription,
-    concertPrice, concertTicketsRemaining, howManyTicketsBought, ticketsCounter, concertDay, concertYear;
+    concertPrice, concertTicketsRemaining, howManyTicketsBought, ticketsCounter, concertDay,
+            concertYear, concertHour;
     private CarouselView artistsCarousel, placeImagesCarousel;
     private Button goPlaceIndicationsBtn, bookTickets, updateTickets;
 
@@ -172,6 +173,11 @@ public class ConcertInfoFragment extends Fragment {
         concertYear = view.findViewById(R.id.concert_year);
 
         String concertDayStr = Utils.getMonthSimplified(concertDate.get(Calendar.MONTH)) + " " + concertDate.get(Calendar.DATE);
+        String minute = concertDate.get(Calendar.MINUTE) < 10 ? "0" + concertDate.get(Calendar.MINUTE): String.valueOf(concertDate.get(Calendar.MINUTE));
+        String hour = concertDate.get(Calendar.HOUR_OF_DAY) + ":" +  minute + "h";
+
+        concertHour = view.findViewById(R.id.concert_hour);
+        concertHour.setText("El concierto empieza a las " + hour);
         concertDay.setText(concertDayStr);
 
         String concertYearStr = String.valueOf(concertDate.get(Calendar.YEAR));
@@ -211,7 +217,10 @@ public class ConcertInfoFragment extends Fragment {
         } else {
             userTicketsNoBoughtLayout.setVisibility(View.GONE);
             userTicketsBoughtLayout.setVisibility(View.VISIBLE);
-            howManyTicketsBought.setText("Tienes " + ticketsBought + " entradas para este concierto");
+            if (ticketsBought <= 1)
+                howManyTicketsBought.setText("Tienes " + ticketsBought + " entrada para este concierto");
+            else
+                howManyTicketsBought.setText("Tienes " + ticketsBought + " entradas para este concierto");
         }
 
         ticketsCounter = view.findViewById(R.id.current_tickets_counter_to_book);
@@ -280,11 +289,11 @@ public class ConcertInfoFragment extends Fragment {
 
         getTickets(userId);
 
-        /*if (price == 0.0){
+        if (price == 0.0){
             getTickets(userId);
         } else {
             Globals.displayShortToast(context, "Payment in process");
-        }*/
+        }
     }
 
     private Dialog dialogPurchasing;

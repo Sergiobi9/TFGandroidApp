@@ -30,6 +30,7 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.example.tfgapp.Broadcasts.UserLocationBroadcast;
 import com.example.tfgapp.Entities.Concert.ConcertReduced;
+import com.example.tfgapp.Fragments.Navigation.User.ConcertInfoFragment;
 import com.example.tfgapp.Global.Api;
 import com.example.tfgapp.Global.Globals;
 import com.example.tfgapp.Global.Permissions;
@@ -199,6 +200,18 @@ public class MapFragment extends Fragment {
                                     return false;
                                 }
                             }).into(imageView);
+
+                    view.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Bundle bundle = new Bundle();
+                            String concertId = concertsArrayList.get(position).getConcertId();
+                            bundle.putString("concertId", concertId);
+                            ConcertInfoFragment concertInfoFragment = new ConcertInfoFragment();
+                            concertInfoFragment.setArguments(bundle);
+                            getFragmentManager().beginTransaction().replace(R.id.main_fragment, concertInfoFragment).addToBackStack(null).commit();
+                        }
+                    });
                 }
             });
 

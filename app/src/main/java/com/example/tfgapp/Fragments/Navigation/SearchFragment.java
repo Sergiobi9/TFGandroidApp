@@ -20,6 +20,7 @@ import com.example.tfgapp.Entities.Artist.ArtistSimplified;
 import com.example.tfgapp.Entities.Concert.Concert;
 import com.example.tfgapp.Entities.Concert.ConcertReduced;
 import com.example.tfgapp.Entities.User.User;
+import com.example.tfgapp.Fragments.Navigation.User.ConcertInfoFragment;
 import com.example.tfgapp.Global.Api;
 import com.example.tfgapp.Global.Globals;
 import com.example.tfgapp.Global.Helpers;
@@ -126,6 +127,16 @@ public class SearchFragment extends Fragment implements ConcertSearchAdapter.OnC
     @Override
     public void onConcertClicked(int position) {
         /* Open fragment specific concert info */
-        Globals.displayShortToast(context, "Concert clicked at position " + position);
+        String concertId = concertsReducedArrayList.get(position).getConcertId();
+
+        openConcertInfo(concertId);
+    }
+
+    private void openConcertInfo(String concertId){
+        Bundle bundle = new Bundle();
+        bundle.putString("concertId", concertId);
+        ConcertInfoFragment concertInfoFragment = new ConcertInfoFragment();
+        concertInfoFragment.setArguments(bundle);
+        getFragmentManager().beginTransaction().replace(R.id.main_fragment, concertInfoFragment).addToBackStack(null).commit();
     }
 }

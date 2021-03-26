@@ -42,6 +42,7 @@ import com.jama.carouselview.enums.IndicatorAnimationType;
 import com.jama.carouselview.enums.OffsetType;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class TicketsQRFragment extends Fragment {
 
@@ -68,15 +69,16 @@ public class TicketsQRFragment extends Fragment {
         ArrayList<Booking> bookings= (ArrayList<Booking>)getArguments().getSerializable("bookings");
         String concertName = this.getArguments().getString("concertName");
         String concertPlace = this.getArguments().getString("concertPlace");
+        String concertDate = this.getArguments().getString("concertDate");
 
         QRCarousel = view.findViewById(R.id.qr_carousel);
 
-        showCarouselQR(bookings, concertName, concertPlace);
+        showCarouselQR(bookings, concertName, concertPlace, concertDate);
 
         return view;
     }
 
-    private void showCarouselQR(ArrayList<Booking> bookings, String concertNameStr, String concertPlaceStr){
+    private void showCarouselQR(ArrayList<Booking> bookings, String concertNameStr, String concertPlaceStr, String concertDateStr){
         QRCarousel.setSize(bookings.size());
         QRCarousel.setResource(R.layout.qr_tickets_carousel_view);
         QRCarousel.setAutoPlay(false);
@@ -99,6 +101,18 @@ public class TicketsQRFragment extends Fragment {
                 concertName.setText(concertNameStr);
                 TextView concertPlace = view.findViewById(R.id.ticket_concert_place);
                 concertPlace.setText(concertPlaceStr);
+
+
+                Calendar concertDate = Helpers.getDateAsCalendar(concertDateStr);
+                String minute = concertDate.get(Calendar.MINUTE) < 10 ? "0" + concertDate.get(Calendar.MINUTE): String.valueOf(concertDate.get(Calendar.MINUTE));
+
+                String concertDay = concertDate.get(Calendar.DATE) + " " +
+                        Utils.getMonthSimplified(concertDate.get(Calendar.MONTH)) + " " +
+                        String.valueOf(concertDate.get(Calendar.YEAR)) + " a las " +
+                        concertDate.get(Calendar.HOUR_OF_DAY) + ":" + minute + "h";
+
+                TextView concertDayTv = view.findViewById(R.id.concert_hour);
+                concertDayTv.setText(concertDay);
 
                 ImageView qr = view.findViewById(R.id.qr);
                 generateQR(qr, bookingId);

@@ -310,8 +310,8 @@ public class HomeFragment extends Fragment {
                         @Override
                         public void onClick(View v) {
                             Bundle bundle = new Bundle();
-                            String artistId = suggestionConcertsArrayList.get(position).getConcertId();
-                            bundle.putString("concertId", artistId);
+                            String concertId = suggestionConcertsArrayList.get(position).getConcertId();
+                            bundle.putString("concertId", concertId);
                             ConcertInfoFragment concertInfoFragment = new ConcertInfoFragment();
                             concertInfoFragment.setArguments(bundle);
                             getFragmentManager().beginTransaction().replace(R.id.main_fragment, concertInfoFragment).addToBackStack(null).commit();
