@@ -42,7 +42,7 @@ import nl.joery.animatedbottombar.AnimatedBottomBar;
 public class MainActivity extends AppCompatActivity {
 
     private final String TAG = "MainActivity";
-    private AnimatedBottomBar animatedBottomBar;
+    public static AnimatedBottomBar animatedBottomBar;
     private Context context;
 
     private boolean mapIntent = false, isLoggedIn = false;

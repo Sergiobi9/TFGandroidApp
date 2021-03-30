@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Fragments.Navigation.User.EditProfile.EditUserProfileFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="20sp"
+            android:textSize="16sp"
+            android:fontFamily="@font/lato_black"
+            android:text="Guardar"
+            android:gravity="right">
+
+        </TextView>
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginTop="25dp"
+                android:layout_marginBottom="25dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Editar perfil"
+                    android:textSize="28sp"
+                    android:fontFamily="@font/lato_black">
+
+                </TextView>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Nombre"
+                    android:textSize="18sp"
+                    android:layout_marginTop="50dp"
+                    android:fontFamily="@font/lato">
+                </TextView>
+
+                <EditText
+                    android:id="@+id/name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/which_email_tv"
+                    android:paddingLeft="20dp"
+                    android:paddingTop="15dp"
+                    android:paddingBottom="15dp"
+                    android:paddingRight="20dp"
+                    android:maxHeight="50dp"
+                    android:fontFamily="@font/lato"
+                    android:inputType="text"
+                    android:layout_marginTop="25dp"
+                    android:background="@drawable/login_edit_text_background">
+
+                </EditText>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Apellidos"
+                    android:textSize="18sp"
+                    android:layout_marginTop="20sp"
+                    android:fontFamily="@font/lato">
+                </TextView>
+
+                <EditText
+                    android:id="@+id/apellidos"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/which_email_tv"
+                    android:paddingLeft="20dp"
+                    android:paddingTop="15dp"
+                    android:paddingBottom="15dp"
+                    android:paddingRight="20dp"
+                    android:maxHeight="50dp"
+                    android:fontFamily="@font/lato"
+                    android:inputType="text"
+                    android:layout_marginTop="25dp"
+                    android:background="@drawable/login_edit_text_background">
+
+                </EditText>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Correo electrónico"
+                    android:textSize="18sp"
+                    android:layout_marginTop="20sp"
+                    android:fontFamily="@font/lato">
+                </TextView>
+
+                <EditText
+                    android:id="@+id/email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/which_email_tv"
+                    android:paddingLeft="20dp"
+                    android:paddingTop="15dp"
+                    android:paddingBottom="15dp"
+                    android:paddingRight="20dp"
+                    android:enabled="false"
+                    android:maxHeight="50dp"
+                    android:fontFamily="@font/lato"
+                    android:inputType="text"
+                    android:layout_marginTop="25dp"
+                    android:background="@drawable/login_edit_text_background">
+
+                </EditText>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Fecha de nacimiento"
+                    android:textSize="18sp"
+                    android:layout_marginTop="20sp"
+                    android:fontFamily="@font/lato">
+                </TextView>
+
+                <EditText
+                    android:id="@+id/fecha_nacimiento"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/which_email_tv"
+                    android:paddingLeft="20dp"
+                    android:paddingTop="15dp"
+                    android:paddingBottom="15dp"
+                    android:paddingRight="20dp"
+                    android:enabled="false"
+                    android:maxHeight="50dp"
+                    android:fontFamily="@font/lato"
+                    android:inputType="text"
+                    android:layout_marginTop="25dp"
+                    android:background="@drawable/login_edit_text_background"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Género"
+                    android:textSize="18sp"
+                    android:layout_marginTop="20sp"
+                    android:fontFamily="@font/lato">
+                </TextView>
+
+                <EditText
+                    android:id="@+id/genero"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/which_email_tv"
+                    android:paddingLeft="20dp"
+                    android:paddingTop="15dp"
+                    android:paddingBottom="15dp"
+                    android:paddingRight="20dp"
+                    android:enabled="false"
+                    android:maxHeight="50dp"
+                    android:fontFamily="@font/lato"
+                    android:inputType="text"
+                    android:layout_marginTop="25dp"
+                    android:background="@drawable/login_edit_text_background"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Teléfono"
+                    android:textSize="18sp"
+                    android:layout_marginTop="20sp"
+                    android:fontFamily="@font/lato">
+                </TextView>
+
+                <EditText
+                    android:id="@+id/telefono"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/which_email_tv"
+                    android:paddingLeft="20dp"
+                    android:paddingTop="15dp"
+                    android:paddingBottom="15dp"
+                    android:paddingRight="20dp"
+                    android:enabled="false"
+                    android:maxHeight="50dp"
+                    android:fontFamily="@font/lato"
+                    android:inputType="text"
+                    android:layout_marginTop="25dp"
+                    android:background="@drawable/login_edit_text_background"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Ciudad"
+                    android:textSize="18sp"
+                    android:layout_marginTop="20sp"
+                    android:fontFamily="@font/lato">
+                </TextView>
+
+                <EditText
+                    android:id="@+id/city"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/which_email_tv"
+                    android:paddingLeft="20dp"
+                    android:paddingTop="15dp"
+                    android:paddingBottom="15dp"
+                    android:paddingRight="20dp"
+                    android:enabled="false"
+                    android:maxHeight="50dp"
+                    android:fontFamily="@font/lato"
+                    android:inputType="text"
+                    android:layout_marginTop="25dp"
+                    android:background="@drawable/login_edit_text_background"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="País"
+                    android:textSize="18sp"
+                    android:layout_marginTop="20sp"
+                    android:fontFamily="@font/lato">
+                </TextView>
+
+                <EditText
+                    android:id="@+id/country"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/which_email_tv"
+                    android:paddingLeft="20dp"
+                    android:paddingTop="15dp"
+                    android:paddingBottom="15dp"
+                    android:paddingRight="20dp"
+                    android:enabled="false"
+                    android:maxHeight="50dp"
+                    android:fontFamily="@font/lato"
+                    android:inputType="text"
+                    android:layout_marginTop="25dp"
+                    android:background="@drawable/login_edit_text_background"/>
+
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+
+    </LinearLayout>
+
+
+</FrameLayout>
