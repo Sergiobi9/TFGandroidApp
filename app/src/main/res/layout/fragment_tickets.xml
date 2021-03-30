@@ -8,7 +8,7 @@
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -23,8 +23,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Mis entradas"
-                android:fontFamily="@font/lato"
-                android:gravity="center"
+                android:fontFamily="@font/lato_black"
                 android:textSize="26sp"
                 android:layout_marginBottom="25dp">
 
@@ -36,6 +35,47 @@
                 android:layout_width="match_parent"
                 android:layout_below="@+id/my_tickets"
                 android:layout_height="wrap_content" />
+
+
+            <LinearLayout
+                android:id="@+id/no_tickets_yet"
+                android:layout_width="match_parent"
+                android:layout_below="@+id/my_tickets"
+                android:layout_height="match_parent"
+                android:visibility="visible"
+                android:layout_marginTop="50dp"
+                android:gravity="center"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:fontFamily="@font/lato"
+                    android:textSize="16sp"
+                    android:text="Todavía no has comprado entradas para ningún concierto">
+                </TextView>
+
+                <Button
+                    android:id="@+id/buy_tickets_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="37dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/black_btn"
+                    android:gravity="center"
+                    android:layout_marginTop="30dp"
+                    android:paddingLeft="25dp"
+                    android:paddingTop="10dp"
+                    android:paddingRight="25dp"
+                    android:paddingBottom="10dp"
+                    android:text="Comprar entradas"
+                    android:textColor="@color/white"></Button>
+
+            </LinearLayout>
+
         </RelativeLayout>
 
     </androidx.core.widget.NestedScrollView>

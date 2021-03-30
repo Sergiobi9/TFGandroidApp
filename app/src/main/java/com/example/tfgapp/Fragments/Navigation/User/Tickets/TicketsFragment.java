@@ -85,10 +85,18 @@ public class TicketsFragment extends Fragment implements TicketsAdapter.OnConcer
                     case 200:
                         Log.d(TAG, "Tickets concerts success " + response.body());
                         ticketsArrayList = response.body();
-                        initTicketsList();
+
+                        if (ticketsArrayList != null && ticketsArrayList.size() > 0)
+                            initTicketsList();
+                        else {
+                            view.findViewById(R.id.no_tickets_yet).setVisibility(View.VISIBLE);
+                            ticketsRecyclerView.setVisibility(View.GONE);
+                        }
                         break;
                     default:
                         Log.d(TAG, "Tickets concerts default " + response.code());
+                        view.findViewById(R.id.no_tickets_yet).setVisibility(View.VISIBLE);
+                        ticketsRecyclerView.setVisibility(View.GONE);
                         break;
                 }
             }
@@ -96,6 +104,8 @@ public class TicketsFragment extends Fragment implements TicketsAdapter.OnConcer
             @Override
             public void onFailure(Call<ArrayList<BookingTicketsList>> call, Throwable t) {
                 Log.d(TAG, "Tickets concerts failure " + t.getLocalizedMessage());
+                view.findViewById(R.id.no_tickets_yet).setVisibility(View.VISIBLE);
+                ticketsRecyclerView.setVisibility(View.GONE);
             }
         });
     }
