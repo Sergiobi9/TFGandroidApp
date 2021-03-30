@@ -10,6 +10,7 @@ import com.example.tfgapp.Entities.Concert.ConcertRegister;
 import com.example.tfgapp.Entities.Concert.FullConcertDetails;
 import com.example.tfgapp.Entities.CustomUserLikes.MusicStyle;
 import com.example.tfgapp.Entities.Login.AuthenticationData;
+import com.example.tfgapp.Entities.Rating.RatingSimplified;
 import com.example.tfgapp.Entities.User.User;
 import com.example.tfgapp.Entities.InfoResponse.InfoResponse;
 import com.example.tfgapp.Entities.User.UserPreferences;
@@ -77,5 +78,8 @@ public interface ApiInterface {
 
     @GET("/booking/all/user/{userId}/{currentDate}")
     Call<ArrayList<BookingTicketsList>> getUserTicketsBooked(@Path("userId") String userId, @Path("currentDate") String currentDate);
+
+    @GET("/concert/rating/all/userId/{userId}/{currentDate}")
+    Call<ArrayList<RatingSimplified>> getUserConcertRatings(@Path("userId") String userId, @Path("currentDate") String currentDate);
 
 }

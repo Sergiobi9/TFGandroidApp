@@ -22,6 +22,7 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.example.tfgapp.Entities.Booking.BookingTicketsList;
 import com.example.tfgapp.Entities.Rating.Rating;
+import com.example.tfgapp.Entities.Rating.RatingSimplified;
 import com.example.tfgapp.Global.Helpers;
 import com.example.tfgapp.Global.Utils;
 import com.example.tfgapp.R;
@@ -33,12 +34,12 @@ import java.util.Calendar;
 
 public class RatingAdapter extends RecyclerView.Adapter<RatingAdapter.ViewHolder> {
 
-    private ArrayList<Rating> ratingArrayList;
+    private ArrayList<RatingSimplified> ratingArrayList;
     private final String TAG = "RatingAdapter";
     private Context context;
     private OnRatingListener onRatingListener;
 
-    public RatingAdapter(Context context, ArrayList<Rating> ratingArrayList, OnRatingListener onLoyaltyCardClicked) {
+    public RatingAdapter(Context context, ArrayList<RatingSimplified> ratingArrayList, OnRatingListener onLoyaltyCardClicked) {
         this.context = context;
         this.onRatingListener = onLoyaltyCardClicked;
         this.ratingArrayList = ratingArrayList;
@@ -55,9 +56,9 @@ public class RatingAdapter extends RecyclerView.Adapter<RatingAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull RatingAdapter.ViewHolder holder, int position) {
-        Rating rating = ratingArrayList.get(position);
+        RatingSimplified rating = ratingArrayList.get(position);
 
-        Glide.with(context).load("https://cdn.smehost.net/sonymusiccommx-mxprod/wp-content/uploads/2018/09/TRAVIS-SCOTT-ASTROWORLD-HEADER.jpg")
+        Glide.with(context).load(rating.getConcertCover())
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .skipMemoryCache(true)
                 .listener(new RequestListener<Drawable>() {

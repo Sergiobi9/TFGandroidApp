@@ -36,7 +36,7 @@
                 android:layout_height="wrap_content" />
 
             <LinearLayout
-                android:id="@+id/no_tickets_yet"
+                android:id="@+id/no_ratings_yet"
                 android:layout_width="match_parent"
                 android:layout_below="@+id/assisted_events"
                 android:layout_height="match_parent"
