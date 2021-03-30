@@ -6,6 +6,8 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.os.Parcelable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +17,8 @@ import android.widget.TextView;
 
 import com.example.tfgapp.Activities.Login.LoginActivity;
 import com.example.tfgapp.Activities.MainActivity;
+import com.example.tfgapp.Entities.Rating.RatingSimplified;
+import com.example.tfgapp.Entities.User.User;
 import com.example.tfgapp.Entities.User.UserSession;
 import com.example.tfgapp.Fragments.Legal.AboutAppFragment;
 import com.example.tfgapp.Fragments.Legal.ConditionTermsFragment;
@@ -22,21 +26,33 @@ import com.example.tfgapp.Fragments.Legal.PrivacyPolicyFragment;
 import com.example.tfgapp.Fragments.Navigation.User.Concert.ConcertsAssistedFragment;
 import com.example.tfgapp.Fragments.Navigation.User.EditProfile.EditUserProfileFragment;
 import com.example.tfgapp.Fragments.Navigation.User.Tickets.TicketsFragment;
+import com.example.tfgapp.Fragments.Navigation.User.Tickets.TicketsQRFragment;
+import com.example.tfgapp.Global.Api;
 import com.example.tfgapp.Global.CurrentUser;
+import com.example.tfgapp.Global.Helpers;
 import com.example.tfgapp.Global.Utils;
 import com.example.tfgapp.R;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class UserProfileFragment extends Fragment {
 
     private final String TAG = "UserProfileFragment";
     private View view;
     private Context context;
+    private User user;
 
     private TextView logoutBtn;
     private LinearLayout artistsFollowedLayout, musicStylesFollowedLayout;
     private Button editProfile;
 
     private TextView myTickets, assistedEvents, aboutApp, policy, terms;
+    private TextView firstNameLetter, userName, userEmail;
 
     public UserProfileFragment() {
         // Required empty public constructor
@@ -55,7 +71,42 @@ public class UserProfileFragment extends Fragment {
         context = getContext();
 
         initView();
+        getUserInfo();
+
         return view;
+    }
+
+    private void getUserInfo(){
+        String userId = CurrentUser.getInstance(context).getCurrentUser().getUser().getId();
+        Call<User> call = Api.getInstance().getAPI().getUser(userId);
+        call.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                switch (response.code()) {
+                    case 200:
+                        Log.d(TAG, "Get user success " + response.body());
+                        user = response.body();
+                        fillUserInformation();
+                        break;
+                    default:
+                        Log.d(TAG, "Get user default " + response.code());
+                        break;
+                }
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                Log.d(TAG, "Get user failure " + t.getLocalizedMessage());
+            }
+        });
+    }
+
+    private void fillUserInformation(){
+        String firstNameLetterStr = String.valueOf(user.getFirstName().charAt(0)).toUpperCase();
+        firstNameLetter.setText(firstNameLetterStr);
+
+        userName.setText(user.getFirstName());
+        userEmail.setText(user.getEmail());
     }
 
     private void initView(){
@@ -69,7 +120,12 @@ public class UserProfileFragment extends Fragment {
         editProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getFragmentManager().beginTransaction().replace(R.id.main_fragment, new EditUserProfileFragment()).addToBackStack(null).commit();
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("user",  user);
+
+                EditUserProfileFragment editUserProfileFragment = new EditUserProfileFragment();
+                editUserProfileFragment.setArguments(bundle);
+                getFragmentManager().beginTransaction().replace(R.id.main_fragment, editUserProfileFragment).addToBackStack(null).commit();
             }
         });
 
@@ -121,6 +177,10 @@ public class UserProfileFragment extends Fragment {
                 goLoginScreen();
             }
         });
+
+        firstNameLetter = view.findViewById(R.id.user_first_name_letter);
+        userName = view.findViewById(R.id.user_name);
+        userEmail = view.findViewById(R.id.user_email);
     }
 
     private void goLoginScreen(){

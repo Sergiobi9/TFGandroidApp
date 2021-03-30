@@ -115,7 +115,7 @@ public class HomeFragment extends Fragment {
 
         if (userRole != null) {
            loginIcon.setVisibility(View.GONE);
-            String userFullName = userSession.getUser().getName();
+            String userFullName = userSession.getUser().getFirstName();
             warmWelcomeText = warmWelcomeText + ", " + userFullName;
         }
 

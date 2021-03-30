@@ -82,4 +82,7 @@ public interface ApiInterface {
     @GET("/concert/rating/all/userId/{userId}/{currentDate}")
     Call<ArrayList<RatingSimplified>> getUserConcertRatings(@Path("userId") String userId, @Path("currentDate") String currentDate);
 
+    @GET("/user/{userId}")
+    Call<User> getUser(@Path("userId") String userId);
+
 }

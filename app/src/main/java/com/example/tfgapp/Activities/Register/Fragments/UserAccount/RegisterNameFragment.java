@@ -59,7 +59,7 @@ public class RegisterNameFragment extends Fragment {
 
                 String nameCapitalized = Helpers.capitalizeString(nameStr);
                 User registeredUser = RegisterAccountActivity.getRegisteredUser();
-                registeredUser.setName(nameCapitalized);
+                registeredUser.setFirstName(nameCapitalized);
                 RegisterAccountActivity.setRegisteredUser(registeredUser);
 
                 RegisterAccountActivity.doUserFinalRegister(context);

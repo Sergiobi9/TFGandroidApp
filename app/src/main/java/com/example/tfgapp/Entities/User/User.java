@@ -3,12 +3,16 @@ package com.example.tfgapp.Entities.User;
 import com.example.tfgapp.Global.Constants;
 import com.google.gson.annotations.SerializedName;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
 
     @SerializedName("id")
     private String id;
-    @SerializedName("name")
-    private String name;
+    @SerializedName("firstName")
+    private String firstName;
+    @SerializedName("lastName")
+    private String lastName;
     @SerializedName("country")
     private String country;
     @SerializedName("city")
@@ -19,6 +23,8 @@ public class User {
     private int gender;
     @SerializedName("birthday")
     private String birthday;
+    @SerializedName("phoneNumber")
+    private String phoneNumber;
     @SerializedName("email")
     private String email;
     @SerializedName("password")
@@ -44,12 +50,20 @@ public class User {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getCountry() {
@@ -100,6 +114,14 @@ public class User {
         this.email = email;
     }
 
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
     public String getPassword() {
         return password;
     }
@@ -128,7 +150,8 @@ public class User {
     public String toString() {
         return "User{" +
                 "id='" + id + '\'' +
-                ", name='" + name + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
                 ", country='" + country + '\'' +
                 ", city='" + city + '\'' +
                 ", zipCode='" + zipCode + '\'' +
