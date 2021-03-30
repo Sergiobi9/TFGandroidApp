@@ -145,6 +145,7 @@
                     android:maxHeight="50dp"
                     android:fontFamily="@font/lato"
                     android:inputType="text"
+                    android:focusable="false"
                     android:hint="DD/MM/YYYY"
                     android:layout_marginTop="25dp"
                     android:background="@drawable/login_edit_text_background"/>

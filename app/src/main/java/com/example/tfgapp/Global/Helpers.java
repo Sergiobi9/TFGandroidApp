@@ -19,6 +19,7 @@ public class Helpers {
 
     private static Helpers instance;
     public static SimpleDateFormat timePattern = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ");
+    public static SimpleDateFormat birthdayPattern = new SimpleDateFormat("dd/MM/yyyy");
 
     public static synchronized Helpers getInstance(Context contextParam) {
         if (instance == null) {
@@ -108,6 +109,17 @@ public class Helpers {
         return calendar;
     }
 
+    public static Date getBirthdayAsDate(String dateAsString) {
+        Date date = null;
+        try {
+            date = birthdayPattern.parse(dateAsString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return date;
+    }
+
     public static String getTimeStamp(){
         TimeZone tz = Calendar.getInstance().getTimeZone();
         timePattern.setTimeZone(tz);
@@ -132,5 +144,11 @@ public class Helpers {
         String[] monts = {"Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dec"};
 
         return monts[month];
+    }
+
+    public static Calendar getCalendarFromDate(Date birthdayCalendarDate) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(birthdayCalendarDate);
+        return calendar;
     }
 }
