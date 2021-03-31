@@ -25,8 +25,11 @@ import android.widget.TextView;
 
 import com.example.tfgapp.Entities.Booking.Booking;
 import com.example.tfgapp.Entities.User.User;
+import com.example.tfgapp.Entities.User.UserSession;
 import com.example.tfgapp.Fragments.Navigation.User.Tickets.TicketsFragment;
 import com.example.tfgapp.Fragments.Navigation.User.UserProfileFragment;
+import com.example.tfgapp.Global.Api;
+import com.example.tfgapp.Global.CurrentUser;
 import com.example.tfgapp.Global.Globals;
 import com.example.tfgapp.Global.Helpers;
 import com.example.tfgapp.R;
@@ -36,6 +39,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class EditUserProfileFragment extends Fragment {
 
@@ -269,6 +276,39 @@ public class EditUserProfileFragment extends Fragment {
     }
 
     private void updateUserProfile(){
-        getFragmentManager().beginTransaction().replace(R.id.main_fragment, new UserProfileFragment()).addToBackStack(null).commit();
+        user.setFirstName(nameEditText.getText().toString());
+        user.setLastName(lastNameEditText.getText().toString());
+
+        Call<User> call = Api.getInstance().getAPI().updateUser(user);
+        call.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                switch (response.code()) {
+                    case 200:
+                        Log.d(TAG, "Update user success " + response.body());
+                        saveUser();
+
+                        Globals.displayShortToast(context, "Perfil actualizado");
+                        getFragmentManager().beginTransaction().replace(R.id.main_fragment, new UserProfileFragment()).addToBackStack(null).commit();
+                        break;
+                    default:
+                        Log.d(TAG, "Update user default " + response.code());
+                        Globals.displayShortToast(context, "No se ha podido actualizar la información");
+                        break;
+                }
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                Log.d(TAG, "Update user failure " + t.getLocalizedMessage());
+                Globals.displayShortToast(context, "No se ha podido actualizar la información");
+            }
+        });
+    }
+
+    private void saveUser() {
+        UserSession userSession = CurrentUser.getInstance(context).getCurrentUser();
+        userSession.setUser(user);
+        CurrentUser.getInstance(context).setCurrentUser(userSession);
     }
 }

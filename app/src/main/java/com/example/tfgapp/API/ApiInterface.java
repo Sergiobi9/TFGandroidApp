@@ -91,4 +91,7 @@ public interface ApiInterface {
     @GET("/artist/following/userId/{userId}")
     Call<ArrayList<ArtistSimplified>> getArtistsFollowingByUserId(@Path("userId") String userId);
 
+    @PUT("/user/update")
+    Call<User> updateUser(@Body User user);
+
 }
