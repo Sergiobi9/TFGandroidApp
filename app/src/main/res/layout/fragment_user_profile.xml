@@ -126,6 +126,7 @@
                     </TextView>
 
                     <TextView
+                        android:id="@+id/artists_following"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
@@ -158,6 +159,7 @@
                     </TextView>
 
                     <TextView
+                        android:id="@+id/music_styles_following"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"

@@ -85,4 +85,10 @@ public interface ApiInterface {
     @GET("/user/{userId}")
     Call<User> getUser(@Path("userId") String userId);
 
+    @GET("/music/style/following/userId/{userId}")
+    Call<ArrayList<MusicStyle>> getMusicStylesFollowingByUserId(@Path("userId") String userId);
+
+    @GET("/artist/following/userId/{userId}")
+    Call<ArrayList<ArtistSimplified>> getArtistsFollowingByUserId(@Path("userId") String userId);
+
 }
