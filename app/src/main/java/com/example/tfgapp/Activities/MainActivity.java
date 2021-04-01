@@ -103,7 +103,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void selectNavigationItem(int itemPosition){
         if (userRole == null)
-            mainNavigationController(itemPosition);
+            //mainNavigationController(itemPosition);
+            goLogginScreen();
         else if (userRole.equals(Constants.USER_NORMAL_ROLE))
             userNavigationController(itemPosition);
         else if (userRole.equals(Constants.ARTIST_ROLE))

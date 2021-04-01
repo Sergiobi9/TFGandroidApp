@@ -385,6 +385,12 @@ public class HomeFragment extends Fragment {
                     CardView concertImageLayout = view.findViewById(R.id.concert_cards);
                     Utils.responsiveView(concertImageLayout, 0.7, 0.7 / 1.714, getActivity());
 
+                    TextView concertName = view.findViewById(R.id.concert_name);
+                    TextView concertPlace = view.findViewById(R.id.concert_place);
+
+                    concertName.setText(popularConcertsArrayList.get(position).getName());
+                    concertPlace.setText(popularConcertsArrayList.get(position).getPlaceName());
+
                     ImageView imageView = view.findViewById(R.id.imageView);
                     String imageUrl = popularConcertsArrayList.get(position).getConcertCoverImage();
                     Glide.with(context).load(imageUrl)
@@ -401,6 +407,18 @@ public class HomeFragment extends Fragment {
                                     return false;
                                 }
                             }).into(imageView);
+
+                    view.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Bundle bundle = new Bundle();
+                            String concertId = popularConcertsArrayList.get(position).getConcertId();
+                            bundle.putString("concertId", concertId);
+                            ConcertInfoFragment concertInfoFragment = new ConcertInfoFragment();
+                            concertInfoFragment.setArguments(bundle);
+                            getFragmentManager().beginTransaction().replace(R.id.main_fragment, concertInfoFragment).addToBackStack(null).commit();
+                        }
+                    });
                 }
             });
 
