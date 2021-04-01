@@ -94,4 +94,7 @@ public interface ApiInterface {
     @PUT("/user/update")
     Call<User> updateUser(@Body User user);
 
+    @PUT("/concert/rating/post/{currentDate}")
+    Call<RatingSimplified> updateUserConcertRating(@Path("currentDate") String currentDate, @Body RatingSimplified ratingSimplified);
+
 }

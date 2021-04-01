@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -28,6 +29,7 @@ import com.example.tfgapp.Global.Utils;
 import com.example.tfgapp.R;
 
 import org.jetbrains.annotations.NotNull;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -72,6 +74,17 @@ public class RatingAdapter extends RecyclerView.Adapter<RatingAdapter.ViewHolder
                         return false;
                     }
                 }).into(holder.concertCover);
+
+        holder.concertName.setText(rating.getConcertName());
+
+        double ratingStars = rating.getRate();
+        if (ratingStars == -1){
+            holder.ratingBar.setVisibility(View.GONE);
+            holder.noRatedYet.setVisibility(View.VISIBLE);
+        } else {
+            holder.ratingBar.setRating((float) ratingStars);
+            holder.noRatedYet.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -82,24 +95,21 @@ public class RatingAdapter extends RecyclerView.Adapter<RatingAdapter.ViewHolder
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private ImageView concertCover;
-        private TextView ticketReference;
-        private TextView ticketsPurchased;
+        private RatingBar ratingBar;
         private TextView concertName;
-        private TextView concertStreet;
-        private TextView concertDate;
-        private ImageView directionsImg;
+        private TextView noRatedYet;
+
         public OnRatingListener onRatingListener;
 
         public ViewHolder(@NotNull View view, OnRatingListener onRatingListener) {
             super(view);
 
             this.concertCover = (ImageView) view.findViewById(R.id.concert_cover);
-            this.ticketsPurchased = (TextView) view.findViewById(R.id.concert_tickets_purchased);
-            this.concertName = (TextView) view.findViewById(R.id.concert_name);
-            this.concertStreet = (TextView) view.findViewById(R.id.concert_place);
-            this.concertDate = (TextView) view.findViewById(R.id.concert_date);
-            this.directionsImg = (ImageView) view.findViewById(R.id.directions);
+            this.ratingBar = view.findViewById(R.id.rating);
+
+            this.concertName = view.findViewById(R.id.concert_name);
             this.onRatingListener = onRatingListener;
+            this.noRatedYet = view.findViewById(R.id.concert_rate_now_text);
             itemView.setOnClickListener(this);
         }
 

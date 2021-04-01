@@ -47,15 +47,14 @@
                     android:layout_height="match_parent">
 
                     <TextView
-                        android:id="@+id/concert_tickets_purchased"
+                        android:id="@+id/concert_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="right"
                         android:textSize="18sp"
                         android:textColor="@color/white"
                         android:fontFamily="@font/lato_black"
-                        android:layout_gravity="bottom"
-                        android:text="Astroworld">
+                        android:layout_gravity="bottom">
                     </TextView>
 
                 </LinearLayout>
@@ -86,6 +85,7 @@
                         android:orientation="vertical">
 
                         <RatingBar
+                            android:id="@+id/rating"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:rating="2"
@@ -101,11 +101,12 @@
                         </RatingBar>
 
                         <TextView
-                            android:id="@+id/concert_name"
+                            android:id="@+id/concert_rate_now_text"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textSize="14sp"
                             android:maxLines="1"
+                            android:visibility="gone"
                             android:fontFamily="@font/lato_black"
                             android:text="Valora este concierto"
                             android:textStyle="bold"

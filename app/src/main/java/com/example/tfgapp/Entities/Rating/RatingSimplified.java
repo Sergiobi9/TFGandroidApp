@@ -7,7 +7,9 @@ public class RatingSimplified {
     private double rate;
     private String comment;
     private String concertCover;
+    private String concertName;
     private String ratingDatePosted;
+
 
     public RatingSimplified(){}
 
@@ -41,6 +43,14 @@ public class RatingSimplified {
 
     public void setConcertCover(String concertCover) {
         this.concertCover = concertCover;
+    }
+
+    public String getConcertName() {
+        return concertName;
+    }
+
+    public void setConcertName(String concertName) {
+        this.concertName = concertName;
     }
 
     public String getRatingDatePosted() {
