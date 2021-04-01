@@ -84,7 +84,8 @@ public class TicketsQRFragment extends Fragment {
         QRCarousel.setAutoPlay(false);
         QRCarousel.setAutoPlayDelay(3000);
         QRCarousel.hideIndicator(true);
-        QRCarousel.setIndicatorAnimationType(IndicatorAnimationType.THIN_WORM);
+        QRCarousel.enableSnapping(false);
+        QRCarousel.setIndicatorAnimationType(IndicatorAnimationType.SCALE_DOWN);
         QRCarousel.setCarouselOffset(OffsetType.CENTER);
         QRCarousel.setCarouselViewListener(new CarouselViewListener() {
             @Override
