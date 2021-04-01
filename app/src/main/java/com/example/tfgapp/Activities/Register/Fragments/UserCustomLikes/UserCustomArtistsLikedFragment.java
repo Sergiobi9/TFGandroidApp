@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.example.tfgapp.Activities.Register.RegisterCustomLikesActivity;
-import com.example.tfgapp.Adapters.CustomUserArtistsAdapter;
+import com.example.tfgapp.Adapters.SelectArtistsAdapter;
 import com.example.tfgapp.Entities.Artist.ArtistSimplified;
 import com.example.tfgapp.Global.Api;
 import com.example.tfgapp.Global.Globals;
@@ -26,7 +26,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class UserCustomArtistsLikedFragment extends Fragment implements CustomUserArtistsAdapter.OnArtistListener {
+public class UserCustomArtistsLikedFragment extends Fragment implements SelectArtistsAdapter.OnArtistListener {
 
     private View view;
     private Context context;
@@ -34,8 +34,8 @@ public class UserCustomArtistsLikedFragment extends Fragment implements CustomUs
 
     private ArrayList<ArtistSimplified> artistReducedInfoArrayList = new ArrayList<>();
     private RecyclerView artistsRecyclerView;
-    private CustomUserArtistsAdapter customUserArtistsAdapter;
-    private CustomUserArtistsAdapter.OnArtistListener onArtistListener;
+    private SelectArtistsAdapter selectArtistsAdapter;
+    private SelectArtistsAdapter.OnArtistListener onArtistListener;
 
     private Button continueBtn;
 
@@ -68,7 +68,7 @@ public class UserCustomArtistsLikedFragment extends Fragment implements CustomUs
             @Override
             public void onClick(View v) {
                 ArrayList<String> artistsSelected = RegisterCustomLikesActivity.getArtistsSelectedIdsArrayList();
-                if (artistsSelected.size() > 0)
+                if (artistsSelected.size() > 3)
                     RegisterCustomLikesActivity.saveUserPreferences(context);
                 else
                     Globals.displayShortToast(context, "Selecciona almenos tres artistas");
@@ -109,11 +109,11 @@ public class UserCustomArtistsLikedFragment extends Fragment implements CustomUs
     private void initArtistsView(){
         artistsRecyclerView = view.findViewById(R.id.artists_to_follow_recyclerview);
 
-        customUserArtistsAdapter = new CustomUserArtistsAdapter(context, artistReducedInfoArrayList, onArtistListener);
+        selectArtistsAdapter = new SelectArtistsAdapter(context, artistReducedInfoArrayList, onArtistListener);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false);
         artistsRecyclerView.setLayoutManager(gridLayoutManager);
         artistsRecyclerView.setNestedScrollingEnabled(false);
-        artistsRecyclerView.setAdapter(customUserArtistsAdapter);
+        artistsRecyclerView.setAdapter(selectArtistsAdapter);
     }
 
     @Override
@@ -129,6 +129,6 @@ public class UserCustomArtistsLikedFragment extends Fragment implements CustomUs
             artistsIdsSelected.remove(artistId);
 
         RegisterCustomLikesActivity.setArtistsSelectedIdsArrayList(artistsIdsSelected);
-        customUserArtistsAdapter.notifyItemChanged(position);
+        selectArtistsAdapter.notifyItemChanged(position);
     }
 }

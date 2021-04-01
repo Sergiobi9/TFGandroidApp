@@ -1,7 +1,6 @@
 package com.example.tfgapp.Fragments.Navigation;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,12 +22,12 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
-import com.example.tfgapp.Activities.Login.LoginActivity;
 import com.example.tfgapp.Entities.Artist.ArtistSimplified;
 import com.example.tfgapp.Entities.Concert.ConcertReduced;
 import com.example.tfgapp.Entities.User.UserSession;
 import com.example.tfgapp.Fragments.Artist.ArtistFragment;
 import com.example.tfgapp.Fragments.Navigation.User.ConcertInfoFragment;
+import com.example.tfgapp.Fragments.Navigation.User.Search.SearchArtistsFragment;
 import com.example.tfgapp.Global.Api;
 import com.example.tfgapp.Global.CircleTransform;
 import com.example.tfgapp.Global.CurrentUser;
@@ -104,7 +103,7 @@ public class HomeFragment extends Fragment {
         loginIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                goLoginScreen();
+                goSearchArtists();
             }
         });
 
@@ -205,7 +204,7 @@ public class HomeFragment extends Fragment {
                         addArtistsContainerLayout.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                goLoginScreen();
+                                goSearchArtists();
                             }
                         });
                     }
@@ -269,9 +268,8 @@ public class HomeFragment extends Fragment {
         });
     }
 
-    private void goLoginScreen(){
-        Intent intent = new Intent(context, LoginActivity.class);
-        startActivity(intent);
+    private void goSearchArtists(){
+        getFragmentManager().beginTransaction().replace(R.id.main_fragment, new SearchArtistsFragment()).addToBackStack(null).commit();
     }
 
     private void getMostSearchedConcerts(){

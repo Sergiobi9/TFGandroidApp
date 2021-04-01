@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
@@ -97,7 +98,13 @@ public interface ApiInterface {
     @PUT("/user/update")
     Call<User> updateUser(@Body User user);
 
+    @DELETE("/user/{userId}")
+    Call<ResponseBody> deleteUser(@Path("userId") String userId);
+
     @PUT("/concert/rating/post/{currentDate}")
     Call<RatingSimplified> updateUserConcertRating(@Path("currentDate") String currentDate, @Body RatingSimplified ratingSimplified);
+
+    @GET("/artist/all")
+    Call<ArrayList<ArtistSimplified>> getAllArtists();
 
 }

@@ -47,6 +47,7 @@ import com.example.tfgapp.Fragments.Navigation.User.Tickets.TicketsFragment;
 import com.example.tfgapp.Fragments.Navigation.User.Tickets.TicketsQRFragment;
 import com.example.tfgapp.Global.Api;
 import com.example.tfgapp.Global.CurrentUser;
+import com.example.tfgapp.Global.Globals;
 import com.example.tfgapp.Global.Helpers;
 import com.example.tfgapp.Global.Utils;
 import com.example.tfgapp.R;
@@ -58,6 +59,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -77,7 +79,7 @@ public class UserProfileFragment extends Fragment {
     private ArrayList<MusicStyle> musicStylesFollowing = new ArrayList<>();
 
     private TextView myTickets, assistedEvents, aboutApp, policy, terms;
-    private TextView firstNameLetter, userName, userEmail;
+    private TextView firstNameLetter, userName, userEmail, deleteAccountBtn;
     private TextView artistsFollowingCounter, musicStylesFollowingCounter;
 
     public UserProfileFragment() {
@@ -273,6 +275,14 @@ public class UserProfileFragment extends Fragment {
             }
         });
 
+        deleteAccountBtn = view.findViewById(R.id.delete_account);
+        deleteAccountBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteAccountDialog();
+            }
+        });
+
         firstNameLetter = view.findViewById(R.id.user_first_name_letter);
         userName = view.findViewById(R.id.user_name);
         userEmail = view.findViewById(R.id.user_email);
@@ -359,5 +369,89 @@ public class UserProfileFragment extends Fragment {
 
         Intent intent = new Intent(context, LoginActivity.class);
         startActivity(intent);
+    }
+
+    private void deleteAccountDialog(){
+        Dialog dialog = new Dialog(context);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(true);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        View view = LayoutInflater.from(context).inflate(R.layout.dialog_delete_account, null);
+        dialog.setContentView(view);
+
+        Button next = view.findViewById(R.id.next_btn);
+        next.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.cancel();
+                proceedToDeleteAccount();
+            }
+        });
+        Button cancel = view.findViewById(R.id.cancel);
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.cancel();
+            }
+        });
+
+        Animation alhpa = AnimationUtils.loadAnimation(context, R.anim.fade_in);
+
+        RelativeLayout all = view.findViewById(R.id.body);
+        all.startAnimation(alhpa);
+
+        dialog.show();
+    }
+
+    private void proceedToDeleteAccount(){
+        Dialog loadingDialog = loadingDialogDeletingAccount();
+        loadingDialog.show();
+
+        String userId = user.getId();
+        Call<ResponseBody> call = Api.getInstance().getAPI().deleteUser(userId);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                switch (response.code()) {
+                    case 200:
+                        Log.d(TAG, "User deleted success " + response.body());
+                        loadingDialog.cancel();
+                        Globals.displayShortToast(context, "Se ha borrado tu cuenta");
+                        goLoginScreen();
+                        break;
+                    default:
+                        Log.d(TAG, "User deleted following default " + response.code());
+                        loadingDialog.cancel();
+                        Globals.displayShortToast(context, "No se ha podido borrar tu cuenta. Prueba de nuevo más tarde");
+                        break;
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.d(TAG, "User deleted following failure " + t.getLocalizedMessage());
+                loadingDialog.cancel();
+                Globals.displayShortToast(context, "No se ha podido borrar tu cuenta. Prueba de nuevo más tarde");
+            }
+        });
+    }
+
+    private Dialog loadingDialogDeletingAccount() {
+        Dialog dialog = new Dialog(context);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(false);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        View view = LayoutInflater.from(context).inflate(R.layout.dialog_loading, null);
+        dialog.setContentView(view);
+
+        TextView textView = view.findViewById(R.id.title);
+        textView.setText("Eliminando cuenta");
+
+        Animation alhpa = AnimationUtils.loadAnimation(context, R.anim.fade_in);
+
+        RelativeLayout all = view.findViewById(R.id.body);
+        all.startAnimation(alhpa);
+
+        return dialog;
     }
 }

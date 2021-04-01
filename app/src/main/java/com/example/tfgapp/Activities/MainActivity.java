@@ -19,7 +19,7 @@ import com.example.tfgapp.Entities.User.UserSession;
 import com.example.tfgapp.Fragments.Navigation.Artist.Concert.ConcertFragment;
 import com.example.tfgapp.Fragments.Navigation.HomeFragment;
 import com.example.tfgapp.Fragments.Navigation.MapFragment;
-import com.example.tfgapp.Fragments.Navigation.SearchFragment;
+import com.example.tfgapp.Fragments.Navigation.User.Search.SearchConcertFragment;
 import com.example.tfgapp.Fragments.Navigation.User.Tickets.TicketsFragment;
 import com.example.tfgapp.Fragments.Navigation.User.UserProfileFragment;
 import com.example.tfgapp.Global.Constants;
@@ -117,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
                 openFragment(new MapFragment());
                 break;
             case 1:
-                openFragment(new SearchFragment());
+                openFragment(new SearchConcertFragment());
                 break;
             case 2:
                 openFragment(new HomeFragment());
@@ -140,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
                 openFragment(new MapFragment());
                 break;
             case 1:
-                openFragment(new SearchFragment());
+                openFragment(new SearchConcertFragment());
                 break;
             case 2:
                 openFragment(new ConcertFragment());
@@ -167,7 +167,7 @@ public class MainActivity extends AppCompatActivity {
                 openFragment(new HomeFragment());
                 break;
             case 2:
-                openFragment(new SearchFragment());
+                openFragment(new SearchConcertFragment());
                 break;
             default:
                 break;

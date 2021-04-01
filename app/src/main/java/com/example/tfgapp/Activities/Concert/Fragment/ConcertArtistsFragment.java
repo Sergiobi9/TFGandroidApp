@@ -1,7 +1,6 @@
 package com.example.tfgapp.Activities.Concert.Fragment;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -16,10 +15,8 @@ import android.widget.Button;
 import android.widget.SearchView;
 
 import com.example.tfgapp.Activities.Concert.CreateConcertActivity;
-import com.example.tfgapp.Activities.Register.RegisterCustomLikesActivity;
-import com.example.tfgapp.Adapters.CustomUserArtistsAdapter;
+import com.example.tfgapp.Adapters.SelectArtistsAdapter;
 import com.example.tfgapp.Entities.Artist.ArtistSimplified;
-import com.example.tfgapp.Entities.User.UserSession;
 import com.example.tfgapp.Global.Api;
 import com.example.tfgapp.Global.CurrentUser;
 import com.example.tfgapp.Global.Globals;
@@ -31,7 +28,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ConcertArtistsFragment extends Fragment implements CustomUserArtistsAdapter.OnArtistListener {
+public class ConcertArtistsFragment extends Fragment implements SelectArtistsAdapter.OnArtistListener {
 
     private View view;
     private Context context;
@@ -41,8 +38,8 @@ public class ConcertArtistsFragment extends Fragment implements CustomUserArtist
     private final String TAG = "ConcertArtistsFragment";
     private ArrayList<ArtistSimplified> artistReducedInfoArrayList = new ArrayList<>();
     private RecyclerView artistsRecyclerView;
-    private CustomUserArtistsAdapter customUserArtistsAdapter;
-    private CustomUserArtistsAdapter.OnArtistListener onArtistListener;
+    private SelectArtistsAdapter selectArtistsAdapter;
+    private SelectArtistsAdapter.OnArtistListener onArtistListener;
 
 
     public ConcertArtistsFragment() {
@@ -73,13 +70,13 @@ public class ConcertArtistsFragment extends Fragment implements CustomUserArtist
         artistSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String arg0) {
-                customUserArtistsAdapter.filter(arg0);
+                selectArtistsAdapter.filter(arg0);
                 return true;
             }
 
             @Override
             public boolean onQueryTextChange(String arg0) {
-                customUserArtistsAdapter.filter(arg0);
+                selectArtistsAdapter.filter(arg0);
                 return false;
             }
         });
@@ -126,11 +123,11 @@ public class ConcertArtistsFragment extends Fragment implements CustomUserArtist
     private void initArtistsView(){
         artistsRecyclerView = view.findViewById(R.id.concerts_artist_recycler_view);
 
-        customUserArtistsAdapter = new CustomUserArtistsAdapter(context, artistReducedInfoArrayList, onArtistListener);
+        selectArtistsAdapter = new SelectArtistsAdapter(context, artistReducedInfoArrayList, onArtistListener);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false);
         artistsRecyclerView.setLayoutManager(gridLayoutManager);
         artistsRecyclerView.setNestedScrollingEnabled(false);
-        artistsRecyclerView.setAdapter(customUserArtistsAdapter);
+        artistsRecyclerView.setAdapter(selectArtistsAdapter);
     }
 
     @Override
@@ -146,6 +143,6 @@ public class ConcertArtistsFragment extends Fragment implements CustomUserArtist
             artistsIdsSelected.remove(artistId);
 
         CreateConcertActivity.getRegisteredConcert().setArtistsIds(artistsIdsSelected);
-        customUserArtistsAdapter.notifyItemChanged(position);
+        selectArtistsAdapter.notifyItemChanged(position);
     }
 }
