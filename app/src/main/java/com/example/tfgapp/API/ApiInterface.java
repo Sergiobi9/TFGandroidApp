@@ -28,8 +28,11 @@ import retrofit2.http.Path;
 
 public interface ApiInterface {
 
-    @GET("/concert/home/{userId}")
-    Call<ArrayList<ConcertReduced>> getHomeConcerts(@Path("userId") String userId);
+    @GET("/concert/home/suggestions/{userId}/{currentDate}")
+    Call<ArrayList<ConcertReduced>> getHomeConcerts(@Path("userId") String userId, @Path("currentDate") String currentDate);
+
+    @GET("/concert/home/popular/{userId}/{currentDate}")
+    Call<ArrayList<ConcertReduced>> getPopularConcerts(@Path("userId") String userId, @Path("currentDate") String currentDate);
 
     @GET("/concert/map/{userLatitude}/{userLongitude}/{radius}")
     Call<ArrayList<ConcertReduced>> getConcertsNearby(@Path("userLatitude") double userLatitude, @Path("userLongitude") double userLongitude, @Path("radius") double radius);

@@ -24,7 +24,6 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.example.tfgapp.Activities.Login.LoginActivity;
-import com.example.tfgapp.Entities.Artist.ArtistInfo;
 import com.example.tfgapp.Entities.Artist.ArtistSimplified;
 import com.example.tfgapp.Entities.Concert.ConcertReduced;
 import com.example.tfgapp.Entities.User.UserSession;
@@ -33,6 +32,7 @@ import com.example.tfgapp.Fragments.Navigation.User.ConcertInfoFragment;
 import com.example.tfgapp.Global.Api;
 import com.example.tfgapp.Global.CircleTransform;
 import com.example.tfgapp.Global.CurrentUser;
+import com.example.tfgapp.Global.Helpers;
 import com.example.tfgapp.Global.Utils;
 import com.example.tfgapp.R;
 import com.jama.carouselview.CarouselView;
@@ -57,10 +57,10 @@ public class HomeFragment extends Fragment {
 
     private CarouselView suggestionConcertsCarousel;
     private CarouselView suggestionArtistsCarousel;
-    private CarouselView mostSearchedCarousel;
+    private CarouselView popularConcertsCarousel;
     private ArrayList<ConcertReduced> suggestionConcertsArrayList;
     private ArrayList<ArtistSimplified> suggestionArtistsArrayList;
-    private ArrayList<ConcertReduced> mostSearchedArrayList;
+    private ArrayList<ConcertReduced> popularConcertsArrayList;
 
     private ImageView viralImageView;
     private ImageView loginIcon;
@@ -244,8 +244,9 @@ public class HomeFragment extends Fragment {
     }
 
     private void getSuggestedConcerts() {
-
-        Call<ArrayList<ConcertReduced>> call = Api.getInstance().getAPI().getHomeConcerts("hello");
+        String userId = CurrentUser.getInstance(context).getCurrentUser().getUser().getId();
+        String currentDate = Helpers.getTimeStamp();
+        Call<ArrayList<ConcertReduced>> call = Api.getInstance().getAPI().getHomeConcerts(userId, currentDate);
         call.enqueue(new Callback<ArrayList<ConcertReduced>>() {
             @Override
             public void onResponse(Call<ArrayList<ConcertReduced>> call, Response<ArrayList<ConcertReduced>> response) {
@@ -274,7 +275,29 @@ public class HomeFragment extends Fragment {
     }
 
     private void getMostSearchedConcerts(){
+        String userId = CurrentUser.getInstance(context).getCurrentUser().getUser().getId();
+        String currentDate = Helpers.getTimeStamp();
+        Call<ArrayList<ConcertReduced>> call = Api.getInstance().getAPI().getPopularConcerts(userId, currentDate);
+        call.enqueue(new Callback<ArrayList<ConcertReduced>>() {
+            @Override
+            public void onResponse(Call<ArrayList<ConcertReduced>> call, Response<ArrayList<ConcertReduced>> response) {
+                switch (response.code()) {
+                    case 200:
+                        Log.d(TAG, "Popular concerts success " + response.body());
+                        popularConcertsArrayList = response.body();
+                        initPopularConcertsCarousel();
+                        break;
+                    default:
+                        Log.d(TAG, "Popular concerts default " + response.code());
+                        break;
+                }
+            }
 
+            @Override
+            public void onFailure(Call<ArrayList<ConcertReduced>> call, Throwable t) {
+                Log.d(TAG, "Popular concerts failure " + t.getLocalizedMessage());
+            }
+        });
     }
 
     private void initSuggestionsCarousel(){
@@ -340,19 +363,19 @@ public class HomeFragment extends Fragment {
 
     }
 
-    private void initMostSearchedCarousel(){
-/*
-        if (mostSearchedArrayList != null && mostSearchedArrayList.size() != 0){
-            mostSearchedCarousel = view.findViewById(R.id.most_searched);
+    private void initPopularConcertsCarousel(){
 
-            mostSearchedCarousel.setSize(mostSearchedArrayList.size());
-            mostSearchedCarousel.setResource(R.layout.carousel_items_list);
-            mostSearchedCarousel.setAutoPlay(false);
-            mostSearchedCarousel.setAutoPlayDelay(3000);
-            mostSearchedCarousel.hideIndicator(true);
-            mostSearchedCarousel.setIndicatorAnimationType(IndicatorAnimationType.THIN_WORM);
-            mostSearchedCarousel.setCarouselOffset(OffsetType.START);
-            mostSearchedCarousel.setCarouselViewListener(new CarouselViewListener() {
+        if (popularConcertsArrayList != null && popularConcertsArrayList.size() != 0){
+            popularConcertsCarousel = view.findViewById(R.id.most_searched);
+
+            popularConcertsCarousel.setSize(popularConcertsArrayList.size());
+            popularConcertsCarousel.setResource(R.layout.carousel_items_list);
+            popularConcertsCarousel.setAutoPlay(false);
+            popularConcertsCarousel.setAutoPlayDelay(3000);
+            popularConcertsCarousel.hideIndicator(true);
+            popularConcertsCarousel.setIndicatorAnimationType(IndicatorAnimationType.THIN_WORM);
+            popularConcertsCarousel.setCarouselOffset(OffsetType.START);
+            popularConcertsCarousel.setCarouselViewListener(new CarouselViewListener() {
                 @Override
                 public void onBindView(View view, final int position) {
                     LinearLayout concertInfoLayout = view.findViewById(R.id.concert_info_layout);
@@ -360,13 +383,10 @@ public class HomeFragment extends Fragment {
                     concertInfoLayout.setLayoutParams(params);
 
                     CardView concertImageLayout = view.findViewById(R.id.concert_cards);
-                    params = concertImageLayout.getLayoutParams();
-                    params.height = (int) (screenWidth * 0.7 / 1.714);
-                    params.width = (int) (screenWidth * 0.7);
-                    concertImageLayout.setLayoutParams(params);
+                    Utils.responsiveView(concertImageLayout, 0.7, 0.7 / 1.714, getActivity());
 
                     ImageView imageView = view.findViewById(R.id.imageView);
-                    String imageUrl = mostSearchedArrayList.get(position).getConcertCoverImage();
+                    String imageUrl = popularConcertsArrayList.get(position).getConcertCoverImage();
                     Glide.with(context).load(imageUrl)
                             .diskCacheStrategy(DiskCacheStrategy.NONE)
                             .skipMemoryCache(true)
@@ -384,8 +404,8 @@ public class HomeFragment extends Fragment {
                 }
             });
 
-            mostSearchedCarousel.show();
+            popularConcertsCarousel.show();
         }
-*/
+
     }
 }

@@ -117,7 +117,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Concerts you would like"
+                android:text="Conciertos que te podrían gustar"
                 android:textColor="@color/black"
                 android:fontFamily="@font/lato"
                 android:padding="25sp"
@@ -133,7 +133,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Artists to follow"
+                android:text="Artistas a seguir según tus gustos"
                 android:textColor="@color/black"
                 android:fontFamily="@font/lato"
                 android:padding="25sp"
@@ -149,7 +149,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Most searched concerts"
+                android:text="Los más populares"
                 android:textColor="@color/black"
                 android:fontFamily="@font/lato"
                 android:padding="25sp"
