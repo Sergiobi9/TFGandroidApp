@@ -21,6 +21,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
@@ -33,6 +34,7 @@ import com.example.tfgapp.Entities.Concert.ConcertReduced;
 import com.example.tfgapp.Fragments.Navigation.User.ConcertInfoFragment;
 import com.example.tfgapp.Global.Api;
 import com.example.tfgapp.Global.Globals;
+import com.example.tfgapp.Global.Helpers;
 import com.example.tfgapp.Global.Permissions;
 import com.example.tfgapp.Global.UserLocation;
 import com.example.tfgapp.Global.Utils;
@@ -55,6 +57,7 @@ import com.jama.carouselview.enums.IndicatorAnimationType;
 import com.jama.carouselview.enums.OffsetType;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -180,6 +183,15 @@ public class MapFragment extends Fragment {
 
                     CardView concertImageLayout = view.findViewById(R.id.concert_cards);
                     ImageView imageView = view.findViewById(R.id.imageView);
+
+                    TextView concertNameTv = view.findViewById(R.id.concert_name);
+                    concertNameTv.setText(concertsArrayList.get(position).getName());
+                    TextView concertAddress = view.findViewById(R.id.concert_place);
+                    concertAddress.setText(concertsArrayList.get(position).getPlaceName());
+
+                    TextView concertDate = view.findViewById(R.id.concert_date);
+                    Calendar concertDateCalendar = Helpers.getDateAsCalendar(concertsArrayList.get(position).getDateStarts());
+                    concertDate.setText(concertDateCalendar.get(Calendar.DATE) + " " + Utils.getMonthSimplified(concertDateCalendar.get(Calendar.MONTH)) + " " + concertDateCalendar.get(Calendar.YEAR));
 
                     Utils.responsiveView(concertImageLayout, 0.85, 0.3, getActivity());
                     Utils.responsiveView(imageView, 0.3, 0.3, getActivity());
