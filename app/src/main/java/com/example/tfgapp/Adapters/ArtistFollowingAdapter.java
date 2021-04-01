@@ -1,6 +1,7 @@
 package com.example.tfgapp.Adapters;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Build;
@@ -13,10 +14,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tfgapp.Entities.Artist.ArtistSimplified;
 import com.example.tfgapp.Fragments.Artist.ArtistFragment;
+import com.example.tfgapp.Fragments.Navigation.Artist.Profile.ArtistProfileFragment;
+import com.example.tfgapp.Fragments.Navigation.User.ConcertInfoFragment;
 import com.example.tfgapp.Global.CircleTransform;
 import com.example.tfgapp.R;
 import com.squareup.picasso.Picasso;
@@ -32,10 +36,12 @@ public class ArtistFollowingAdapter extends RecyclerView.Adapter<ArtistFollowing
     private ArrayList<ArtistSimplified> artistSimplifiedArrayList;
     private final String TAG = "ArtistFollowingAdapter";
     private Context context;
+    private Dialog dialog;
 
-    public ArtistFollowingAdapter(Context context, ArrayList<ArtistSimplified> artistSimplifiedArrayList) {
+    public ArtistFollowingAdapter(Context context, ArrayList<ArtistSimplified> artistSimplifiedArrayList, Dialog dialog) {
         this.context = context;
         this.artistSimplifiedArrayList = artistSimplifiedArrayList;
+        this.dialog = dialog;
     }
 
     @NonNull
@@ -58,6 +64,18 @@ public class ArtistFollowingAdapter extends RecyclerView.Adapter<ArtistFollowing
         TextView artistName = (TextView) holder.artistName;
         artistName.setText(currentArtist.getArtistName());
 
+        holder.container.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.cancel();
+                Bundle bundle = new Bundle();
+                bundle.putString("artistId", currentArtist.getArtistId());
+                ArtistFragment artistFragment = new ArtistFragment();
+                artistFragment.setArguments(bundle);
+                ((FragmentActivity)context).getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, artistFragment).commit();
+            }
+        });
+
     }
 
     @Override
@@ -76,6 +94,7 @@ public class ArtistFollowingAdapter extends RecyclerView.Adapter<ArtistFollowing
 
             this.image = (ImageView) view.findViewById(R.id.image);
             this.artistName = (TextView) view.findViewById(R.id.name);
+            this.container = view.findViewById(R.id.container);
             itemView.setOnClickListener(this);
         }
 

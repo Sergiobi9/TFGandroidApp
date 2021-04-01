@@ -340,7 +340,7 @@ public class UserProfileFragment extends Fragment {
         artistFollowingRecyclerView.setLayoutManager(mLayoutManager);
         artistFollowingRecyclerView.setNestedScrollingEnabled(false);
 
-        artistFollowingAdapter = new ArtistFollowingAdapter(context, artistsFollowing);
+        artistFollowingAdapter = new ArtistFollowingAdapter(context, artistsFollowing, dialog);
         artistFollowingRecyclerView.setAdapter(artistFollowingAdapter);
 
         Animation alhpa = AnimationUtils.loadAnimation(context, R.anim.fade_in);
