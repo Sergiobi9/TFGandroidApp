@@ -43,7 +43,7 @@ public class ConcertsAssistedFragment extends Fragment implements RatingAdapter.
 
     private View view;
     private Context context;
-    private final String TAG = "ConcertsAssistedFragment";
+    private final String TAG = "ConcertsAssistedFrag";
 
     private ArrayList<RatingSimplified> ratingArrayList = new ArrayList<>();
     private RecyclerView ratingsRecyclerView;
@@ -126,11 +126,10 @@ public class ConcertsAssistedFragment extends Fragment implements RatingAdapter.
 
     @Override
     public void onRatingClicked(int position) {
-        RatingSimplified ratingSimplified = ratingArrayList.get(position);
-        showRatingDialog(ratingSimplified);
+        showRatingDialog(position);
     }
 
-    private void showRatingDialog(RatingSimplified rating){
+    private void showRatingDialog(int position){
         Dialog dialog = new Dialog(context);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(true);
@@ -138,12 +137,14 @@ public class ConcertsAssistedFragment extends Fragment implements RatingAdapter.
         View view = LayoutInflater.from(context).inflate(R.layout.dialog_rate, null);
         dialog.setContentView(view);
 
+        RatingSimplified ratingSimplified = ratingArrayList.get(position);
+
         TextView title = view.findViewById(R.id.title);
 
-        String concertName = rating.getConcertName();
+        String concertName = ratingSimplified.getConcertName();
         title.setText("Valora tu experiencia en " + concertName);
 
-        double ratingStars = rating.getRate();
+        double ratingStars = ratingSimplified.getRate();
 
         RatingBar ratingBar = view.findViewById(R.id.rating);
         if (ratingStars == -1){
@@ -153,7 +154,7 @@ public class ConcertsAssistedFragment extends Fragment implements RatingAdapter.
         }
 
         EditText comment = view.findViewById(R.id.comment);
-        comment.setText(rating.getComment());
+        comment.setText(ratingSimplified.getComment());
 
         Animation alhpa = AnimationUtils.loadAnimation(context, R.anim.fade_in);
 
@@ -164,14 +165,39 @@ public class ConcertsAssistedFragment extends Fragment implements RatingAdapter.
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                publishRate(rating, dialog);
+                ratingSimplified.setComment(comment.getText().toString());
+                ratingSimplified.setRate(ratingBar.getRating());
+                publishRate(ratingSimplified, dialog, position);
             }
         });
 
         dialog.show();
     }
 
-    private void publishRate(RatingSimplified rating, Dialog dialog){
-        dialog.cancel();
+    private void publishRate(RatingSimplified rating, Dialog dialog, int positionToReplace){
+        String currentDate = Helpers.getTimeStamp();
+        Call<RatingSimplified> call = Api.getInstance().getAPI().updateUserConcertRating(currentDate, rating);
+        call.enqueue(new Callback<RatingSimplified>() {
+            @Override
+            public void onResponse(Call<RatingSimplified> call, Response<RatingSimplified> response) {
+                switch (response.code()) {
+                    case 200:
+                        Log.d(TAG, "Rating updated success " + response.body());
+
+                        ratingArrayList.set(positionToReplace, rating);
+                        ratingAdapter.notifyItemChanged(positionToReplace);
+                        dialog.cancel();
+                        break;
+                    default:
+                        Log.d(TAG, "Rating updated default " + response.code());
+                        break;
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RatingSimplified> call, Throwable t) {
+                Log.d(TAG, "Rating updated failure " + t.getLocalizedMessage());
+            }
+        });
     }
 }

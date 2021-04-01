@@ -60,4 +60,16 @@ public class RatingSimplified {
     public void setRatingDatePosted(String ratingDatePosted) {
         this.ratingDatePosted = ratingDatePosted;
     }
+
+    @Override
+    public String toString() {
+        return "RatingSimplified{" +
+                "id='" + id + '\'' +
+                ", rate=" + rate +
+                ", comment='" + comment + '\'' +
+                ", concertCover='" + concertCover + '\'' +
+                ", concertName='" + concertName + '\'' +
+                ", ratingDatePosted='" + ratingDatePosted + '\'' +
+                '}';
+    }
 }
