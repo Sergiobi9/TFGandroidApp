@@ -107,4 +107,7 @@ public interface ApiInterface {
     @GET("/artist/all")
     Call<ArrayList<ArtistSimplified>> getAllArtists();
 
+    @GET("/concert/artist/{artistId}/{currentDate}")
+    Call<ArrayList<ConcertReduced>> getArtistConcerts(@Path("artistId") String artistId, @Path("currentDate") String currentDate);
+
 }

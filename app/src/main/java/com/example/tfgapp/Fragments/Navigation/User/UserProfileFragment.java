@@ -4,14 +4,12 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
-import android.os.Build;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.Parcelable;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,7 +20,6 @@ import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -30,12 +27,9 @@ import android.widget.TextView;
 import com.example.tfgapp.Activities.Login.LoginActivity;
 import com.example.tfgapp.Activities.MainActivity;
 import com.example.tfgapp.Adapters.ArtistFollowingAdapter;
-import com.example.tfgapp.Adapters.ConcertSearchAdapter;
-import com.example.tfgapp.Adapters.CustomUserMusicStyleAdapter;
 import com.example.tfgapp.Adapters.MusicStyleFollowingAdapter;
 import com.example.tfgapp.Entities.Artist.ArtistSimplified;
 import com.example.tfgapp.Entities.CustomUserLikes.MusicStyle;
-import com.example.tfgapp.Entities.Rating.RatingSimplified;
 import com.example.tfgapp.Entities.User.User;
 import com.example.tfgapp.Entities.User.UserSession;
 import com.example.tfgapp.Fragments.Legal.AboutAppFragment;
@@ -44,20 +38,13 @@ import com.example.tfgapp.Fragments.Legal.PrivacyPolicyFragment;
 import com.example.tfgapp.Fragments.Navigation.User.Concert.ConcertsAssistedFragment;
 import com.example.tfgapp.Fragments.Navigation.User.EditProfile.EditUserProfileFragment;
 import com.example.tfgapp.Fragments.Navigation.User.Tickets.TicketsFragment;
-import com.example.tfgapp.Fragments.Navigation.User.Tickets.TicketsQRFragment;
 import com.example.tfgapp.Global.Api;
 import com.example.tfgapp.Global.CurrentUser;
 import com.example.tfgapp.Global.Globals;
-import com.example.tfgapp.Global.Helpers;
 import com.example.tfgapp.Global.Utils;
 import com.example.tfgapp.R;
 
-import org.w3c.dom.Text;
-
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;

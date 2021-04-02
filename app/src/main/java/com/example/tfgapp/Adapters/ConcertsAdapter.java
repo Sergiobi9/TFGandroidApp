@@ -2,9 +2,7 @@ package com.example.tfgapp.Adapters;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Typeface;
 import android.os.Build;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,14 +11,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tfgapp.Entities.Artist.ArtistInfo;
-import com.example.tfgapp.Entities.Artist.ArtistSimplified;
 import com.example.tfgapp.Entities.Concert.ConcertReduced;
-import com.example.tfgapp.Fragments.Navigation.User.ConcertInfoFragment;
-import com.example.tfgapp.Global.CircleTransform;
 import com.example.tfgapp.Global.Helpers;
 import com.example.tfgapp.Global.Utils;
 import com.example.tfgapp.R;
@@ -33,7 +27,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ConcertSearchAdapter extends RecyclerView.Adapter<ConcertSearchAdapter.ViewHolder> {
+public class ConcertsAdapter extends RecyclerView.Adapter<ConcertsAdapter.ViewHolder> {
 
     private ArrayList<ConcertReduced> concertsArrayList;
     private ArrayList<ConcertReduced> concertsInitArrayList = new ArrayList<>();
@@ -42,7 +36,7 @@ public class ConcertSearchAdapter extends RecyclerView.Adapter<ConcertSearchAdap
     private Activity activity;
     private OnConcertListener onConcertListener;
 
-    public ConcertSearchAdapter(Context context, ArrayList<ConcertReduced> concertsArrayList, OnConcertListener onConcertListener, Activity activity) {
+    public ConcertsAdapter(Context context, ArrayList<ConcertReduced> concertsArrayList, OnConcertListener onConcertListener, Activity activity) {
         this.context = context;
         this.onConcertListener = onConcertListener;
         this.concertsArrayList = concertsArrayList;
@@ -52,15 +46,15 @@ public class ConcertSearchAdapter extends RecyclerView.Adapter<ConcertSearchAdap
 
     @NonNull
     @Override
-    public ConcertSearchAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ConcertsAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
 
-        return new ConcertSearchAdapter.ViewHolder(inflater.inflate(R.layout.search_concert_list, parent, false), onConcertListener);
+        return new ConcertsAdapter.ViewHolder(inflater.inflate(R.layout.search_concert_list, parent, false), onConcertListener);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ConcertSearchAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ConcertsAdapter.ViewHolder holder, int position) {
         ConcertReduced currentConcert = concertsArrayList.get(position);
 
         String imageUrl = currentConcert.getConcertCoverImage();

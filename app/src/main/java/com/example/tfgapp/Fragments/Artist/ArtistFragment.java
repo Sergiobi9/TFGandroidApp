@@ -6,6 +6,8 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,23 +18,25 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.amazonaws.http.HttpResponse;
+import com.example.tfgapp.Adapters.ConcertsAdapter;
 import com.example.tfgapp.Entities.Artist.ArtistProfileInfo;
+import com.example.tfgapp.Entities.Concert.ConcertReduced;
 import com.example.tfgapp.Global.Api;
 import com.example.tfgapp.Global.CircleTransform;
 import com.example.tfgapp.Global.CurrentUser;
-import com.example.tfgapp.Global.Globals;
 import com.example.tfgapp.Global.Helpers;
 import com.example.tfgapp.Global.Utils;
 import com.example.tfgapp.R;
 import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ArtistFragment extends Fragment {
+public class ArtistFragment extends Fragment implements ConcertsAdapter.OnConcertListener {
 
     private View view;
     private ImageView artistImage;
@@ -45,6 +49,11 @@ public class ArtistFragment extends Fragment {
     private TextView artistName, artistMusicStyle, artistFollowers, artistConcertsMade,
             artistSince, artistBio, noRecentConcerts;
     private ImageView spotifyLink, facebookLink, twitterLink, instagramLink, youtubeLink, snapchatLink;
+
+    private ArrayList<ConcertReduced> artistConcertsArrayList = new ArrayList<>();
+    private RecyclerView artistConcertsRecyclerView;
+    private ConcertsAdapter artistConcertsAdapter;
+    private ConcertsAdapter.OnConcertListener onConcertListener;
 
     public ArtistFragment() {
 
@@ -63,6 +72,7 @@ public class ArtistFragment extends Fragment {
         artistId = this.getArguments().getString("artistId");
 
         context = getContext();
+        onConcertListener = this;
 
         initView();
         return view;
@@ -189,7 +199,50 @@ public class ArtistFragment extends Fragment {
 
         noRecentConcerts = view.findViewById(R.id.no_concerts_text_view);
 
+        artistConcertsRecyclerView = view.findViewById(R.id.artist_next_concerts_recycler_view);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
+        artistConcertsRecyclerView.setLayoutManager(mLayoutManager);
+        artistConcertsRecyclerView.setNestedScrollingEnabled(false);
+
         getArtistProfileInfo();
+        getConcerts();
+    }
+    
+    private void getConcerts(){
+        String currentDate = Helpers.getTimeStamp();
+        Call<ArrayList<ConcertReduced>> call = Api.getInstance().getAPI().getArtistConcerts(artistId, currentDate);
+        call.enqueue(new Callback<ArrayList<ConcertReduced>>() {
+            @Override
+            public void onResponse(Call<ArrayList<ConcertReduced>> call, Response<ArrayList<ConcertReduced>> response) {
+                switch (response.code()) {
+                    case 200:
+                        Log.d(TAG, "Get artist concerts success " + response.body());
+                        artistConcertsArrayList = response.body();
+                        initArtistConcertsList();
+                        break;
+                    default:
+                        Log.d(TAG, "Get artist concerts default " + response.code());
+                        break;
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<ConcertReduced>> call, Throwable t) {
+                Log.d(TAG, "Get artist concerts onFaulure " + t.getLocalizedMessage());
+            }
+        });
+    }
+
+    private void initArtistConcertsList() {
+        if (!artistConcertsArrayList.isEmpty()){
+            artistConcertsRecyclerView.setVisibility(View.VISIBLE);
+            artistConcertsAdapter = new ConcertsAdapter(context, artistConcertsArrayList, onConcertListener, getActivity());
+            artistConcertsRecyclerView.setAdapter(artistConcertsAdapter);
+            noRecentConcerts.setVisibility(View.GONE);
+        } else {
+            noRecentConcerts.setVisibility(View.VISIBLE);
+            artistConcertsRecyclerView.setVisibility(View.GONE);
+        }
     }
 
     private void followArtist(boolean follow){
@@ -221,5 +274,10 @@ public class ArtistFragment extends Fragment {
                 Log.d(TAG, "Follow artist onFaulure " + t.getLocalizedMessage());
             }
         });
+    }
+
+    @Override
+    public void onConcertClicked(int position) {
+        
     }
 }

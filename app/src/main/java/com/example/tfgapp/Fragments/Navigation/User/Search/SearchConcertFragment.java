@@ -13,7 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SearchView;
 
-import com.example.tfgapp.Adapters.ConcertSearchAdapter;
+import com.example.tfgapp.Adapters.ConcertsAdapter;
 import com.example.tfgapp.Entities.Concert.ConcertReduced;
 import com.example.tfgapp.Fragments.Navigation.User.ConcertInfoFragment;
 import com.example.tfgapp.Global.Api;
@@ -27,7 +27,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class SearchConcertFragment extends Fragment implements ConcertSearchAdapter.OnConcertListener {
+public class SearchConcertFragment extends Fragment implements ConcertsAdapter.OnConcertListener {
 
     private final String TAG = "SearchFragment";
     private View view;
@@ -36,8 +36,8 @@ public class SearchConcertFragment extends Fragment implements ConcertSearchAdap
 
     private ArrayList<ConcertReduced> concertsReducedArrayList = new ArrayList<>();
     private RecyclerView concertsRecyclerView;
-    private ConcertSearchAdapter concertSearchAdapter;
-    private ConcertSearchAdapter.OnConcertListener onConcertListener;
+    private ConcertsAdapter concertsAdapter;
+    private ConcertsAdapter.OnConcertListener onConcertListener;
 
     public SearchConcertFragment() {
         // Required empty public constructor
@@ -72,13 +72,13 @@ public class SearchConcertFragment extends Fragment implements ConcertSearchAdap
         concertsSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String arg0) {
-                concertSearchAdapter.filter(arg0);
+                concertsAdapter.filter(arg0);
                 return true;
             }
 
             @Override
             public boolean onQueryTextChange(String arg0) {
-                concertSearchAdapter.filter(arg0);
+                concertsAdapter.filter(arg0);
                 return false;
             }
         });
@@ -114,8 +114,8 @@ public class SearchConcertFragment extends Fragment implements ConcertSearchAdap
     }
 
     private void initConcertsView(){
-        concertSearchAdapter = new ConcertSearchAdapter(context, concertsReducedArrayList, onConcertListener, getActivity());
-        concertsRecyclerView.setAdapter(concertSearchAdapter);
+        concertsAdapter = new ConcertsAdapter(context, concertsReducedArrayList, onConcertListener, getActivity());
+        concertsRecyclerView.setAdapter(concertsAdapter);
     }
 
 

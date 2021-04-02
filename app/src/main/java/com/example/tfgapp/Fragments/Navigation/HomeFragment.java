@@ -1,7 +1,10 @@
 package com.example.tfgapp.Fragments.Navigation;
 
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
@@ -22,6 +26,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+import com.example.tfgapp.Broadcasts.UserLocationBroadcast;
 import com.example.tfgapp.Entities.Artist.ArtistSimplified;
 import com.example.tfgapp.Entities.Concert.ConcertReduced;
 import com.example.tfgapp.Entities.User.UserSession;
@@ -31,9 +36,16 @@ import com.example.tfgapp.Fragments.Navigation.User.Search.SearchArtistsFragment
 import com.example.tfgapp.Global.Api;
 import com.example.tfgapp.Global.CircleTransform;
 import com.example.tfgapp.Global.CurrentUser;
+import com.example.tfgapp.Global.Globals;
 import com.example.tfgapp.Global.Helpers;
+import com.example.tfgapp.Global.Permissions;
+import com.example.tfgapp.Global.UserLocation;
 import com.example.tfgapp.Global.Utils;
 import com.example.tfgapp.R;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.jama.carouselview.CarouselView;
 import com.jama.carouselview.CarouselViewListener;
 import com.jama.carouselview.enums.IndicatorAnimationType;
@@ -57,16 +69,23 @@ public class HomeFragment extends Fragment {
     private CarouselView suggestionConcertsCarousel;
     private CarouselView suggestionArtistsCarousel;
     private CarouselView popularConcertsCarousel;
+    private CarouselView nearConcertsCarousel;
     private ArrayList<ConcertReduced> suggestionConcertsArrayList;
     private ArrayList<ArtistSimplified> suggestionArtistsArrayList;
     private ArrayList<ConcertReduced> popularConcertsArrayList;
+    private ArrayList<ConcertReduced> nearConcertsArrayList;
 
     private ImageView viralImageView;
     private ImageView loginIcon;
-    private TextView welcomeTv;
+    private TextView welcomeTv, nearConcertsTv;
 
     private UserSession userSession;
     private String userRole = null;
+    private int radius = 30;
+
+
+    private FusedLocationProviderClient fusedLocationProviderClient;
+    private LocationRequest locationRequest;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -89,12 +108,129 @@ public class HomeFragment extends Fragment {
 
         initView();
 
+        getCurrentLocation();
         getMostWantedConcert();
         getSuggestedConcerts();
         getSuggestedArtists();
         getMostSearchedConcerts();
 
         return view;
+    }
+
+    private void getCurrentLocation() {
+        if (Permissions.checkLocationPermission(context)){
+            buildLocationRequest();
+            fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
+
+            fusedLocationProviderClient.requestLocationUpdates(locationRequest, getPendingIntent());
+            fusedLocationProviderClient.getLastLocation()
+                    .addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
+                        @Override
+                        public void onSuccess(Location location) {
+                            if (location != null){
+                                getNearConcerts(location.getLatitude(), location.getLongitude());
+                            }
+                        }
+                    });
+        }
+    }
+
+    private PendingIntent getPendingIntent() {
+        Intent intent = new Intent(context, UserLocationBroadcast.class);
+        intent.setAction(UserLocationBroadcast.ACTION_PROCESS_UPDATE);
+        return PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+    }
+
+    private void buildLocationRequest() {
+        locationRequest = new LocationRequest();
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        locationRequest.setInterval(5000);
+        locationRequest.setFastestInterval(3000);
+        locationRequest.setSmallestDisplacement(10f);
+    }
+
+    private void getNearConcerts(double latitude, double longitude){
+        Call<ArrayList<ConcertReduced>> call = Api.getInstance().getAPI().getConcertsNearby(latitude, longitude, radius);
+        call.enqueue(new Callback<ArrayList<ConcertReduced>>() {
+            @Override
+            public void onResponse(@NonNull Call<ArrayList<ConcertReduced>> call, Response<ArrayList<ConcertReduced>> response) {
+                switch (response.code()) {
+                    case 200:
+                        Log.d(TAG, "Nearby concerts successful");
+                        nearConcertsArrayList = response.body();
+                        if (!nearConcertsArrayList.isEmpty()){
+                            nearConcertsCarousel.setVisibility(View.VISIBLE);
+                            nearConcertsTv.setVisibility(View.VISIBLE);
+                            loadNearConcertsCarousel();
+                        }
+                        break;
+                    default:
+                        Log.d(TAG, "Nearby concerts default " + response.code());
+                        break;
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ArrayList<ConcertReduced>> call, Throwable t) {
+                Log.d(TAG, "Nearby concerts onFailure " + t.getLocalizedMessage());
+            }
+        });
+    }
+
+    private void loadNearConcertsCarousel() {
+            nearConcertsCarousel.setSize(nearConcertsArrayList.size());
+        nearConcertsCarousel.setResource(R.layout.carousel_items_list);
+        nearConcertsCarousel.setAutoPlay(false);
+        nearConcertsCarousel.setAutoPlayDelay(3000);
+        nearConcertsCarousel.hideIndicator(true);
+        nearConcertsCarousel.setIndicatorAnimationType(IndicatorAnimationType.THIN_WORM);
+        nearConcertsCarousel.setCarouselOffset(OffsetType.START);
+        nearConcertsCarousel.setCarouselViewListener(new CarouselViewListener() {
+                @Override
+                public void onBindView(View view, final int position) {
+                    /* Get screen size */
+                    CardView concertImageLayout = view.findViewById(R.id.concert_cards);
+                    Utils.responsiveView(concertImageLayout, 0.7, 0.7 / 1.714, getActivity());
+
+                    TextView concertName = view.findViewById(R.id.concert_name);
+                    TextView concertPlace = view.findViewById(R.id.concert_place);
+
+                    concertName.setText(nearConcertsArrayList.get(position).getName());
+                    concertPlace.setText(nearConcertsArrayList.get(position).getPlaceName());
+
+                    ImageView imageView = view.findViewById(R.id.imageView);
+                    String imageUrl = nearConcertsArrayList.get(position).getConcertCoverImage();
+
+                    view.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Bundle bundle = new Bundle();
+                            String concertId = nearConcertsArrayList.get(position).getConcertId();
+                            bundle.putString("concertId", concertId);
+                            ConcertInfoFragment concertInfoFragment = new ConcertInfoFragment();
+                            concertInfoFragment.setArguments(bundle);
+                            getFragmentManager().beginTransaction().replace(R.id.main_fragment, concertInfoFragment).addToBackStack(null).commit();
+                        }
+                    });
+
+                    Glide.with(context).load(imageUrl)
+                            .diskCacheStrategy(DiskCacheStrategy.NONE)
+                            .skipMemoryCache(true)
+                            .listener(new RequestListener<Drawable>() {
+                                @Override
+                                public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                                    return false;
+                                }
+
+                                @Override
+                                public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                                    return false;
+                                }
+                            }).into(imageView);
+                }
+            });
+
+            nearConcertsCarousel.show();
     }
 
     private void initView(){
@@ -117,6 +253,9 @@ public class HomeFragment extends Fragment {
             String userFullName = userSession.getUser().getFirstName();
             warmWelcomeText = warmWelcomeText + ", " + userFullName;
         }
+
+        nearConcertsTv = view.findViewById(R.id.near_you_text_view);
+        nearConcertsCarousel =view.findViewById(R.id.near_concerts);
 
         welcomeTv.setText(warmWelcomeText);
     }
