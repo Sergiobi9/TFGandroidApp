@@ -5,6 +5,7 @@ import com.example.tfgapp.Entities.Artist.ArtistSimplified;
 import com.example.tfgapp.Entities.Booking.BookingTicketsList;
 import com.example.tfgapp.Entities.Booking.RegisterBooking;
 import com.example.tfgapp.Entities.Concert.Concert;
+import com.example.tfgapp.Entities.Concert.ConcertActivity;
 import com.example.tfgapp.Entities.Concert.ConcertReduced;
 import com.example.tfgapp.Entities.Concert.ConcertRegister;
 import com.example.tfgapp.Entities.Concert.FullConcertDetails;
@@ -109,5 +110,8 @@ public interface ApiInterface {
 
     @GET("/concert/artist/{artistId}/{currentDate}")
     Call<ArrayList<ConcertReduced>> getArtistConcerts(@Path("artistId") String artistId, @Path("currentDate") String currentDate);
+
+    @GET("/concert/all/activity/{artistId}")
+    Call<ArrayList<ConcertActivity>> getArtistActivityByUsers(@Path("artistId") String artistId);
 
 }

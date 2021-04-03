@@ -17,6 +17,8 @@ import android.view.WindowManager;
 import com.example.tfgapp.Activities.Login.LoginActivity;
 import com.example.tfgapp.Entities.User.UserSession;
 import com.example.tfgapp.Fragments.Navigation.Artist.Concert.ConcertFragment;
+import com.example.tfgapp.Fragments.Navigation.Artist.Home.HomeArtistFragment;
+import com.example.tfgapp.Fragments.Navigation.Artist.Profile.ArtistProfileFragment;
 import com.example.tfgapp.Fragments.Navigation.HomeFragment;
 import com.example.tfgapp.Fragments.Navigation.MapFragment;
 import com.example.tfgapp.Fragments.Navigation.SearchFragment;
@@ -86,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
         } else if (userRole.equals(Constants.ARTIST_ROLE)) {
             animatedBottomBar = findViewById(R.id.artist_navigation);
             animatedBottomBar.setVisibility(View.VISIBLE);
-            selectNavigationItem(2);
+            selectNavigationItem(0);
         }
 
         animatedBottomBar.setOnTabSelectListener(new AnimatedBottomBar.OnTabSelectListener() {
@@ -138,19 +140,13 @@ public class MainActivity extends AppCompatActivity {
     private void artistNavigationController(int itemPosition){
         switch (itemPosition){
             case 0:
-                openFragment(new MapFragment());
+                openFragment(new HomeArtistFragment());
                 break;
             case 1:
-                openFragment(new SearchFragment());
-                break;
-            case 2:
                 openFragment(new ConcertFragment());
                 break;
-            case 3:
-                openFragment(new TicketsFragment());
-                break;
-            case 4:
-                openFragment(new UserProfileFragment());
+            case 2:
+                openFragment(new ArtistProfileFragment());
                 break;
             default:
                 break;

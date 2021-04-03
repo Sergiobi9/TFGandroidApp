@@ -2,24 +2,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/tab_alarm"
-        android:icon="@drawable/map"
+        android:id="@+id/tab_home"
+        android:icon="@drawable/home"
         android:title="Inicio" />
 
     <item
-        android:id="@+id/tab_bread"
+        android:id="@+id/tab_list_concerts"
         android:icon="@drawable/search"
-        android:title="Tendencias" />
-
-    <item
-        android:id="@+id/tab_home"
-        android:icon="@drawable/home"
-        android:title="Crear concierto" />
-
-    <item
-        android:id="@+id/tab_tickets"
-        android:icon="@drawable/tickets"
-        android:title="Listado" />
+        android:title="Conciertos" />
 
     <item
         android:id="@+id/tab_cart"

@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".Fragments.Navigation.Artist.Home.HomeArtistFragment">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="25sp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/warm_welcome"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:autoSizeTextType="uniform"
+                    android:maxLines="1"
+                    android:fontFamily="@font/lato"
+                    android:textStyle="normal"
+                    android:text="Buenos días"
+                    android:paddingLeft="25sp"
+                    android:layout_marginRight="65dp"
+                    android:paddingTop="50dp"
+                    android:paddingRight="25sp"
+                    android:textSize="26sp"
+                    android:textColor="@color/black"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginTop="20sp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:paddingLeft="20sp"
+                    android:paddingRight="20sp"
+
+                    android:textSize="12dp"
+                    android:fontFamily="@font/lato"
+                    android:background="@drawable/unfollow_btn"
+                    android:text="Listado conciertos">
+
+                </Button>
+                <Button
+                    android:id="@+id/next_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/black_btn"
+                    android:fontFamily="@font/lato"
+                    android:text="CREAR CONCIERTO"
+                    android:paddingLeft="20sp"
+                    android:paddingRight="20sp"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="12dp"></Button>
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Actividad"
+                android:textColor="@color/black"
+                android:fontFamily="@font/lato"
+                android:padding="25sp"
+                android:textSize="26sp">
+            </TextView>
+
+            <androidx.core.widget.NestedScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/users_registered_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                </androidx.recyclerview.widget.RecyclerView>
+
+            </androidx.core.widget.NestedScrollView>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Comentarios"
+                android:textColor="@color/black"
+                android:fontFamily="@font/lato"
+                android:layout_marginTop="20sp"
+                android:padding="25sp"
+                android:textSize="26sp">
+            </TextView>
+
+            <com.jama.carouselview.CarouselView
+                android:id="@+id/comments"
+                android:layout_width="match_parent"
+                android:layout_marginBottom="20dp"
+                android:paddingLeft="10dp"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+
+
+</FrameLayout>
