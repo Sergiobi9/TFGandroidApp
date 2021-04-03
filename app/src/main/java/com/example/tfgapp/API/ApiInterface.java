@@ -114,4 +114,13 @@ public interface ApiInterface {
     @GET("/concert/all/activity/{artistId}")
     Call<ArrayList<ConcertActivity>> getArtistActivityByUsers(@Path("artistId") String artistId);
 
+    @GET("/concert/all/hosting/artistId/{artistId}/{currentDate}")
+    Call<ArrayList<ConcertReduced>> getArtistCreatedConcerts(@Path("artistId") String artistId, @Path("currentDate") String currentDate);
+
+    @GET("/concert/all/finished/artistId/{artistId}/{currentDate}")
+    Call<ArrayList<ConcertReduced>> getArtistFinishedConcerts(@Path("artistId") String artistId, @Path("currentDate") String currentDate);
+
+    @GET("/concert/all/featuring/artistId/{artistId}/{currentDate}")
+    Call<ArrayList<ConcertReduced>> getArtistConcertFeaturing(@Path("artistId") String artistId, @Path("currentDate") String currentDate);
+
 }

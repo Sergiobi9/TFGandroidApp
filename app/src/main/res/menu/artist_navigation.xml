@@ -8,8 +8,8 @@
 
     <item
         android:id="@+id/tab_list_concerts"
-        android:icon="@drawable/search"
-        android:title="Conciertos" />
+        android:icon="@drawable/manage_icon"
+        android:title="Gestión" />
 
     <item
         android:id="@+id/tab_cart"

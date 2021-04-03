@@ -81,14 +81,17 @@ public class MainActivity extends AppCompatActivity {
             animatedBottomBar = findViewById(R.id.main_navigation);
             animatedBottomBar.setVisibility(View.VISIBLE);
             selectNavigationItem(1);
+            animatedBottomBar.selectTabAt(1, true);
         } else if (userRole.equals(Constants.USER_NORMAL_ROLE)) {
             animatedBottomBar = findViewById(R.id.normal_user_navigation);
             animatedBottomBar.setVisibility(View.VISIBLE);
             selectNavigationItem(2);
+            animatedBottomBar.selectTabAt(2, true);
         } else if (userRole.equals(Constants.ARTIST_ROLE)) {
             animatedBottomBar = findViewById(R.id.artist_navigation);
             animatedBottomBar.setVisibility(View.VISIBLE);
             selectNavigationItem(0);
+            animatedBottomBar.selectTabAt(0, true);
         }
 
         animatedBottomBar.setOnTabSelectListener(new AnimatedBottomBar.OnTabSelectListener() {
@@ -146,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
                 openFragment(new ConcertFragment());
                 break;
             case 2:
-                openFragment(new ArtistProfileFragment());
+                openFragment(new UserProfileFragment());
                 break;
             default:
                 break;

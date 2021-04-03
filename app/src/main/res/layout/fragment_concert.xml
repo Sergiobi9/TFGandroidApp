@@ -3,25 +3,145 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Fragments.Navigation.Artist.Concert.ConcertFragment">
+    android:background="@color/white"
+    tools:context=".Fragments.Navigation.User.Tickets.TicketsFragment">
 
-    <LinearLayout
-        android:id="@+id/add_concert"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:background="@drawable/circle">
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-        <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_gravity="center"
-            android:background="@drawable/add_icon">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:paddingTop="40dp"
+            android:paddingBottom="20dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:orientation="vertical"
+            android:layout_height="match_parent">
 
-        </ImageView>
+            <TextView
+                android:id="@+id/my_tickets"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Gestiona tus conciertos"
+                android:fontFamily="@font/lato_black"
+                android:textSize="26sp"
+                android:layout_marginBottom="25dp">
+
+            </TextView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginTop="20sp"
+                android:layout_marginBottom="20sp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/add_concert_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/black_btn"
+                    android:fontFamily="@font/lato"
+                    android:text="CREAR CONCIERTO"
+                    android:paddingLeft="20sp"
+                    android:paddingRight="20sp"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="12dp"></Button>
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Mis conciertos"
+                android:fontFamily="@font/lato_black"
+                android:textSize="22sp"
+                android:layout_marginTop="20sp"
+                android:layout_marginBottom="25dp">
+
+            </TextView>
+
+            <com.jama.carouselview.CarouselView
+                android:id="@+id/concerts_hosted"
+                android:layout_width="match_parent"
+                android:paddingLeft="10dp"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/no_hosted_concerts_yet"
+                android:layout_width="match_parent"
+                android:paddingLeft="20sp"
+                android:paddingRight="20sp"
+                android:visibility="gone"
+                android:gravity="center"
+                android:text="Aún no has organizado ningún concierto"
+                android:layout_height="wrap_content">
+
+            </TextView>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Colaboraciones"
+                android:fontFamily="@font/lato_black"
+                android:layout_marginTop="25dp"
+                android:textSize="22sp"
+                android:layout_marginBottom="25dp">
+
+            </TextView>
+
+            <com.jama.carouselview.CarouselView
+                android:id="@+id/concerts_featuring"
+                android:layout_width="match_parent"
+                android:paddingLeft="10dp"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/no_featured_concerts_yet"
+                android:layout_width="match_parent"
+                android:visibility="gone"
+                android:gravity="center"
+                android:padding="20sp"
+                android:text="No estas colaborando con ningún artista actualmente"
+                android:layout_height="wrap_content">
+            </TextView>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Conciertos finalizados"
+                android:fontFamily="@font/lato_black"
+                android:layout_marginTop="25dp"
+                android:textSize="22sp"
+                android:layout_marginBottom="25dp">
+
+            </TextView>
+
+            <com.jama.carouselview.CarouselView
+                android:id="@+id/concerts_finished"
+                android:layout_width="match_parent"
+                android:paddingLeft="10dp"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/no_finished_concerts_yet"
+                android:layout_width="match_parent"
+                android:paddingLeft="20sp"
+                android:paddingRight="20sp"
+                android:visibility="gone"
+                android:gravity="center"
+                android:text="No has finalizado ningún concierto todavía"
+                android:layout_height="wrap_content">
+            </TextView>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
 
 
-    </LinearLayout>
 
 </FrameLayout>
