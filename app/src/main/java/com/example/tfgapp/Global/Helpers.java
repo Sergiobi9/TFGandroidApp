@@ -30,7 +30,7 @@ public class Helpers {
 
     public static String getIntervalDay(Context context, UserSession userSession){
 
-        boolean isUserBirthday = isUserBirthday(context, userSession);
+        boolean isUserBirthday = isUserBirthday(userSession);
 
         if (isUserBirthday) return "Happy birthday";
 
@@ -49,7 +49,7 @@ public class Helpers {
             return "Good afternoon";
     }
 
-    private static boolean isUserBirthday(Context context, UserSession userSession) {
+    private static boolean isUserBirthday(UserSession userSession) {
         String userBirthday = userSession.getUser().getBirthday();
 
         if (userBirthday == null) return false;
@@ -60,7 +60,7 @@ public class Helpers {
         Date userBirthdayDate = null;
 
         try {
-            userBirthdayDate = timePattern.parse(userBirthday);
+            userBirthdayDate = birthdayPattern.parse(userBirthday);
             specifiedDate.setTime(userBirthdayDate);
         } catch (ParseException e) {
             e.printStackTrace();
