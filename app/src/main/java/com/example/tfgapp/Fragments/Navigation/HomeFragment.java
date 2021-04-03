@@ -178,7 +178,7 @@ public class HomeFragment extends Fragment {
     }
 
     private void loadNearConcertsCarousel() {
-            nearConcertsCarousel.setSize(nearConcertsArrayList.size());
+        nearConcertsCarousel.setSize(nearConcertsArrayList.size());
         nearConcertsCarousel.setResource(R.layout.carousel_items_list);
         nearConcertsCarousel.setAutoPlay(false);
         nearConcertsCarousel.setAutoPlayDelay(3000);

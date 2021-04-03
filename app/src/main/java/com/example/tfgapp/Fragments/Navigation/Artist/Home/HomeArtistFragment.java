@@ -104,10 +104,19 @@ public class HomeArtistFragment extends Fragment {
                         Log.d(TAG, "Get artist user activity success " + response.body());
                         concertActivityArrayList = response.body();
 
-                        getComments();
+                        if (concertActivityArrayList.isEmpty()){
+                            view.findViewById(R.id.no_comments_yet).setVisibility(View.VISIBLE);
+                            view.findViewById(R.id.no_activity_yet).setVisibility(View.VISIBLE);
+                        } else {
+                            getComments();
 
-                        initActivityList();
-                        initCommentsCarousel();
+                            initActivityList();
+                            if (concertActivityCommentsArrayList.isEmpty()){
+                                view.findViewById(R.id.no_comments_yet).setVisibility(View.VISIBLE);
+                            } else {
+                                initCommentsCarousel();
+                            }
+                        }
                         break;
                     default:
                         Log.d(TAG, "Get artist user activity default " + response.code());

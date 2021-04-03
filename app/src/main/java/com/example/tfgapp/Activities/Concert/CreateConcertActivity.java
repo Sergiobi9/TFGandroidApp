@@ -282,22 +282,26 @@ public class CreateConcertActivity extends AppCompatActivity {
     private static TextView dialogMessage;
 
     private static void showCreatingConcertDialog(Context context, String message) {
-        dialog = new Dialog(context);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setCancelable(false);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        View view = LayoutInflater.from(context).inflate(R.layout.dialog_loading, null);
-        dialog.setContentView(view);
+        try {
+            dialog = new Dialog(context);
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.setCancelable(false);
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+            View view = LayoutInflater.from(context).inflate(R.layout.dialog_loading, null);
+            dialog.setContentView(view);
 
-        dialogMessage = view.findViewById(R.id.title);
-        dialogMessage.setText(message);
+            dialogMessage = view.findViewById(R.id.title);
+            dialogMessage.setText(message);
 
-        Animation alhpa = AnimationUtils.loadAnimation(context, R.anim.fade_in);
+            Animation alhpa = AnimationUtils.loadAnimation(context, R.anim.fade_in);
 
-        RelativeLayout all = view.findViewById(R.id.body);
-        all.startAnimation(alhpa);
+            RelativeLayout all = view.findViewById(R.id.body);
+            all.startAnimation(alhpa);
 
-        dialog.show();
+            dialog.show();
+        } catch (Exception windowLeaked){
+
+        }
     }
 
     private static void updateDialogMessage(String message) {

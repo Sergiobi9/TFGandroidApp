@@ -99,6 +99,17 @@
 
             </androidx.core.widget.NestedScrollView>
 
+            <TextView
+                android:id="@+id/no_activity_yet"
+                android:layout_width="match_parent"
+                android:paddingLeft="20sp"
+                android:paddingRight="20sp"
+                android:visibility="gone"
+                android:gravity="center"
+                android:text="No hay actividad todavía"
+                android:layout_height="wrap_content">
+            </TextView>
+
 
             <TextView
                 android:layout_width="wrap_content"
@@ -114,9 +125,20 @@
             <com.jama.carouselview.CarouselView
                 android:id="@+id/comments"
                 android:layout_width="match_parent"
-                android:layout_marginBottom="20dp"
                 android:paddingLeft="10dp"
                 android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/no_comments_yet"
+                android:layout_width="match_parent"
+                android:paddingLeft="20sp"
+                android:paddingRight="20sp"
+                android:visibility="gone"
+                android:gravity="center"
+                android:text="No hay actividad todavía"
+                android:layout_height="wrap_content">
+            </TextView>
+
 
         </LinearLayout>
 
