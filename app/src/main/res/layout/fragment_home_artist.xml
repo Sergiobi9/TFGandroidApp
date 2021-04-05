@@ -48,20 +48,20 @@
                 android:orientation="horizontal">
 
                 <Button
+                    android:id="@+id/list_concerts_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:paddingLeft="20sp"
                     android:paddingRight="20sp"
-
                     android:textSize="12dp"
                     android:fontFamily="@font/lato"
-                    android:background="@drawable/unfollow_btn"
+                    android:background="@drawable/transparent_btn"
                     android:text="Listado conciertos">
 
                 </Button>
                 <Button
-                    android:id="@+id/next_btn"
+                    android:id="@+id/create_concert_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
@@ -75,6 +75,99 @@
                     android:textSize="12dp"></Button>
 
             </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tu próximo concierto"
+                android:textColor="@color/black"
+                android:fontFamily="@font/lato"
+                android:padding="25sp"
+                android:textSize="26sp">
+            </TextView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/next_concert_card"
+                    android:layout_width="wrap_content"
+                    android:layout_height="175dp"
+                    android:layout_gravity="center"
+                    android:visibility="visible"
+                    android:elevation="5dp"
+                    android:translationZ="0dp"
+                    android:layout_marginBottom="10dp"
+                    app:cardCornerRadius="10dp">
+
+                    <ImageView
+                        android:id="@+id/next_concert_image"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerCrop"
+                        tools:srcCompat="@tools:sample/avatars[3]" />
+
+                </androidx.cardview.widget.CardView>
+
+                <LinearLayout
+                    android:id="@+id/concert_info_container"
+                    android:layout_width="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:id="@+id/concert_info_layout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/concert_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:gravity="left"
+                            android:fontFamily="@font/lato"
+                            android:textSize="22sp"></TextView>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/concert_day"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:gravity="right"
+                            android:fontFamily="@font/lato"
+                            android:textSize="22sp"></TextView>
+
+                        <TextView
+                            android:id="@+id/concert_year"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:gravity="right"
+                            android:fontFamily="@font/lato"
+                            android:textSize="14sp"></TextView>
+
+                    </LinearLayout>
+
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/no_recent_concert"
+                android:layout_width="match_parent"
+                android:paddingLeft="20sp"
+                android:paddingRight="20sp"
+                android:visibility="gone"
+                android:gravity="center"
+                android:text="No tienes conciertos próximamente"
+                android:layout_height="wrap_content">
+            </TextView>
 
             <TextView
                 android:layout_width="wrap_content"

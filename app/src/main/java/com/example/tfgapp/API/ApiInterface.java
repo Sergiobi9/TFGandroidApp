@@ -123,4 +123,6 @@ public interface ApiInterface {
     @GET("/concert/all/featuring/artistId/{artistId}/{currentDate}")
     Call<ArrayList<ConcertReduced>> getArtistConcertFeaturing(@Path("artistId") String artistId, @Path("currentDate") String currentDate);
 
+    @GET("/concert/next/artistId/{artistId}/{currentDate}")
+    Call<ConcertReduced> getArtistNextConcert(@Path("artistId") String artistId, @Path("currentDate") String currentDate);
 }

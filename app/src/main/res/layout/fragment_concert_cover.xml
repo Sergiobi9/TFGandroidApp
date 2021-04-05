@@ -37,7 +37,7 @@
                 android:layout_centerVertical="true"
                 android:layout_centerHorizontal="true"
                 android:visibility="visible"
-                android:background="@drawable/unfollow_btn"
+                android:background="@drawable/transparent_btn"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
