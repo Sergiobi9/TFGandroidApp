@@ -350,7 +350,7 @@ public class ConcertFragment extends Fragment {
     private void showManageConcertDialog(String artistId){
         Dialog dialog = new Dialog(context);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setCancelable(false);
+        dialog.setCancelable(true);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         View view = LayoutInflater.from(context).inflate(R.layout.dialog_manage_concert, null);
         dialog.setContentView(view);
