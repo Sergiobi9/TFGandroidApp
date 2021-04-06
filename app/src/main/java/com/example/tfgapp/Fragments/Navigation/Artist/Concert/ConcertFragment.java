@@ -1,7 +1,9 @@
 package com.example.tfgapp.Fragments.Navigation.Artist.Concert;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
@@ -13,10 +15,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -150,12 +156,7 @@ public class ConcertFragment extends Fragment {
                 view.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Bundle bundle = new Bundle();
-                        String concertId = finishedConcertsArrayList.get(position).getConcertId();
-                        bundle.putString("concertId", concertId);
-                        ConcertInfoFragment concertInfoFragment = new ConcertInfoFragment();
-                        concertInfoFragment.setArguments(bundle);
-                        getFragmentManager().beginTransaction().replace(R.id.main_fragment, concertInfoFragment).addToBackStack(null).commit();
+                        showManageConcertDialog(finishedConcertsArrayList.get(position).getConcertId());
                     }
                 });
 
@@ -238,12 +239,7 @@ public class ConcertFragment extends Fragment {
                 view.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Bundle bundle = new Bundle();
-                        String concertId = featuringConcertsArrayList.get(position).getConcertId();
-                        bundle.putString("concertId", concertId);
-                        ConcertInfoFragment concertInfoFragment = new ConcertInfoFragment();
-                        concertInfoFragment.setArguments(bundle);
-                        getFragmentManager().beginTransaction().replace(R.id.main_fragment, concertInfoFragment).addToBackStack(null).commit();
+                        showManageConcertDialog(featuringConcertsArrayList.get(position).getConcertId());
                     }
                 });
 
@@ -326,12 +322,7 @@ public class ConcertFragment extends Fragment {
                 view.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Bundle bundle = new Bundle();
-                        String concertId = ownedConcertsArrayList.get(position).getConcertId();
-                        bundle.putString("concertId", concertId);
-                        ConcertInfoFragment concertInfoFragment = new ConcertInfoFragment();
-                        concertInfoFragment.setArguments(bundle);
-                        getFragmentManager().beginTransaction().replace(R.id.main_fragment, concertInfoFragment).addToBackStack(null).commit();
+                        showManageConcertDialog(ownedConcertsArrayList.get(position).getConcertId());
                     }
                 });
 
@@ -353,6 +344,23 @@ public class ConcertFragment extends Fragment {
         });
 
         ownedConcertsCarousel.show();
+    }
+
+
+    private void showManageConcertDialog(String artistId){
+        Dialog dialog = new Dialog(context);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(false);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        View view = LayoutInflater.from(context).inflate(R.layout.dialog_manage_concert, null);
+        dialog.setContentView(view);
+
+        Animation alhpa = AnimationUtils.loadAnimation(context, R.anim.fade_in);
+
+        RelativeLayout all = view.findViewById(R.id.body);
+        all.startAnimation(alhpa);
+
+        dialog.show();
     }
 
     private void initView(){

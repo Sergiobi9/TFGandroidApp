@@ -149,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
                 openFragment(new ConcertFragment());
                 break;
             case 2:
-                openFragment(new UserProfileFragment());
+                openFragment(new ArtistProfileFragment());
                 break;
             default:
                 break;

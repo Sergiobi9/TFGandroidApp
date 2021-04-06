@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.example.tfgapp.Adapters.ConcertsAdapter;
 import com.example.tfgapp.Entities.Artist.ArtistProfileInfo;
 import com.example.tfgapp.Entities.Concert.ConcertReduced;
+import com.example.tfgapp.Fragments.Navigation.User.ConcertInfoFragment;
 import com.example.tfgapp.Global.Api;
 import com.example.tfgapp.Global.CircleTransform;
 import com.example.tfgapp.Global.CurrentUser;
@@ -108,7 +109,7 @@ public class ArtistFragment extends Fragment implements ConcertsAdapter.OnConcer
         Picasso.get().load(artistProfileInfo.getProfileUrl()).transform(new CircleTransform()).into(artistImage);
 
         artistName.setText(artistProfileInfo.getArtistName());
-        artistMusicStyle.setText(artistProfileInfo.getMusicStyleName() + " artist");
+        artistMusicStyle.setText("Cantante de " + artistProfileInfo.getMusicStyleName());
         artistFollowers.setText(String.valueOf(artistProfileInfo.getFollowers()));
         artistConcertsMade.setText(String.valueOf(artistProfileInfo.getNumberOfConcerts().size()));
         artistSince.setText(Helpers.getDateSince(artistProfileInfo.getMemberSince(), context));
@@ -278,6 +279,11 @@ public class ArtistFragment extends Fragment implements ConcertsAdapter.OnConcer
 
     @Override
     public void onConcertClicked(int position) {
-        
+        Bundle bundle = new Bundle();
+        String concertId = artistConcertsArrayList.get(position).getConcertId();
+        bundle.putString("concertId", concertId);
+        ConcertInfoFragment concertInfoFragment = new ConcertInfoFragment();
+        concertInfoFragment.setArguments(bundle);
+        getFragmentManager().beginTransaction().replace(R.id.main_fragment, concertInfoFragment).addToBackStack(null).commit();
     }
 }

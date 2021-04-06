@@ -83,6 +83,8 @@ public class ConcertsAdapter extends RecyclerView.Adapter<ConcertsAdapter.ViewHo
 
         String concertYearStr = String.valueOf(concertDate.get(Calendar.YEAR));
         concertYear.setText(concertYearStr);
+
+
     }
 
     private String getCurrentArtist(ArrayList<ArtistInfo> artists) {

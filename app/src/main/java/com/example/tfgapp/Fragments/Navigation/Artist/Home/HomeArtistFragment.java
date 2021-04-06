@@ -1,7 +1,9 @@
 package com.example.tfgapp.Fragments.Navigation.Artist.Home;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
@@ -15,10 +17,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -107,6 +113,22 @@ public class HomeArtistFragment extends Fragment {
         return view;
     }
 
+    private void showManageConcertDialog(String artistId){
+        Dialog dialog = new Dialog(context);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(false);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        View view = LayoutInflater.from(context).inflate(R.layout.dialog_manage_concert, null);
+        dialog.setContentView(view);
+
+        Animation alhpa = AnimationUtils.loadAnimation(context, R.anim.fade_in);
+
+        RelativeLayout all = view.findViewById(R.id.body);
+        all.startAnimation(alhpa);
+
+        dialog.show();
+    }
+
     private void getArtistNextConcert() {
         String artistId = userSession.getUser().getId();
         String currentDate = Helpers.getTimeStamp();
@@ -136,6 +158,13 @@ public class HomeArtistFragment extends Fragment {
 
     private void initNextConcertView(ConcertReduced concertReduced) {
         CardView nextCardView = view.findViewById(R.id.next_concert_card);
+        nextCardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showManageConcertDialog(concertReduced.getConcertId());
+            }
+        });
+
         LinearLayout concertInfoContainer = view.findViewById(R.id.concert_info_container);
         if (concertReduced.getConcertId() != null){
 
@@ -295,18 +324,6 @@ public class HomeArtistFragment extends Fragment {
 
 
     private void initView(){
-        welcomeTv = view.findViewById(R.id.warm_welcome);
-
-        String warmWelcomeText = "";
-        warmWelcomeText = getIntervalDay(context, userSession);
-        String userFullName = userSession.getUser().getFirstName();
-        if (userFullName != null) {
-            userFullName =  userFullName.split("\\s+")[0];
-        }
-        warmWelcomeText = warmWelcomeText + ", " + userFullName;
-
-        welcomeTv.setText(warmWelcomeText);
-
         activityRecyclerView = view.findViewById(R.id.users_registered_recycler_view);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         activityRecyclerView.setLayoutManager(mLayoutManager);
