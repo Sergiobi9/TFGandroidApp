@@ -3,16 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_margin="25sp"
     tools:context=".Activities.Register.Fragments.UserAccount.RegisterEmailFragment">
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_margin="25dp"
-        android:layout_height="wrap_content">
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -77,8 +73,5 @@
             </RelativeLayout>
 
         </androidx.core.widget.NestedScrollView>
-
-
-    </RelativeLayout>
 
 </FrameLayout>

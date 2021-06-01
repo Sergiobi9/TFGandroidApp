@@ -68,7 +68,7 @@ public class ConcertIntervalPricingFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 concertIntervalPricing.add(new ConcertIntervalPricing());
-                concertTicketsRegisterPricingAdapter.notifyDataSetChanged();
+                concertTicketsRegisterPricingAdapter.notifyItemChanged(concertIntervalPricing.size() - 1);
             }
         });
     }

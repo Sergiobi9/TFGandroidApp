@@ -58,11 +58,21 @@ public class ConcertTicketsRegisterPricingAdapter extends RecyclerView.Adapter<C
         removeIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (concertIntervalPricing.size() <= 1){
-                    Globals.displayShortToast(context, "No se puede eliminar, almenos registra un precio de entrada");
+                if (position == 0){
+                    Globals.displayShortToast(context, "No se puede eliminar, almenos registra un precio para las entradas");
                 } else {
-                    concertIntervalPricing.remove(position);
-                    notifyItemRemoved(position);
+                    try {
+                        holder.ticketPrice.setText("");
+                        holder.ticketNumber.setText("");
+                        holder.ticketName.setText("");
+                        holder.ticketDescription.setText("");
+
+                        concertIntervalPricing.remove(position);
+                        notifyItemRemoved(position);
+                        notifyItemRangeChanged(position, concertIntervalPricing.size());
+                    } catch (IllegalArgumentException ie){
+
+                    }
                 }
             }
         });
@@ -85,7 +95,7 @@ public class ConcertTicketsRegisterPricingAdapter extends RecyclerView.Adapter<C
             removeItem = view.findViewById(R.id.remove);
             ticketName = view.findViewById(R.id.ticket_name);
             ticketDescription = view.findViewById(R.id.ticket_description);
-            ticketNumber = view.findViewById(R.id.ticket_number);
+            ticketNumber = view.findViewById(R.id.number_tickets);
             ticketPrice = view.findViewById(R.id.ticket_price);
         }
 
