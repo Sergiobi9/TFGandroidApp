@@ -77,4 +77,17 @@ public class ConcertIntervalPricing {
     public void setConcertId(String concertId) {
         this.concertId = concertId;
     }
+
+    @Override
+    public String toString() {
+        return "ConcertIntervalPricing{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", numberTickets=" + numberTickets +
+                ", cost=" + cost +
+                ", discountApplied=" + discountApplied +
+                ", concertId='" + concertId + '\'' +
+                '}';
+    }
 }

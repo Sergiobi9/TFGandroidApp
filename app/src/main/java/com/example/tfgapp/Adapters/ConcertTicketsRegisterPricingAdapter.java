@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.media.Image;
 import android.os.Build;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -73,6 +75,95 @@ public class ConcertTicketsRegisterPricingAdapter extends RecyclerView.Adapter<C
                     } catch (IllegalArgumentException ie){
 
                     }
+                }
+            }
+        });
+
+        holder.ticketName.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start,
+                                          int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start,
+                                      int before, int count) {
+                String pricingName = s.toString();
+                concertIntervalPricing.get(position).setName(pricingName);
+                concertIntervalPricing.set(position, concertIntervalPricing.get(position));
+            }
+        });
+
+        holder.ticketDescription.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start,
+                                          int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start,
+                                      int before, int count) {
+                String pricingDescription = s.toString();
+                concertIntervalPricing.get(position).setDescription(pricingDescription);
+                concertIntervalPricing.set(position, concertIntervalPricing.get(position));
+            }
+        });
+
+        holder.ticketNumber.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start,
+                                          int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start,
+                                      int before, int count) {
+                try{
+                    if (s.toString() != null && !s.toString().equals("")){
+                        int numberTickets = Integer.parseInt(s.toString());
+                        concertIntervalPricing.get(position).setNumberTickets(numberTickets);
+                        concertIntervalPricing.set(position, concertIntervalPricing.get(position));
+                    }
+                } catch (NumberFormatException numberFormatException){
+
+                }
+            }
+        });
+
+        holder.ticketPrice.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start,
+                                          int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start,
+                                      int before, int count) {
+
+                try{
+                    if (s.toString() != null && !s.toString().equals("")){
+                        double price = Double.parseDouble(s.toString());
+                        concertIntervalPricing.get(position).setCost(price);
+                        concertIntervalPricing.set(position, concertIntervalPricing.get(position));
+                    }
+                } catch (NumberFormatException numberFormatException){
+
                 }
             }
         });

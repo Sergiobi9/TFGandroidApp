@@ -11,12 +11,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.tfgapp.Activities.Concert.CreateConcertActivity;
 import com.example.tfgapp.Adapters.ConcertTicketsRegisterPricingAdapter;
 import com.example.tfgapp.Adapters.SelectArtistsAdapter;
 import com.example.tfgapp.Entities.Artist.ArtistSimplified;
+import com.example.tfgapp.Entities.Concert.Concert;
 import com.example.tfgapp.Entities.Concert.Pricing.ConcertIntervalPricing;
+import com.example.tfgapp.Global.Globals;
 import com.example.tfgapp.R;
 
 import java.util.ArrayList;
@@ -30,6 +34,8 @@ public class ConcertIntervalPricingFragment extends Fragment {
     private ArrayList<ConcertIntervalPricing> concertIntervalPricing = new ArrayList<>();
     private RecyclerView concertPricingRecyclerView;
     private ConcertTicketsRegisterPricingAdapter concertTicketsRegisterPricingAdapter;
+
+    private Button nextBtn;
 
     public ConcertIntervalPricingFragment() {
         // Required empty public constructor
@@ -69,6 +75,35 @@ public class ConcertIntervalPricingFragment extends Fragment {
             public void onClick(View v) {
                 concertIntervalPricing.add(new ConcertIntervalPricing());
                 concertTicketsRegisterPricingAdapter.notifyItemChanged(concertIntervalPricing.size() - 1);
+            }
+        });
+
+        nextBtn = view.findViewById(R.id.tickets_next_btn);
+        nextBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean errors = false;
+
+                System.out.println("data " + concertIntervalPricing.toString());
+
+                for (int i = 0; i < concertIntervalPricing.size() && !errors; i++){
+                    if (concertIntervalPricing.get(i).getName().equals("")) {
+                        Globals.displayShortToast(context, "Algunos campos estan por completar o no son validos");
+                        errors = true;
+                    } else if (concertIntervalPricing.get(i).getNumberTickets() <= 0) {
+                        Globals.displayShortToast(context, "Algunos campos estan por completar o no son validos");
+                        errors = true;
+                    } else if (concertIntervalPricing.get(i).getCost() < 0) {
+                        Globals.displayShortToast(context, "Algunos campos estan por completar o no son validos");
+                        errors = true;
+                    }
+                }
+
+                if (!errors){
+                    ArrayList<ConcertIntervalPricing> pricings = CreateConcertActivity.getConcertIntervalPricing();
+                    CreateConcertActivity.setConcertIntervalPricing(pricings);
+                    CreateConcertActivity.createConcert(context);
+                }
             }
         });
     }

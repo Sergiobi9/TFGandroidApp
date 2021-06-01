@@ -93,7 +93,7 @@ public class ConcertHourFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 setConcertHour();
-                getFragmentManager().beginTransaction().replace(R.id.concert_fragment, new ConcertPriceFragment()).addToBackStack(null).commit();
+                getFragmentManager().beginTransaction().replace(R.id.concert_fragment, new ConcertIntervalPricingFragment()).addToBackStack(null).commit();
             }
         });
     }

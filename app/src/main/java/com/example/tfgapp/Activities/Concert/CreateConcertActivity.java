@@ -42,6 +42,7 @@ import com.example.tfgapp.Activities.MainActivity;
 import com.example.tfgapp.Entities.Concert.Concert;
 import com.example.tfgapp.Entities.Concert.ConcertLocation;
 import com.example.tfgapp.Entities.Concert.ConcertRegister;
+import com.example.tfgapp.Entities.Concert.Pricing.ConcertIntervalPricing;
 import com.example.tfgapp.Entities.User.User;
 import com.example.tfgapp.Global.Api;
 import com.example.tfgapp.Global.CurrentUser;
@@ -64,6 +65,7 @@ public class CreateConcertActivity extends AppCompatActivity {
 
     private static Concert registeredConcert;
     private static ConcertLocation registeredConcertLocation;
+    private static ArrayList<ConcertIntervalPricing> concertIntervalPricing;
     private static final String TAG = "CreateConcertActivity";
     private static AmazonS3 s3;
     private static TransferUtility transferUtility;
@@ -95,7 +97,7 @@ public class CreateConcertActivity extends AppCompatActivity {
 
         activity = this;
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.concert_fragment, new ConcertIntervalPricingFragment()).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.concert_fragment, new ConcertNameFragment()).commit();
     }
 
     public static void setConcertImagesArrayList(ArrayList<Uri> newConcertImagesArrayList) {
@@ -117,6 +119,14 @@ public class CreateConcertActivity extends AppCompatActivity {
     public static void setRegisteredConcert(Concert concert) {
         registeredConcert = concert;
         Log.d(TAG, registeredConcert.toString());
+    }
+
+    public static ArrayList<ConcertIntervalPricing> getConcertIntervalPricing() {
+        return concertIntervalPricing;
+    }
+
+    public static void setConcertIntervalPricing(ArrayList<ConcertIntervalPricing> concertIntervalPricing) {
+        CreateConcertActivity.concertIntervalPricing = concertIntervalPricing;
     }
 
     public static ConcertLocation getRegisteredConcertLocation() {
@@ -195,7 +205,7 @@ public class CreateConcertActivity extends AppCompatActivity {
         String userId = CurrentUser.getInstance(context).getCurrentUser().getUser().getId();
         registeredConcert.setUserId(userId);
 
-        ConcertRegister concertRegister = new ConcertRegister(registeredConcert, registeredConcertLocation, concertImagesArrayList.size(), new ArrayList<>());
+        ConcertRegister concertRegister = new ConcertRegister(registeredConcert, registeredConcertLocation, concertImagesArrayList.size(), concertIntervalPricing);
         Call<Concert> call = Api.getInstance().getAPI().createConcert(concertRegister);
         call.enqueue(new Callback<Concert>() {
             @Override

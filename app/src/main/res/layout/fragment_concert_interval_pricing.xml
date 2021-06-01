@@ -6,72 +6,70 @@
     android:layout_margin="25sp"
     tools:context=".Activities.Register.Fragments.UserAccount.RegisterEmailFragment">
 
-        <androidx.core.widget.NestedScrollView
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
-            <RelativeLayout
+            <TextView
+                android:id="@+id/concert_assistance_top_tv"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/lato_black"
+                android:text="Gestiona las entradas para tus fans"
+                android:textSize="28sp"></TextView>
 
-                <TextView
-                    android:id="@+id/concert_assistance_top_tv"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/lato_black"
-                    android:text="Gestiona las entradas para tus fans"
-                    android:textSize="28sp">
-                </TextView>
+            <TextView
+                android:id="@+id/concert_assistance_description_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/concert_assistance_top_tv"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/lato"
+                android:text="Añade diferentes tipos de entradas y precios"
+                android:textSize="18sp"></TextView>
 
-                <TextView
-                    android:id="@+id/concert_assistance_description_tv"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/lato"
-                    android:layout_marginTop="10dp"
-                    android:layout_below="@+id/concert_assistance_top_tv"
-                    android:text="Añade diferentes tipos de entradas y precios"
-                    android:textSize="18sp">
-                </TextView>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/concert_assistance_recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/concert_assistance_description_tv"
+                android:layout_marginTop="25sp">
 
-               <androidx.recyclerview.widget.RecyclerView
-                   android:id="@+id/concert_assistance_recyclerview"
-                   android:layout_width="match_parent"
-                   android:layout_below="@+id/concert_assistance_description_tv"
-                   android:layout_marginTop="25sp"
-                   android:layout_height="wrap_content">
+            </androidx.recyclerview.widget.RecyclerView>
 
-               </androidx.recyclerview.widget.RecyclerView>
+            <TextView
+                android:id="@+id/add_new_pricing"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/concert_assistance_recyclerview"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20sp"
+                android:gravity="center"
+                android:text="Añadir nueva franja de precios">
 
-                <TextView
-                    android:id="@+id/add_new_pricing"
-                    android:layout_width="match_parent"
-                    android:layout_marginTop="20sp"
-                    android:gravity="center"
-                    android:layout_centerHorizontal="true"
-                    android:layout_below="@+id/concert_assistance_recyclerview"
-                    android:layout_height="wrap_content"
-                    android:text="Añadir nueva franja de precios">
+            </TextView>
 
-                </TextView>
+            <Button
+                android:id="@+id/tickets_next_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/add_new_pricing"
+                android:layout_marginLeft="50dp"
+                android:layout_marginTop="50dp"
+                android:layout_marginRight="50dp"
+                android:background="@drawable/black_btn"
+                android:fontFamily="@font/lato"
+                android:text="NEXT"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="12dp"></Button>
 
-                <Button
-                    android:id="@+id/assistance_next_btn"
-                    android:layout_width="match_parent"
-                    android:layout_marginLeft="50dp"
-                    android:layout_marginRight="50dp"
-                    android:text="NEXT"
-                    android:background="@drawable/black_btn"
-                    android:fontFamily="@font/lato"
-                    android:textColor="@color/white"
-                    android:textSize="12dp"
-                    android:layout_marginTop="50dp"
-                    android:layout_below="@+id/add_new_pricing"
-                    android:textAllCaps="false"
-                    android:layout_height="wrap_content"></Button>
+        </RelativeLayout>
 
-            </RelativeLayout>
-
-        </androidx.core.widget.NestedScrollView>
+    </androidx.core.widget.NestedScrollView>
 
 </FrameLayout>
