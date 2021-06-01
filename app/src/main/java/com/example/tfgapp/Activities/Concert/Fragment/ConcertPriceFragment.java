@@ -56,7 +56,6 @@ public class ConcertPriceFragment extends Fragment {
 
     private void setConcertPrice(double concertPriceVal){
         Concert concert = CreateConcertActivity.getRegisteredConcert();
-        concert.setPrice(concertPriceVal);
         CreateConcertActivity.setRegisteredConcert(concert);
     }
 }

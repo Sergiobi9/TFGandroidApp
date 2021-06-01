@@ -36,6 +36,7 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.example.tfgapp.Activities.Concert.Fragment.ConcertArtistsFragment;
 import com.example.tfgapp.Activities.Concert.Fragment.ConcertCoverFragment;
+import com.example.tfgapp.Activities.Concert.Fragment.ConcertIntervalPricingFragment;
 import com.example.tfgapp.Activities.Concert.Fragment.ConcertNameFragment;
 import com.example.tfgapp.Activities.MainActivity;
 import com.example.tfgapp.Entities.Concert.Concert;
@@ -94,7 +95,7 @@ public class CreateConcertActivity extends AppCompatActivity {
 
         activity = this;
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.concert_fragment, new ConcertNameFragment()).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.concert_fragment, new ConcertIntervalPricingFragment()).commit();
     }
 
     public static void setConcertImagesArrayList(ArrayList<Uri> newConcertImagesArrayList) {
@@ -194,7 +195,7 @@ public class CreateConcertActivity extends AppCompatActivity {
         String userId = CurrentUser.getInstance(context).getCurrentUser().getUser().getId();
         registeredConcert.setUserId(userId);
 
-        ConcertRegister concertRegister = new ConcertRegister(registeredConcert, registeredConcertLocation, concertImagesArrayList.size());
+        ConcertRegister concertRegister = new ConcertRegister(registeredConcert, registeredConcertLocation, concertImagesArrayList.size(), new ArrayList<>());
         Call<Concert> call = Api.getInstance().getAPI().createConcert(concertRegister);
         call.enqueue(new Callback<Concert>() {
             @Override

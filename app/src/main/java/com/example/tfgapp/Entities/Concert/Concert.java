@@ -16,10 +16,6 @@ public class Concert {
     public String dateStarts;
     @SerializedName("userId")
     public String userId;
-    @SerializedName("price")
-    public double price;
-    @SerializedName("numberAssistants")
-    public int numberAssistants;
     @SerializedName("description")
     public String description;
     @SerializedName("extraDescription")
@@ -35,13 +31,11 @@ public class Concert {
         this.finished = false;
     }
 
-    public Concert(String id, String name, String dateCreated, String dateStarts, double price, int numberAssistants, String description, String extraDescription, boolean finished, int numberImages, ArrayList<String> artistsIds) {
+    public Concert(String id, String name, String dateCreated, String dateStarts, String description, String extraDescription, boolean finished, int numberImages, ArrayList<String> artistsIds) {
         this.id = id;
         this.name = name;
         this.dateCreated = dateCreated;
         this.dateStarts = dateStarts;
-        this.price = price;
-        this.numberAssistants = numberAssistants;
         this.description = description;
         this.extraDescription = extraDescription;
         this.finished = finished;
@@ -87,22 +81,6 @@ public class Concert {
 
     public void setUserId(String userId) {
         this.userId = userId;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
-    public int getNumberAssistants() {
-        return numberAssistants;
-    }
-
-    public void setNumberAssistants(int numberAssistants) {
-        this.numberAssistants = numberAssistants;
     }
 
     public String getDescription() {
@@ -152,8 +130,6 @@ public class Concert {
                 ", name='" + name + '\'' +
                 ", dateCreated='" + dateCreated + '\'' +
                 ", dateStarts='" + dateStarts + '\'' +
-                ", price=" + price +
-                ", numberAssistants=" + numberAssistants +
                 ", description='" + description + '\'' +
                 ", extraDescription='" + extraDescription + '\'' +
                 ", finished=" + finished +

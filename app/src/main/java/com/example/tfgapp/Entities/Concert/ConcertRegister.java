@@ -1,5 +1,6 @@
 package com.example.tfgapp.Entities.Concert;
 
+import com.example.tfgapp.Entities.Concert.Pricing.ConcertIntervalPricing;
 import com.example.tfgapp.Global.Helpers;
 import com.google.gson.annotations.SerializedName;
 
@@ -25,10 +26,6 @@ public class ConcertRegister {
     private String dateStarts;
     @SerializedName("userId")
     private String userId;
-    @SerializedName("price")
-    private double price;
-    @SerializedName("numberAssistants")
-    private int numberAssistants;
     @SerializedName("description")
     private String description;
     @SerializedName("extraDescription")
@@ -37,10 +34,12 @@ public class ConcertRegister {
     private boolean finished;
     @SerializedName("numberImages")
     private int numberImages;
+    @SerializedName("concertIntervalPricing")
+    private ArrayList<ConcertIntervalPricing> concertIntervalPricing;
     @SerializedName("artistsIds")
     private ArrayList<String> artistsIds;
 
-    public ConcertRegister(Concert concert, ConcertLocation concertLocation, int numberImages){
+    public ConcertRegister(Concert concert, ConcertLocation concertLocation, int numberImages, ArrayList<ConcertIntervalPricing> concertIntervalPricing){
         this.name = concert.getName();
         this.latitude = concertLocation.getLatitude();
         this.longitude =  concertLocation.getLongitude();
@@ -50,12 +49,11 @@ public class ConcertRegister {
         this.dateCreated = Helpers.getTimeStamp();
         this.dateStarts = concert.getDateStarts();
         this.userId = concert.getUserId();
-        this.price = concert.getPrice();
-        this.numberAssistants = concert.getNumberAssistants();
         this.description = concert.getDescription();
         this.extraDescription = concert.getExtraDescription();
         this.finished = false;
         this.numberImages = numberImages;
+        this.concertIntervalPricing = concertIntervalPricing;
         this.artistsIds = concert.getArtistsIds();
     }
 
@@ -131,22 +129,6 @@ public class ConcertRegister {
         this.userId = userId;
     }
 
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
-    public int getNumberAssistants() {
-        return numberAssistants;
-    }
-
-    public void setNumberAssistants(int numberAssistants) {
-        this.numberAssistants = numberAssistants;
-    }
-
     public String getDescription() {
         return description;
     }
@@ -177,6 +159,14 @@ public class ConcertRegister {
 
     public void setNumberImages(int numberImages) {
         this.numberImages = numberImages;
+    }
+
+    public ArrayList<ConcertIntervalPricing> getConcertIntervalPricing() {
+        return concertIntervalPricing;
+    }
+
+    public void setConcertIntervalPricing(ArrayList<ConcertIntervalPricing> concertIntervalPricing) {
+        this.concertIntervalPricing = concertIntervalPricing;
     }
 
     public ArrayList<String> getArtistsIds() {

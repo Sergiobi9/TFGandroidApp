@@ -70,7 +70,6 @@ public class ConcertAssistanceFragment extends Fragment {
 
     private void setConcertAssistance(int concertAssistanceVal){
         Concert concert = CreateConcertActivity.getRegisteredConcert();
-        concert.setNumberAssistants(concertAssistanceVal);
         CreateConcertActivity.setRegisteredConcert(concert);
     }
 }
