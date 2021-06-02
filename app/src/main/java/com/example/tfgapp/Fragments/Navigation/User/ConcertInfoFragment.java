@@ -65,6 +65,8 @@ import com.jama.carouselview.enums.IndicatorAnimationType;
 import com.jama.carouselview.enums.OffsetType;
 import com.squareup.picasso.Picasso;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -178,13 +180,52 @@ public class ConcertInfoFragment extends Fragment {
 
         concertIntervalPricingDetails = fullConcertDetails.getConcertTickets();
 
-        ticketsRecyclerView = view.findViewById(R.id.tickets_available);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
-        ticketsRecyclerView.setLayoutManager(mLayoutManager);
-        ticketsRecyclerView.setNestedScrollingEnabled(false);
+        boolean userAlreadyGotTickets = getUserGotAtLeastOneTicket();
+        userTicketsBoughtLayout = view.findViewById(R.id.user_already_bought_tickets_layout);
+        userTicketsNoBoughtLayout = view.findViewById(R.id.user_not_tickets_bought_layout);
 
-        concertTicketsAdapter = new ConcertTicketsAdapter(context, concertIntervalPricingDetails, getActivity());
-        ticketsRecyclerView.setAdapter(concertTicketsAdapter);
+        if (userAlreadyGotTickets){
+            userTicketsNoBoughtLayout.setVisibility(View.GONE);
+            userTicketsBoughtLayout.setVisibility(View.VISIBLE);
+            howManyTicketsBought = view.findViewById(R.id.how_many_tickets);
+
+            String text = getTicketsBought();
+            howManyTicketsBought.setText(text);
+
+            view.findViewById(R.id.buy_more_tickets).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    userTicketsNoBoughtLayout.setVisibility(View.VISIBLE);
+                    userTicketsBoughtLayout.setVisibility(View.GONE);
+
+                    for (int i = 0; i < concertIntervalPricingDetails.size(); i++){
+                        concertIntervalPricingDetails.get(i).setTicketsBought(0);
+                    }
+
+                    ticketsRecyclerView = view.findViewById(R.id.tickets_available);
+                    RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
+                    ticketsRecyclerView.setLayoutManager(mLayoutManager);
+                    ticketsRecyclerView.setNestedScrollingEnabled(false);
+
+                    concertTicketsAdapter = new ConcertTicketsAdapter(context, concertIntervalPricingDetails, getActivity());
+                    ticketsRecyclerView.setAdapter(concertTicketsAdapter);
+                }
+            });
+
+        } else{
+            userTicketsNoBoughtLayout.setVisibility(View.VISIBLE);
+            userTicketsBoughtLayout.setVisibility(View.GONE);
+
+            ticketsRecyclerView = view.findViewById(R.id.tickets_available);
+            RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
+            ticketsRecyclerView.setLayoutManager(mLayoutManager);
+            ticketsRecyclerView.setNestedScrollingEnabled(false);
+
+            concertTicketsAdapter = new ConcertTicketsAdapter(context, concertIntervalPricingDetails, getActivity());
+            ticketsRecyclerView.setAdapter(concertTicketsAdapter);
+        }
+
+
 
         concertName = view.findViewById(R.id.concert_name);
         concertArtistsNames = view.findViewById(R.id.concert_artists);
@@ -221,23 +262,6 @@ public class ConcertInfoFragment extends Fragment {
             concertExtraDescription.setVisibility(View.GONE);
         else concertExtraDescription.setText(extraDescription);
 
-        userTicketsBoughtLayout = view.findViewById(R.id.user_already_bought_tickets_layout);
-        userTicketsNoBoughtLayout = view.findViewById(R.id.user_not_tickets_bought_layout);
-        howManyTicketsBought = view.findViewById(R.id.how_many_tickets);
-
-        int ticketsBought = fullConcertDetails.getBookingsIds().size();
-        if (ticketsBought <= 0) {
-            userTicketsNoBoughtLayout.setVisibility(View.VISIBLE);
-            userTicketsBoughtLayout.setVisibility(View.GONE);
-        } else {
-            userTicketsNoBoughtLayout.setVisibility(View.VISIBLE);
-            userTicketsBoughtLayout.setVisibility(View.GONE);
-            if (ticketsBought <= 1)
-                howManyTicketsBought.setText("Tienes " + ticketsBought + " entrada para este concierto");
-            else
-                howManyTicketsBought.setText("Tienes " + ticketsBought + " entradas para este concierto");
-        }
-
         goPlaceIndicationsBtn = view.findViewById(R.id.go_place_btn);
         goPlaceIndicationsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -248,6 +272,18 @@ public class ConcertInfoFragment extends Fragment {
         initArtistsCarousel(artists);
         initCarrouselPlaceImages(fullConcertDetails.getImagesUrls());
         focusConcertLocation(fullConcertDetails.getConcertLocation());
+    }
+
+    private boolean getUserGotAtLeastOneTicket(){
+        for (int i = 0; i < concertIntervalPricingDetails.size(); i++){
+            int ticketsBought = concertIntervalPricingDetails.get(i).getTicketsBought();
+
+            if (ticketsBought != 0){
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private void focusConcertLocation(ConcertLocationReduced concertLocationReduced){
@@ -337,7 +373,10 @@ public class ConcertInfoFragment extends Fragment {
         dialog.setContentView(view);
 
         TextView textView = view.findViewById(R.id.title);
-        textView.setText("Has comprado " + howManyTicketsToBookCounter + " entradas");
+
+        String text = getTicketsBought();
+
+        textView.setText(text);
 
         Animation alhpa = AnimationUtils.loadAnimation(context, R.anim.fade_in);
 
@@ -362,6 +401,20 @@ public class ConcertInfoFragment extends Fragment {
         all.startAnimation(alhpa);
 
         dialog.show();
+    }
+
+    @NotNull
+    private String getTicketsBought() {
+        String text = "Has comprado las siguientes entradas:\n\n";
+
+        for (int i = 0; i < concertIntervalPricingDetails.size(); i++){
+            int ticketsBooked = concertIntervalPricingDetails.get(i).getTicketsBought();
+
+            if (ticketsBooked != 0){
+                text = text + "\t" + (ticketsBooked == 1? ticketsBooked +" entrada " : ticketsBooked + " entradas ") + concertIntervalPricingDetails.get(i).getName() + "\n";
+            }
+        }
+        return text;
     }
 
     private void goTickets(){
