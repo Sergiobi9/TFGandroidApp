@@ -63,7 +63,12 @@ public class ConcertTicketsAdapter extends RecyclerView.Adapter<ConcertTicketsAd
         holder.ticketName.setText(concertIntervalPricingDetail.getName());
         holder.ticketDescription.setText(concertIntervalPricingDetail.getDescription());
         holder.remaining.setText(concertIntervalPricingDetail.getRemaining() + " disponibles");
-        holder.ticketCost.setText(new DecimalFormat("###.#").format(concertIntervalPricingDetail.getCost()) + "€");
+
+        if (concertIntervalPricingDetail.getCost() == 0){
+            holder.ticketCost.setText("GRATIS");
+        } else{
+            holder.ticketCost.setText(new DecimalFormat("###.#").format(concertIntervalPricingDetail.getCost()) + "€");
+        }
 
         if (concertIntervalPricingDetail.getDescription() == null || concertIntervalPricingDetail.getDescription().isEmpty()){
             holder.ticketDescription.setVisibility(View.GONE);

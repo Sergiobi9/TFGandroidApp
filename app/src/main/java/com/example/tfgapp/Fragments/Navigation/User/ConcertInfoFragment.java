@@ -158,7 +158,7 @@ public class ConcertInfoFragment extends Fragment {
         bookTickets.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                bookTickets();
+                readyToPay();
             }
         });
 
@@ -403,6 +403,46 @@ public class ConcertInfoFragment extends Fragment {
         dialog.show();
     }
 
+    private void readyToPay(){
+        Dialog dialog = new Dialog(context);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(true);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        View view = LayoutInflater.from(context).inflate(R.layout.dialog_tickets_purchased, null);
+        dialog.setContentView(view);
+
+        TextView textView = view.findViewById(R.id.title);
+        textView.setText("Vas a comprar las siguientes entradas");
+
+        String text = getTicketsBoughtWithTotal();
+        TextView description = view.findViewById(R.id.description);
+        description.setVisibility(View.VISIBLE);
+        description.setText(text);
+
+        Animation alhpa = AnimationUtils.loadAnimation(context, R.anim.fade_in);
+
+        Button accept = view.findViewById(R.id.accept);
+        accept.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                bookTickets();
+            }
+        });
+
+        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                dialog.dismiss();
+            }
+        });
+
+        RelativeLayout all = view.findViewById(R.id.body);
+        all.startAnimation(alhpa);
+
+        dialog.show();
+    }
+
     @NotNull
     private String getTicketsBought() {
         String text = "Has comprado las siguientes entradas:\n\n";
@@ -415,6 +455,23 @@ public class ConcertInfoFragment extends Fragment {
             }
         }
         return text;
+    }
+
+    @NotNull
+    private String getTicketsBoughtWithTotal() {
+        String text = "Has comprado las siguientes entradas:\n\n";
+
+        double total = 0;
+
+        for (int i = 0; i < concertIntervalPricingDetails.size(); i++){
+            int ticketsBooked = concertIntervalPricingDetails.get(i).getTicketsBought();
+
+            if (ticketsBooked != 0){
+                text = text + "\t" + (ticketsBooked == 1? ticketsBooked +" entrada " : ticketsBooked + " entradas ") + concertIntervalPricingDetails.get(i).getName() + "\n";
+                total = total + (concertIntervalPricingDetails.get(i).getCost() * ticketsBooked);
+            }
+        }
+        return text + "\n\nTotal: " + (total == 0? "GRATIS" : new DecimalFormat("###.#").format(total) + "€");
     }
 
     private void goTickets(){
