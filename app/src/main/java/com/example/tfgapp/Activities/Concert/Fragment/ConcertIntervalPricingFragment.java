@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -100,8 +101,9 @@ public class ConcertIntervalPricingFragment extends Fragment {
                 }
 
                 if (!errors){
-                    ArrayList<ConcertIntervalPricing> pricings = CreateConcertActivity.getConcertIntervalPricing();
-                    CreateConcertActivity.setConcertIntervalPricing(pricings);
+                    CreateConcertActivity.setConcertIntervalPricing(concertIntervalPricing);
+
+                    Log.d("WTF", CreateConcertActivity.getConcertIntervalPricing().toString());
                     CreateConcertActivity.createConcert(context);
                 }
             }

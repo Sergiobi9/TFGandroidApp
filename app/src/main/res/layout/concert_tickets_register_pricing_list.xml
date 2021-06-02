@@ -24,7 +24,7 @@
                 android:layout_marginRight="40dp"
                 android:fontFamily="@font/lato_black"
                 android:textSize="22sp"
-                android:text="Tipo: ">
+                android:text="Tipo entrada: ">
 
             </TextView>
 

@@ -12,6 +12,8 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -32,10 +34,13 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+import com.example.tfgapp.Adapters.ConcertTicketsAdapter;
+import com.example.tfgapp.Adapters.ConcertsAdapter;
 import com.example.tfgapp.Entities.Artist.ArtistSimplified;
 import com.example.tfgapp.Entities.Booking.RegisterBooking;
 import com.example.tfgapp.Entities.Concert.ConcertLocationReduced;
 import com.example.tfgapp.Entities.Concert.FullConcertDetails;
+import com.example.tfgapp.Entities.Concert.Pricing.ConcertIntervalPricingDetails;
 import com.example.tfgapp.Entities.InfoResponse.InfoResponse;
 import com.example.tfgapp.Fragments.Artist.ArtistFragment;
 import com.example.tfgapp.Fragments.Navigation.User.Tickets.TicketsFragment;
@@ -87,6 +92,9 @@ public class ConcertInfoFragment extends Fragment {
     private LinearLayout userTicketsBoughtLayout, userTicketsNoBoughtLayout;
     private FloatingActionButton addTickets, removeTickets;
     private int howManyTicketsToBookCounter = 1;
+    private ArrayList<ConcertIntervalPricingDetails> concertIntervalPricingDetails;
+    private RecyclerView ticketsRecyclerView;
+    private ConcertTicketsAdapter concertTicketsAdapter;
 
     private String concertId;
 
@@ -160,6 +168,16 @@ public class ConcertInfoFragment extends Fragment {
                     }
                 }).into(concertCover);
 
+        concertIntervalPricingDetails = fullConcertDetails.getConcertTickets();
+
+        ticketsRecyclerView = view.findViewById(R.id.tickets_available);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
+        ticketsRecyclerView.setLayoutManager(mLayoutManager);
+        ticketsRecyclerView.setNestedScrollingEnabled(false);
+
+        concertTicketsAdapter = new ConcertTicketsAdapter(context, concertIntervalPricingDetails, getActivity());
+        ticketsRecyclerView.setAdapter(concertTicketsAdapter);
+
         concertName = view.findViewById(R.id.concert_name);
         concertArtistsNames = view.findViewById(R.id.concert_artists);
 
@@ -195,17 +213,6 @@ public class ConcertInfoFragment extends Fragment {
             concertExtraDescription.setVisibility(View.GONE);
         else concertExtraDescription.setText(extraDescription);
 
-        concertPrice = view.findViewById(R.id.concert_price);
-        double price = fullConcertDetails.getConcertDetails().getPrice();
-
-        if (price <= 0) concertPrice.setText("GRATIS");
-        else concertPrice.setText(new DecimalFormat("###.#").format(price) + " €");
-
-        concertTicketsRemaining = view.findViewById(R.id.concert_tickets_remining);
-        int ticketsRemaining = fullConcertDetails.getPlacesRemaining();
-
-        concertTicketsRemaining.setText(ticketsRemaining  + " disponibles");
-
         userTicketsBoughtLayout = view.findViewById(R.id.user_already_bought_tickets_layout);
         userTicketsNoBoughtLayout = view.findViewById(R.id.user_not_tickets_bought_layout);
         howManyTicketsBought = view.findViewById(R.id.how_many_tickets);
@@ -215,44 +222,13 @@ public class ConcertInfoFragment extends Fragment {
             userTicketsNoBoughtLayout.setVisibility(View.VISIBLE);
             userTicketsBoughtLayout.setVisibility(View.GONE);
         } else {
-            userTicketsNoBoughtLayout.setVisibility(View.GONE);
-            userTicketsBoughtLayout.setVisibility(View.VISIBLE);
+            userTicketsNoBoughtLayout.setVisibility(View.VISIBLE);
+            userTicketsBoughtLayout.setVisibility(View.GONE);
             if (ticketsBought <= 1)
                 howManyTicketsBought.setText("Tienes " + ticketsBought + " entrada para este concierto");
             else
                 howManyTicketsBought.setText("Tienes " + ticketsBought + " entradas para este concierto");
         }
-
-        ticketsCounter = view.findViewById(R.id.current_tickets_counter_to_book);
-
-        addTickets = view.findViewById(R.id.add_tickets);
-        addTickets.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                howManyTicketsToBookCounter++;
-                ticketsCounter.setText(String.valueOf(howManyTicketsToBookCounter));
-            }
-        });
-
-        removeTickets = view.findViewById(R.id.remove_tickets);
-        removeTickets.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (howManyTicketsToBookCounter - 1 <= 1)
-                    howManyTicketsToBookCounter = 1;
-                else howManyTicketsToBookCounter--;
-
-                ticketsCounter.setText(String.valueOf(howManyTicketsToBookCounter));
-            }
-        });
-
-        bookTickets = view.findViewById(R.id.buy_tickets_btn);
-        bookTickets.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                bookTickets(price);
-            }
-        });
 
         goPlaceIndicationsBtn = view.findViewById(R.id.go_place_btn);
         goPlaceIndicationsBtn.setOnClickListener(new View.OnClickListener() {

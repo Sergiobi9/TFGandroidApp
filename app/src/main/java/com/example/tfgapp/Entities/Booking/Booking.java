@@ -8,6 +8,8 @@ public class Booking {
     private String id;
     @SerializedName("userId")
     private String userId;
+    @SerializedName("ticketId")
+    private String ticketId;
     @SerializedName("concertId")
     private String concertId;
     @SerializedName("price")
@@ -15,11 +17,21 @@ public class Booking {
     @SerializedName("dateBooked")
     private String dateBooked;
 
-    public Booking(String userId, String concertId, double price, String dateBooked) {
+    public Booking(String id, String userId, String ticketId, String concertId, double price, String dateBooked) {
+        this.id = id;
         this.userId = userId;
+        this.ticketId = ticketId;
         this.concertId = concertId;
         this.price = price;
         this.dateBooked = dateBooked;
+    }
+
+    public String getTicketId() {
+        return ticketId;
+    }
+
+    public void setTicketId(String ticketId) {
+        this.ticketId = ticketId;
     }
 
     public Booking(){}

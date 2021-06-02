@@ -22,11 +22,7 @@ import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.example.tfgapp.Adapters.MusicStyleFollowingAdapter;
 import com.example.tfgapp.Adapters.RatingAdapter;
-import com.example.tfgapp.Adapters.TicketsAdapter;
-import com.example.tfgapp.Entities.Booking.BookingTicketsList;
-import com.example.tfgapp.Entities.Rating.Rating;
 import com.example.tfgapp.Entities.Rating.RatingSimplified;
 import com.example.tfgapp.Global.Api;
 import com.example.tfgapp.Global.CurrentUser;

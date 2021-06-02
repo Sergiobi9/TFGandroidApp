@@ -122,7 +122,11 @@ public class CreateConcertActivity extends AppCompatActivity {
     }
 
     public static ArrayList<ConcertIntervalPricing> getConcertIntervalPricing() {
-        return concertIntervalPricing;
+        if (concertIntervalPricing != null) {
+            return concertIntervalPricing;
+        } else {
+            return new ArrayList<>();
+        }
     }
 
     public static void setConcertIntervalPricing(ArrayList<ConcertIntervalPricing> concertIntervalPricing) {
@@ -206,6 +210,9 @@ public class CreateConcertActivity extends AppCompatActivity {
         registeredConcert.setUserId(userId);
 
         ConcertRegister concertRegister = new ConcertRegister(registeredConcert, registeredConcertLocation, concertImagesArrayList.size(), concertIntervalPricing);
+
+        Log.d(TAG, concertRegister.toString());
+
         Call<Concert> call = Api.getInstance().getAPI().createConcert(concertRegister);
         call.enqueue(new Callback<Concert>() {
             @Override

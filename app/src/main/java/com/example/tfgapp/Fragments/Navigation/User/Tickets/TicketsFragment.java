@@ -7,7 +7,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,8 +16,6 @@ import android.widget.ImageView;
 import com.example.tfgapp.Adapters.TicketsAdapter;
 import com.example.tfgapp.Entities.Booking.Booking;
 import com.example.tfgapp.Entities.Booking.BookingTicketsList;
-import com.example.tfgapp.Entities.Concert.ConcertReduced;
-import com.example.tfgapp.Fragments.Artist.ArtistFragment;
 import com.example.tfgapp.Global.Api;
 import com.example.tfgapp.Global.CurrentUser;
 import com.example.tfgapp.Global.Helpers;

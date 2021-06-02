@@ -1,14 +1,23 @@
 package com.example.tfgapp.Entities.Concert.Pricing;
 
 
+import com.google.gson.annotations.SerializedName;
+
 public class ConcertIntervalPricing {
 
+    @SerializedName("id")
     private String id;
-    private String name;
-    private String description;
+    @SerializedName("name")
+    private String name = "";
+    @SerializedName("description")
+    private String description = "";
+    @SerializedName("numberTickets")
     private int numberTickets;
+    @SerializedName("cost")
     private double cost;
+    @SerializedName("discountApplied")
     private double discountApplied;
+    @SerializedName("concertId")
     private String concertId;
 
     public ConcertIntervalPricing(){}

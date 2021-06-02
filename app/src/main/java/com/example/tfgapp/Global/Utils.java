@@ -32,13 +32,15 @@ public class Utils {
     }
 
     public static void responsiveViewWidth(View view, double appliedWidth, Activity activity){
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        activity.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        int screenWidth = displayMetrics.widthPixels;
+        try {
+            DisplayMetrics displayMetrics = new DisplayMetrics();
+            activity.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+            int screenWidth = displayMetrics.widthPixels;
 
-        ViewGroup.LayoutParams params = view.getLayoutParams();
-        params.width = (int) (screenWidth * appliedWidth);
-        view.setLayoutParams(params);
+            ViewGroup.LayoutParams params = view.getLayoutParams();
+            params.width = (int) (screenWidth * appliedWidth);
+            view.setLayoutParams(params);
+        } catch (NullPointerException nullPointerException){}
     }
 
     public static String getMonthSimplified(int position){
@@ -60,13 +62,17 @@ public class Utils {
     }
 
     public static void responsiveView(View view, double appliedWidth, double appliedHeight, Activity activity){
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        activity.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        int screenWidth = displayMetrics.widthPixels;
+        try {
+            DisplayMetrics displayMetrics = new DisplayMetrics();
+            activity.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+            int screenWidth = displayMetrics.widthPixels;
 
-        ViewGroup.LayoutParams params = view.getLayoutParams();
-        params.height = (int) (screenWidth * appliedHeight);
-        params.width = (int) (screenWidth * appliedWidth);
-        view.setLayoutParams(params);
+            ViewGroup.LayoutParams params = view.getLayoutParams();
+            params.height = (int) (screenWidth * appliedHeight);
+            params.width = (int) (screenWidth * appliedWidth);
+            view.setLayoutParams(params);
+        } catch (NullPointerException np){
+
+        }
     }
 }

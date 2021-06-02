@@ -127,7 +127,7 @@
                     android:textSize="12dp"
                     android:fontFamily="@font/lato"
                     android:background="@drawable/transparent_btn"
-                    android:text="Listado conciertos">
+                    android:text="Conciertos">
 
                 </Button>
                 <Button

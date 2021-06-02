@@ -1,6 +1,8 @@
 package com.example.tfgapp.Entities.Concert;
 
 import com.example.tfgapp.Entities.Artist.ArtistSimplified;
+import com.example.tfgapp.Entities.Concert.Pricing.ConcertIntervalPricing;
+import com.example.tfgapp.Entities.Concert.Pricing.ConcertIntervalPricingDetails;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
@@ -13,8 +15,8 @@ public class FullConcertDetails {
     private ConcertLocationReduced concertLocation;
     @SerializedName("concertArtists")
     private ArrayList<ArtistSimplified> concertArtists;
-    @SerializedName("placesRemaining")
-    private int placesRemaining;
+    @SerializedName("concertTickets")
+    private ArrayList<ConcertIntervalPricingDetails> concertTickets;
     @SerializedName("bookingsIds")
     private ArrayList<String> bookingsIds;
     @SerializedName("imagesUrls")
@@ -46,12 +48,12 @@ public class FullConcertDetails {
         this.concertArtists = concertArtists;
     }
 
-    public int getPlacesRemaining() {
-        return placesRemaining;
+    public ArrayList<ConcertIntervalPricingDetails> getConcertTickets() {
+        return concertTickets;
     }
 
-    public void setPlacesRemaining(int placesRemaining) {
-        this.placesRemaining = placesRemaining;
+    public void setConcertTickets(ArrayList<ConcertIntervalPricingDetails> concertTickets) {
+        this.concertTickets = concertTickets;
     }
 
     public ArrayList<String> getBookingsIds() {

@@ -176,4 +176,25 @@ public class ConcertRegister {
     public void setArtistsIds(ArrayList<String> artistsIds) {
         this.artistsIds = artistsIds;
     }
+
+    @Override
+    public String toString() {
+        return "ConcertRegister{" +
+                "name='" + name + '\'' +
+                ", latitude=" + latitude +
+                ", longitude=" + longitude +
+                ", placeName='" + placeName + '\'' +
+                ", placeAddress='" + placeAddress + '\'' +
+                ", placeDescription='" + placeDescription + '\'' +
+                ", dateCreated='" + dateCreated + '\'' +
+                ", dateStarts='" + dateStarts + '\'' +
+                ", userId='" + userId + '\'' +
+                ", description='" + description + '\'' +
+                ", extraDescription='" + extraDescription + '\'' +
+                ", finished=" + finished +
+                ", numberImages=" + numberImages +
+                ", concertIntervalPricing=" + concertIntervalPricing +
+                ", artistsIds=" + artistsIds +
+                '}';
+    }
 }

@@ -104,6 +104,7 @@ public class ConcertCoverFragment extends Fragment {
 
                 if (coverUri == null){
                     Globals.displayShortToast(context, "Por favor, selecciona una imagen cover para tu concierto");
+                    return;
                 }
 
                 getFragmentManager().beginTransaction().replace(R.id.concert_fragment, new ConcertArtistsFragment()).addToBackStack(null).commit();
