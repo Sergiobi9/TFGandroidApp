@@ -42,11 +42,11 @@ public class Helpers {
         Calendar rightNow = Calendar.getInstance();
         int currentHourIn24Format = rightNow.get(Calendar.HOUR_OF_DAY); // return the hour in 24 hrs format (ranging from 0-23)
         if (currentHourIn24Format >= 21 || currentHourIn24Format < 6)
-            return "Good night";
+            return "Buenas noches";
         else if (currentHourIn24Format < 12)
-            return "Good morning";
+            return "Buenos días";
         else
-            return "Good afternoon";
+            return "Buenas tardes";
     }
 
     private static boolean isUserBirthday(UserSession userSession) {

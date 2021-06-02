@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -117,6 +118,8 @@ public class HomeFragment extends Fragment {
         return view;
     }
 
+    boolean permissionRequested = false;
+
     private void getCurrentLocation() {
         if (Permissions.checkLocationPermission(context)){
             buildLocationRequest();
@@ -132,7 +135,43 @@ public class HomeFragment extends Fragment {
                             }
                         }
                     });
+        } else {
+            permissionRequested = true;
+            Permissions.requestLocationPermission(getActivity());
         }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        Globals.displayShortToast(context, "EI");
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+            if (Permissions.checkLocationPermission(context)){
+                buildLocationRequest();
+                fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
+
+                fusedLocationProviderClient.requestLocationUpdates(locationRequest, getPendingIntent());
+                fusedLocationProviderClient.getLastLocation()
+                        .addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
+                            @Override
+                            public void onSuccess(Location location) {
+                                if (location != null){
+                                    getNearConcerts(location.getLatitude(), location.getLongitude());
+                                }
+                            }
+                        });
+            }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Globals.displayShortToast(context, "PAUSE");
+
     }
 
     private PendingIntent getPendingIntent() {
