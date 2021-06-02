@@ -87,4 +87,18 @@ public class ConcertIntervalPricingDetails {
     public void setTicketsBought(int ticketsBought) {
         this.ticketsBought = ticketsBought;
     }
+
+    @Override
+    public String toString() {
+        return "ConcertIntervalPricingDetails{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", numberTickets=" + numberTickets +
+                ", cost=" + cost +
+                ", discountApplied=" + discountApplied +
+                ", remaining=" + remaining +
+                ", ticketsBought=" + ticketsBought +
+                '}';
+    }
 }

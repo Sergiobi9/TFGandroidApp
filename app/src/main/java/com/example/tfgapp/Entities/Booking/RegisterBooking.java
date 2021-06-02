@@ -2,8 +2,11 @@ package com.example.tfgapp.Entities.Booking;
 
 import android.text.format.DateUtils;
 
+import com.example.tfgapp.Entities.Concert.Pricing.ConcertIntervalPricingDetails;
 import com.example.tfgapp.Global.Helpers;
 import com.google.gson.annotations.SerializedName;
+
+import java.util.ArrayList;
 
 public class RegisterBooking {
 
@@ -12,13 +15,13 @@ public class RegisterBooking {
     @SerializedName("concertId")
     private String concertId;
     @SerializedName("bookings")
-    private int bookings;
+    private ArrayList<ConcertIntervalPricingDetails> bookings;
     @SerializedName("dateBooked")
     private String dateBooked;
 
     public RegisterBooking() { }
 
-    public RegisterBooking(String userId, String concertId, int bookings) {
+    public RegisterBooking(String userId, String concertId, ArrayList<ConcertIntervalPricingDetails> bookings) {
         this.userId = userId;
         this.concertId = concertId;
         this.bookings = bookings;
@@ -41,11 +44,11 @@ public class RegisterBooking {
         this.concertId = concertId;
     }
 
-    public int getBookings() {
+    public ArrayList<ConcertIntervalPricingDetails> getBookings() {
         return bookings;
     }
 
-    public void setBookings(int bookings) {
+    public void setBookings(ArrayList<ConcertIntervalPricingDetails> bookings) {
         this.bookings = bookings;
     }
 
@@ -55,5 +58,15 @@ public class RegisterBooking {
 
     public void setDateBooked(String dateBooked) {
         this.dateBooked = dateBooked;
+    }
+
+    @Override
+    public String toString() {
+        return "RegisterBooking{" +
+                "userId='" + userId + '\'' +
+                ", concertId='" + concertId + '\'' +
+                ", bookings=" + bookings +
+                ", dateBooked='" + dateBooked + '\'' +
+                '}';
     }
 }

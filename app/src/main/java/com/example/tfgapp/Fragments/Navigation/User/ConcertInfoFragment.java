@@ -152,6 +152,14 @@ public class ConcertInfoFragment extends Fragment {
     private void loadConcertInfoView(FullConcertDetails fullConcertDetails){
         concertCover = view.findViewById(R.id.concert_cover);
 
+        bookTickets = view.findViewById(R.id.buy_tickets_btn);
+        bookTickets.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bookTickets();
+            }
+        });
+
         String imageUrl = fullConcertDetails.getConcertDetails().getConcertCover();
         Glide.with(context).load(imageUrl)
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
@@ -258,18 +266,10 @@ public class ConcertInfoFragment extends Fragment {
         });
     }
 
-    private void bookTickets(double price){
+    private void bookTickets(){
         String userId = CurrentUser.getInstance(context).getCurrentUser().getUser().getId();
-
         dialogPurchasingTickets();
-
         getTickets(userId);
-
-        if (price == 0.0){
-            getTickets(userId);
-        } else {
-            Globals.displayShortToast(context, "Payment in process");
-        }
     }
 
     private Dialog dialogPurchasing;
@@ -294,8 +294,9 @@ public class ConcertInfoFragment extends Fragment {
     }
 
     private void getTickets(String userId){
-        RegisterBooking registerBooking = new RegisterBooking(userId, concertId, howManyTicketsToBookCounter);
-        Call<InfoResponse> call = Api.getInstance().getAPI().bookConcertTickets(registerBooking);
+        RegisterBooking registerBooking = new RegisterBooking(userId, concertId, concertIntervalPricingDetails);
+        System.out.println(registerBooking.toString());
+       Call<InfoResponse> call = Api.getInstance().getAPI().bookConcertTickets(registerBooking);
         call.enqueue(new Callback<InfoResponse>() {
             @Override
             public void onResponse(Call<InfoResponse> call, Response<InfoResponse> response) {

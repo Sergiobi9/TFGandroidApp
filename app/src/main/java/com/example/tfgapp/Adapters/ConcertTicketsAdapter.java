@@ -75,7 +75,7 @@ public class ConcertTicketsAdapter extends RecyclerView.Adapter<ConcertTicketsAd
         holder.remove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (concertIntervalPricingDetail.getTicketsBought() - 1  == 0){
+                if (concertIntervalPricingDetail.getTicketsBought() - 1  < 0){
                     Globals.displayShortToast(context, "Minimo una entrada para comprar");
                 } else {
                     concertIntervalPricingDetail.setTicketsBought(concertIntervalPricingDetail.getTicketsBought() - 1);
