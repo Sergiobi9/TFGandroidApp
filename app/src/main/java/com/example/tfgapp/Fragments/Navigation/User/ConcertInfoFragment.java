@@ -225,8 +225,6 @@ public class ConcertInfoFragment extends Fragment {
             ticketsRecyclerView.setAdapter(concertTicketsAdapter);
         }
 
-
-
         concertName = view.findViewById(R.id.concert_name);
         concertArtistsNames = view.findViewById(R.id.concert_artists);
 
@@ -557,6 +555,7 @@ public class ConcertInfoFragment extends Fragment {
             placeImagesCarousel.setAutoPlay(false);
             placeImagesCarousel.setAutoPlayDelay(3000);
             placeImagesCarousel.hideIndicator(true);
+            placeImagesCarousel.setScaleOnScroll(false);
             placeImagesCarousel.setIndicatorAnimationType(IndicatorAnimationType.THIN_WORM);
             placeImagesCarousel.setCarouselOffset(OffsetType.START);
             placeImagesCarousel.setCarouselViewListener(new CarouselViewListener() {

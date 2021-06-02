@@ -268,8 +268,9 @@
 
             <com.jama.carouselview.CarouselView
                 android:id="@+id/carrousel_concert_place_images"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_marginBottom="20dp"
+                android:paddingRight="10dp"
                 android:layout_marginTop="20sp"
                 android:layout_height="wrap_content" />
 

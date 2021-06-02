@@ -318,7 +318,7 @@
                         android:layout_marginLeft="15dp"
                         android:fontFamily="@font/lato"
                         android:textSize="18sp"
-                        android:text="Sobre {{nombreApp}}">
+                        android:text="Sobre Stereo">
                     </TextView>
 
                 </LinearLayout>

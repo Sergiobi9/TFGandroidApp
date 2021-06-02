@@ -113,7 +113,7 @@ public class HomeArtistFragment extends Fragment {
         return view;
     }
 
-    private void showManageConcertDialog(String artistId){
+    private void showManageConcertDialog(String concertId){
         Dialog dialog = new Dialog(context);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(true);
@@ -122,6 +122,19 @@ public class HomeArtistFragment extends Fragment {
         dialog.setContentView(view);
 
         Animation alhpa = AnimationUtils.loadAnimation(context, R.anim.fade_in);
+
+        TextView showInfo = view.findViewById(R.id.show);
+        showInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle bundle = new Bundle();
+                bundle.putString("concertId", concertId);
+                ConcertInfoFragment concertInfoFragment = new ConcertInfoFragment();
+                concertInfoFragment.setArguments(bundle);
+                getFragmentManager().beginTransaction().replace(R.id.main_fragment, concertInfoFragment).addToBackStack(null).commit();
+                dialog.dismiss();
+            }
+        });
 
         RelativeLayout all = view.findViewById(R.id.body);
         all.startAnimation(alhpa);

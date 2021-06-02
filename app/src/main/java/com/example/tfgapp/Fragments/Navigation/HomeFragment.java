@@ -118,8 +118,6 @@ public class HomeFragment extends Fragment {
         return view;
     }
 
-    boolean permissionRequested = false;
-
     private void getCurrentLocation() {
         if (Permissions.checkLocationPermission(context)){
             buildLocationRequest();
@@ -136,15 +134,8 @@ public class HomeFragment extends Fragment {
                         }
                     });
         } else {
-            permissionRequested = true;
             Permissions.requestLocationPermission(getActivity());
         }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        Globals.displayShortToast(context, "EI");
-
     }
 
     @Override
@@ -170,8 +161,6 @@ public class HomeFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        Globals.displayShortToast(context, "PAUSE");
-
     }
 
     private PendingIntent getPendingIntent() {
