@@ -38,6 +38,7 @@ import com.example.tfgapp.Entities.User.UserSession;
 import com.example.tfgapp.Fragments.Navigation.User.ConcertInfoFragment;
 import com.example.tfgapp.Global.Api;
 import com.example.tfgapp.Global.CurrentUser;
+import com.example.tfgapp.Global.Globals;
 import com.example.tfgapp.Global.Helpers;
 import com.example.tfgapp.Global.Utils;
 import com.example.tfgapp.R;
@@ -49,6 +50,7 @@ import com.jama.carouselview.enums.OffsetType;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -370,10 +372,79 @@ public class ConcertFragment extends Fragment {
             }
         });
 
+        TextView delete = view.findViewById(R.id.delete);
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.cancel();
+                deleteConcertDialog(concertId);
+            }
+        });
+
+
+
         RelativeLayout all = view.findViewById(R.id.body);
         all.startAnimation(alhpa);
 
         dialog.show();
+    }
+
+    private void deleteConcertDialog(String concertId){
+        Dialog dialog = new Dialog(context);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(true);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        View view = LayoutInflater.from(context).inflate(R.layout.dialog_delete_concert, null);
+        dialog.setContentView(view);
+
+        Animation alhpa = AnimationUtils.loadAnimation(context, R.anim.fade_in);
+        TextView delete = view.findViewById(R.id.accept);
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.cancel();
+                deleteConcert(concertId, dialog);
+            }
+        });
+
+        RelativeLayout all = view.findViewById(R.id.body);
+        all.startAnimation(alhpa);
+
+        dialog.show();
+    }
+
+    private void deleteConcert(String concertId, Dialog dialog){
+        Call<ResponseBody> call = Api.getInstance().getAPI().deleteConcertByConcertId(concertId);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                switch (response.code()) {
+                    case 200:
+                        Log.d(TAG, "Get artist featuring concerts success " + response.body());
+                        Globals.displayShortToast(context, "Concierto eliminado");
+                        dialog.cancel();
+
+                        Bundle bundle = new Bundle();
+                        ConcertFragment concertFragment = new ConcertFragment();
+                        concertFragment.setArguments(bundle);
+                        getFragmentManager().beginTransaction().replace(R.id.main_fragment, concertFragment).addToBackStack(null).commit();
+                        dialog.dismiss();
+                        break;
+                    default:
+                        Log.d(TAG, "Get artist featuring concerts default " + response.code());
+                        Globals.displayShortToast(context, "No se ha podido eliminar tu concierto, prueba de nuevo más tarde");
+                        dialog.cancel();
+                        break;
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.d(TAG, "Get artist featuring concerts failure " + t.getLocalizedMessage());
+                Globals.displayShortToast(context, "No se ha podido eliminar tu concierto, prueba de nuevo más tarde");
+                dialog.cancel();
+            }
+        });
     }
 
     private void initView(){

@@ -129,4 +129,7 @@ public interface ApiInterface {
 
     @GET("/concert/next/artistId/{artistId}/{currentDate}")
     Call<ConcertReduced> getArtistNextConcert(@Path("artistId") String artistId, @Path("currentDate") String currentDate);
+
+    @DELETE("/concert/delete/concertId/{concertId}")
+    Call<ResponseBody> deleteConcertByConcertId(@Path("concertId") String concertId);
 }

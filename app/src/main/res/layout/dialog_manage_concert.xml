@@ -75,6 +75,7 @@
             android:layout_height="wrap_content"
             android:text="Eliminar"
             android:gravity="center"
+            android:id="@+id/delete"
             android:textColor="@color/red_logout"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="5dp"
