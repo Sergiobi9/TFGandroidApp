@@ -126,6 +126,7 @@
                     android:paddingRight="20sp"
                     android:textSize="12dp"
                     android:fontFamily="@font/lato"
+                    android:textColor="@color/black"
                     android:background="@drawable/transparent_btn"
                     android:text="Conciertos">
 

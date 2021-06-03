@@ -67,8 +67,8 @@ public interface ApiInterface {
     @GET("/artist/home/suggested/{userId}")
     Call<ArrayList<ArtistSimplified>> getSuggestedArtists(@Path("userId") String userId);
 
-    @GET("/concert/all/{currentDate}")
-    Call<ArrayList<ConcertReduced>> getAllConcertsActiveByCurrentDate(@Path("currentDate") String currentDate);
+    @GET("/concert/all/currentDate/{currentDate}/startDate/{startDate}/endDate/{endDate}")
+    Call<ArrayList<ConcertReduced>> getAllConcertsActiveByCurrentDate(@Path("startDate") String startDate, @Path("endDate") String endDate, @Path("currentDate") String currentDate);
 
     @GET("/artist/follow/{artistId}/{userId}/{follow}")
     Call<ResponseBody> followArtist(@Path("artistId") String artistId, @Path("userId") String userId, @Path("follow") boolean follow);

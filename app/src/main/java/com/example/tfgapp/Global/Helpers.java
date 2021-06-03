@@ -89,6 +89,19 @@ public class Helpers {
         return content != null ? content.substring(0, 1).toUpperCase() + content.substring(1) : "";
     }
 
+    public static String getDateFinalStringFromLong(Long date){
+        Date dateToDate = new Date(date);
+        dateToDate.setHours(23);
+        dateToDate.setMinutes(59);
+        return timePattern.format(dateToDate);
+    }
+
+    public static String getDateStartStringFromLong(Long date){
+        Date dateToDate = new Date(date);
+        return timePattern.format(dateToDate);
+    }
+
+
     public static boolean isPasswordValid(String password){
         int passwordLength = password.length();
 
@@ -120,6 +133,17 @@ public class Helpers {
         return date;
     }
 
+    public static Date getDateStringAsDate(String dateAsString) {
+        Date date = null;
+        try {
+            date = timePattern.parse(dateAsString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return date;
+    }
+
     public static String getTimeStamp(){
         TimeZone tz = Calendar.getInstance().getTimeZone();
         timePattern.setTimeZone(tz);
@@ -144,6 +168,13 @@ public class Helpers {
         String[] monts = {"Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dec"};
 
         return monts[month];
+    }
+
+    public static String addYearToTimestamp(){
+        Calendar c = Calendar.getInstance();
+        c.setTime(getDateStringAsDate(getTimeStamp()));
+        c.add(Calendar.YEAR, 5);
+        return getDateWithPattern(c.getTime());
     }
 
     public static Calendar getCalendarFromDate(Date birthdayCalendarDate) {
