@@ -116,9 +116,6 @@ public class SearchConcertFragment extends Fragment implements ConcertsAdapter.O
                         startDate = Helpers.getDateStartStringFromLong(first);
                         endDate = Helpers.getDateFinalStringFromLong(last);
 
-                        Globals.displayShortToast(context, "Selected Date start is : " + startDate);
-
-
                         // if the user clicks on the positive
                         // button that is ok button update the
                         // selected date
@@ -142,7 +139,6 @@ public class SearchConcertFragment extends Fragment implements ConcertsAdapter.O
         startDate = Helpers.getTimeStamp();
         endDate  = Helpers.addYearToTimestamp();
 
-        Globals.displayShortToast(context, endDate);
         getConcerts();
 
     }
