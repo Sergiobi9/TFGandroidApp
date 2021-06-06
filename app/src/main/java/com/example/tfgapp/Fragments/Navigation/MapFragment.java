@@ -26,6 +26,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -95,6 +96,8 @@ public class MapFragment extends Fragment {
     private int lastPostionCarrousel = 0;
 
     private FloatingActionButton searchDateBtn, rangePickerBtn;
+    private String startDate;
+    private String endDate;
 
     public MapFragment() {
         // Required empty public constructor
@@ -127,6 +130,10 @@ public class MapFragment extends Fragment {
                         Long first = selection.first;
                         Long last = selection.second;
 
+                        startDate = Helpers.getDateStartStringFromLong(first);
+                        endDate = Helpers.getDateFinalStringFromLong(last);
+
+                        createPoints();
                     }
                 });
 
@@ -174,6 +181,17 @@ public class MapFragment extends Fragment {
                 textKm.setText(radius + " kilómetros");
             }
         });
+
+        Button nextBtn = view.findViewById(R.id.range_next_btn);
+        nextBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                createPoints();
+                dialog.cancel();
+            }
+        });
+
+
         Animation alhpa = AnimationUtils.loadAnimation(context, R.anim.fade_in);
 
         RelativeLayout all = view.findViewById(R.id.body);
@@ -234,87 +252,92 @@ public class MapFragment extends Fragment {
     }
 
     private void initCarrousel(){
+        try {
+            if (concertsArrayList != null && concertsArrayList.size() != 0){
+                concertsCarousel = view.findViewById(R.id.map_concerts_list);
+                concertsCarousel.addOnAttachStateChangeListener(null);
+                concertsCarousel.setSize(concertsArrayList.size());
+                concertsCarousel.setResource(R.layout.map_concerts_carousel_view);
+                concertsCarousel.setAutoPlay(false);
+                concertsCarousel.setAutoPlayDelay(3000);
+                concertsCarousel.hideIndicator(true);
+                concertsCarousel.setIndicatorAnimationType(IndicatorAnimationType.THIN_WORM);
+                concertsCarousel.setCarouselOffset(OffsetType.CENTER);
+                concertsCarousel.setCarouselViewListener(new CarouselViewListener() {
+                    @Override
+                    public void onBindView(View view, final int position) {
 
-        if (concertsArrayList != null && concertsArrayList.size() != 0){
-            concertsCarousel = view.findViewById(R.id.map_concerts_list);
+                        CardView concertImageLayout = view.findViewById(R.id.concert_cards);
+                        ImageView imageView = view.findViewById(R.id.imageView);
 
-            concertsCarousel.setSize(concertsArrayList.size());
-            concertsCarousel.setResource(R.layout.map_concerts_carousel_view);
-            concertsCarousel.setAutoPlay(false);
-            concertsCarousel.setAutoPlayDelay(3000);
-            concertsCarousel.hideIndicator(true);
-            concertsCarousel.setIndicatorAnimationType(IndicatorAnimationType.THIN_WORM);
-            concertsCarousel.setCarouselOffset(OffsetType.CENTER);
-            concertsCarousel.setCarouselViewListener(new CarouselViewListener() {
-                @Override
-                public void onBindView(View view, final int position) {
+                        TextView concertNameTv = view.findViewById(R.id.concert_name);
+                        concertNameTv.setText(concertsArrayList.get(position).getName());
+                        TextView concertAddress = view.findViewById(R.id.concert_place);
+                        concertAddress.setText(concertsArrayList.get(position).getPlaceName());
 
-                    CardView concertImageLayout = view.findViewById(R.id.concert_cards);
-                    ImageView imageView = view.findViewById(R.id.imageView);
+                        TextView concertDate = view.findViewById(R.id.concert_date);
+                        Calendar concertDateCalendar = Helpers.getDateAsCalendar(concertsArrayList.get(position).getDateStarts());
+                        concertDate.setText(concertDateCalendar.get(Calendar.DATE) + " " + Utils.getMonthSimplified(concertDateCalendar.get(Calendar.MONTH)) + " " + concertDateCalendar.get(Calendar.YEAR));
 
-                    TextView concertNameTv = view.findViewById(R.id.concert_name);
-                    concertNameTv.setText(concertsArrayList.get(position).getName());
-                    TextView concertAddress = view.findViewById(R.id.concert_place);
-                    concertAddress.setText(concertsArrayList.get(position).getPlaceName());
+                        Utils.responsiveView(concertImageLayout, 0.85, 0.3, getActivity());
+                        Utils.responsiveView(imageView, 0.3, 0.3, getActivity());
 
-                    TextView concertDate = view.findViewById(R.id.concert_date);
-                    Calendar concertDateCalendar = Helpers.getDateAsCalendar(concertsArrayList.get(position).getDateStarts());
-                    concertDate.setText(concertDateCalendar.get(Calendar.DATE) + " " + Utils.getMonthSimplified(concertDateCalendar.get(Calendar.MONTH)) + " " + concertDateCalendar.get(Calendar.YEAR));
+                        String imageUrl = concertsArrayList.get(position).getConcertCoverImage();
 
-                    Utils.responsiveView(concertImageLayout, 0.85, 0.3, getActivity());
-                    Utils.responsiveView(imageView, 0.3, 0.3, getActivity());
+                        Glide.with(context).load(imageUrl)
+                                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                                .skipMemoryCache(true)
+                                .listener(new RequestListener<Drawable>() {
+                                    @Override
+                                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                                        return false;
+                                    }
 
-                    String imageUrl = concertsArrayList.get(position).getConcertCoverImage();
+                                    @Override
+                                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                                        return false;
+                                    }
+                                }).into(imageView);
 
-                    Glide.with(context).load(imageUrl)
-                            .diskCacheStrategy(DiskCacheStrategy.NONE)
-                            .skipMemoryCache(true)
-                            .listener(new RequestListener<Drawable>() {
-                                @Override
-                                public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                                    return false;
-                                }
-
-                                @Override
-                                public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                                    return false;
-                                }
-                            }).into(imageView);
-
-                    view.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Bundle bundle = new Bundle();
-                            String concertId = concertsArrayList.get(position).getConcertId();
-                            bundle.putString("concertId", concertId);
-                            ConcertInfoFragment concertInfoFragment = new ConcertInfoFragment();
-                            concertInfoFragment.setArguments(bundle);
-                            getFragmentManager().beginTransaction().replace(R.id.main_fragment, concertInfoFragment).addToBackStack(null).commit();
-                        }
-                    });
-                }
-            });
-
-            concertsCarousel.setCarouselScrollListener(new CarouselScrollListener() {
-                @Override
-                public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState, int position) {
-                    if (lastPostionCarrousel != position) {
-                        lastPostionCarrousel = position;
-                        focusConcertOnCarouselScrolled(position);
+                        view.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Bundle bundle = new Bundle();
+                                String concertId = concertsArrayList.get(position).getConcertId();
+                                bundle.putString("concertId", concertId);
+                                ConcertInfoFragment concertInfoFragment = new ConcertInfoFragment();
+                                concertInfoFragment.setArguments(bundle);
+                                getFragmentManager().beginTransaction().replace(R.id.main_fragment, concertInfoFragment).addToBackStack(null).commit();
+                            }
+                        });
                     }
-                }
+                });
 
-                @Override
-                public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                }
+                concertsCarousel.setCarouselScrollListener(new CarouselScrollListener() {
+                    @Override
+                    public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState, int position) {
+                        if (lastPostionCarrousel != position) {
+                            lastPostionCarrousel = position;
+                            focusConcertOnCarouselScrolled(position);
+                        }
+                    }
 
-            });
+                    @Override
+                    public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                    }
 
+                });
 
-            concertsCarousel.show();
+                if (concertsCarousel != null)
+                    concertsCarousel.show();
+            }
+
+            showPoints();
+        } catch (IllegalArgumentException illegalArgumentException){
+
+        } catch (Exception e){
+
         }
-
-        showPoints();
     }
 
     private void focusConcertOnCarouselScrolled(int position) {
@@ -361,6 +384,8 @@ public class MapFragment extends Fragment {
     }
 
     private void createPoints(){
+        concertsArrayList = new ArrayList<>();
+
         Call<ArrayList<ConcertReduced>> call = Api.getInstance().getAPI().getConcertsNearby(Double.parseDouble(userLocation.latitude), Double.parseDouble(userLocation.longitude), radius);
         call.enqueue(new Callback<ArrayList<ConcertReduced>>() {
             @Override
