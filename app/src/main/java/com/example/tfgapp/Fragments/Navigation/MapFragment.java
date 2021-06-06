@@ -2,9 +2,11 @@ package com.example.tfgapp.Fragments.Navigation;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.net.Uri;
@@ -21,7 +23,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -54,6 +60,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.slider.Slider;
 import com.jama.carouselview.CarouselScrollListener;
 import com.jama.carouselview.CarouselView;
 import com.jama.carouselview.CarouselViewListener;
@@ -82,12 +89,12 @@ public class MapFragment extends Fragment {
 
     private CarouselView concertsCarousel;
     private ArrayList<ConcertReduced> concertsArrayList;
-    private int radius = 1000;
+    private int radius = 100;
 
     private UserLocation userLocation;
     private int lastPostionCarrousel = 0;
 
-    private FloatingActionButton searchDateBtn;
+    private FloatingActionButton searchDateBtn, rangePickerBtn;
 
     public MapFragment() {
         // Required empty public constructor
@@ -131,6 +138,14 @@ public class MapFragment extends Fragment {
             }
         });
 
+        rangePickerBtn = view.findViewById(R.id.filter_range_btn);
+        rangePickerBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openRangeDialog();
+            }
+        });
+
         if (Permissions.checkLocationPermission(context)){
             initMap();
             updateUserLocation();
@@ -139,6 +154,32 @@ public class MapFragment extends Fragment {
         }
 
         return view;
+    }
+
+    private void openRangeDialog(){
+        Dialog dialog = new Dialog(context);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(true);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        View view = LayoutInflater.from(context).inflate(R.layout.dialog_slider_map, null);
+        dialog.setContentView(view);
+
+        TextView textKm = view.findViewById(R.id.km_text);
+        textKm.setText(radius + " kilómetros");
+        Slider slider = view.findViewById(R.id.range_picker);
+        slider.addOnChangeListener(new Slider.OnChangeListener() {
+            @Override
+            public void onValueChange(@NonNull Slider slider, float value, boolean fromUser) {
+                radius = (int) value;
+                textKm.setText(radius + " kilómetros");
+            }
+        });
+        Animation alhpa = AnimationUtils.loadAnimation(context, R.anim.fade_in);
+
+        RelativeLayout all = view.findViewById(R.id.body);
+        all.startAnimation(alhpa);
+
+        dialog.show();
     }
 
     @Override
