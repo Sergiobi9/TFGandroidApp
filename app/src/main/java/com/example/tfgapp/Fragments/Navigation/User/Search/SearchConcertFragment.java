@@ -116,14 +116,7 @@ public class SearchConcertFragment extends Fragment implements ConcertsAdapter.O
                         startDate = Helpers.getDateStartStringFromLong(first);
                         endDate = Helpers.getDateFinalStringFromLong(last);
 
-                        // if the user clicks on the positive
-                        // button that is ok button update the
-                        // selected date
                         selectDate.setText(materialDatePicker.getHeaderText());
-                        // in the above statement, getHeaderText
-                        // will return selected date preview from the
-                        // dialog
-
                         getConcerts();
                     }
                 });

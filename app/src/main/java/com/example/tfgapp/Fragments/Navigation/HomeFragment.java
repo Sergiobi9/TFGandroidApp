@@ -206,14 +206,15 @@ public class HomeFragment extends Fragment {
     }
 
     private void loadNearConcertsCarousel() {
-        nearConcertsCarousel.setSize(nearConcertsArrayList.size());
-        nearConcertsCarousel.setResource(R.layout.carousel_items_list);
-        nearConcertsCarousel.setAutoPlay(false);
-        nearConcertsCarousel.setAutoPlayDelay(3000);
-        nearConcertsCarousel.hideIndicator(true);
-        nearConcertsCarousel.setIndicatorAnimationType(IndicatorAnimationType.THIN_WORM);
-        nearConcertsCarousel.setCarouselOffset(OffsetType.START);
-        nearConcertsCarousel.setCarouselViewListener(new CarouselViewListener() {
+        try {
+            nearConcertsCarousel.setSize(nearConcertsArrayList.size());
+            nearConcertsCarousel.setResource(R.layout.carousel_items_list);
+            nearConcertsCarousel.setAutoPlay(false);
+            nearConcertsCarousel.setAutoPlayDelay(3000);
+            nearConcertsCarousel.hideIndicator(true);
+            nearConcertsCarousel.setIndicatorAnimationType(IndicatorAnimationType.THIN_WORM);
+            nearConcertsCarousel.setCarouselOffset(OffsetType.START);
+            nearConcertsCarousel.setCarouselViewListener(new CarouselViewListener() {
                 @Override
                 public void onBindView(View view, final int position) {
                     /* Get screen size */
@@ -259,6 +260,9 @@ public class HomeFragment extends Fragment {
             });
 
             nearConcertsCarousel.show();
+        } catch (IllegalStateException ie){
+
+        }
     }
 
     private void initView(){

@@ -37,6 +37,8 @@ public class ConcertReduced {
     private ArrayList<String> imagesUrls;
     @SerializedName("artists")
     private ArrayList<ArtistInfo> artists;
+    @SerializedName("distance")
+    private int distance;
 
     public ConcertReduced() { }
 
@@ -158,5 +160,13 @@ public class ConcertReduced {
 
     public void setArtists(ArrayList<ArtistInfo> artists) {
         this.artists = artists;
+    }
+
+    public int getDistance() {
+        return distance;
+    }
+
+    public void setDistance(int distance) {
+        this.distance = distance;
     }
 }
