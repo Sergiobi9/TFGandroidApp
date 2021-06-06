@@ -37,8 +37,8 @@ public interface ApiInterface {
     @GET("/concert/home/popular/{userId}/{currentDate}")
     Call<ArrayList<ConcertReduced>> getPopularConcerts(@Path("userId") String userId, @Path("currentDate") String currentDate);
 
-    @GET("/concert/map/{userLatitude}/{userLongitude}/{radius}")
-    Call<ArrayList<ConcertReduced>> getConcertsNearby(@Path("userLatitude") double userLatitude, @Path("userLongitude") double userLongitude, @Path("radius") double radius);
+    @GET("/concert/map/latitude/{userLatitude}/longitude/{userLongitude}/radius/{radius}/currentDate/{currentDate}/startDate/{startDate}/endDate/{endDate}")
+    Call<ArrayList<ConcertReduced>> getConcertsNearby(@Path("userLatitude") double userLatitude, @Path("userLongitude") double userLongitude, @Path("radius") double radius,  @Path("currentDate") String currentDate,  @Path("startDate") String startDate,  @Path("endDate") String endDate);
 
     @POST("/auth/login")
     Call<UserSession> doUserLogin(@Body AuthenticationData authenticationData);

@@ -99,6 +99,8 @@ public class MapFragment extends Fragment {
     private String startDate;
     private String endDate;
 
+    private RelativeLayout carrouselContainer, loadingContainer;
+
     public MapFragment() {
         // Required empty public constructor
     }
@@ -137,6 +139,12 @@ public class MapFragment extends Fragment {
                     }
                 });
 
+        loadingContainer = view.findViewById(R.id.loading_layout);
+        carrouselContainer = view.findViewById(R.id.carousel_container);
+
+        loadingContainer.setVisibility(View.VISIBLE);
+        carrouselContainer.setVisibility(View.GONE);
+
         searchDateBtn = view.findViewById(R.id.search_date_by_date_btn);
         searchDateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -152,6 +160,9 @@ public class MapFragment extends Fragment {
                 openRangeDialog();
             }
         });
+
+        startDate = Helpers.getTimeStamp();
+        endDate = Helpers.addYearToTimestamp();
 
         if (Permissions.checkLocationPermission(context)){
             initMap();
@@ -181,6 +192,8 @@ public class MapFragment extends Fragment {
                 textKm.setText(radius + " kilómetros");
             }
         });
+
+        slider.setValue(radius);
 
         Button nextBtn = view.findViewById(R.id.range_next_btn);
         nextBtn.setOnClickListener(new View.OnClickListener() {
@@ -220,9 +233,11 @@ public class MapFragment extends Fragment {
     }
 
     private void showPoints(){
+        googleMap.clear();
         for (int i = 0; i < concertsArrayList.size(); i++) {
             ConcertReduced concertToShow = concertsArrayList.get(i);
 
+            Log.d(TAG, "Markers done " );
             googleMap.addMarker(
                     new MarkerOptions()
                             .position(new LatLng(concertToShow.getPlaceLatitude(), concertToShow.getPlaceLongitude()))
@@ -251,101 +266,122 @@ public class MapFragment extends Fragment {
         });
     }
 
-    private void initCarrousel(){
-        try {
-            if (concertsArrayList != null && concertsArrayList.size() != 0){
-                concertsCarousel = view.findViewById(R.id.map_concerts_list);
-                concertsCarousel.addOnAttachStateChangeListener(null);
-                concertsCarousel.setSize(concertsArrayList.size());
-                concertsCarousel.setResource(R.layout.map_concerts_carousel_view);
-                concertsCarousel.setAutoPlay(false);
-                concertsCarousel.setAutoPlayDelay(3000);
-                concertsCarousel.hideIndicator(true);
-                concertsCarousel.setIndicatorAnimationType(IndicatorAnimationType.THIN_WORM);
-                concertsCarousel.setCarouselOffset(OffsetType.CENTER);
-                concertsCarousel.setCarouselViewListener(new CarouselViewListener() {
-                    @Override
-                    public void onBindView(View view, final int position) {
+    private void initCarousel(){
+        if (concertsArrayList != null && concertsArrayList.size() == 0){
+            carrouselContainer.setVisibility(View.GONE);
+        } else {
+            try {
+                if (concertsArrayList != null && concertsArrayList.size() != 0){
+                    concertsCarousel = view.findViewById(R.id.map_concerts_list);
+                    concertsCarousel.destroyDrawingCache();
+                    concertsCarousel.setSize(concertsArrayList.size());
+                    concertsCarousel.setResource(R.layout.map_concerts_carousel_view);
+                    concertsCarousel.setAutoPlay(false);
+                    concertsCarousel.setAutoPlayDelay(3000);
+                    concertsCarousel.hideIndicator(true);
+                    concertsCarousel.setIndicatorAnimationType(IndicatorAnimationType.THIN_WORM);
+                    concertsCarousel.setCarouselOffset(OffsetType.CENTER);
+                    concertsCarousel.setCarouselViewListener(new CarouselViewListener() {
+                        @Override
+                        public void onBindView(View view, final int position) {
+                            try {
+                                CardView concertImageLayout = view.findViewById(R.id.concert_cards);
+                                ImageView imageView = view.findViewById(R.id.imageView);
 
-                        CardView concertImageLayout = view.findViewById(R.id.concert_cards);
-                        ImageView imageView = view.findViewById(R.id.imageView);
+                                TextView concertNameTv = view.findViewById(R.id.concert_name);
+                                concertNameTv.setText(concertsArrayList.get(position).getName());
+                                TextView concertAddress = view.findViewById(R.id.concert_place);
+                                concertAddress.setText(concertsArrayList.get(position).getPlaceName());
 
-                        TextView concertNameTv = view.findViewById(R.id.concert_name);
-                        concertNameTv.setText(concertsArrayList.get(position).getName());
-                        TextView concertAddress = view.findViewById(R.id.concert_place);
-                        concertAddress.setText(concertsArrayList.get(position).getPlaceName());
+                                TextView concertDate = view.findViewById(R.id.concert_date);
+                                Calendar concertDateCalendar = Helpers.getDateAsCalendar(concertsArrayList.get(position).getDateStarts());
+                                concertDate.setText(concertDateCalendar.get(Calendar.DATE) + " " + Utils.getMonthSimplified(concertDateCalendar.get(Calendar.MONTH)) + " " + concertDateCalendar.get(Calendar.YEAR));
 
-                        TextView concertDate = view.findViewById(R.id.concert_date);
-                        Calendar concertDateCalendar = Helpers.getDateAsCalendar(concertsArrayList.get(position).getDateStarts());
-                        concertDate.setText(concertDateCalendar.get(Calendar.DATE) + " " + Utils.getMonthSimplified(concertDateCalendar.get(Calendar.MONTH)) + " " + concertDateCalendar.get(Calendar.YEAR));
+                                Utils.responsiveView(concertImageLayout, 0.85, 0.3, getActivity());
+                                Utils.responsiveView(imageView, 0.3, 0.3, getActivity());
 
-                        Utils.responsiveView(concertImageLayout, 0.85, 0.3, getActivity());
-                        Utils.responsiveView(imageView, 0.3, 0.3, getActivity());
+                                String imageUrl = concertsArrayList.get(position).getConcertCoverImage();
 
-                        String imageUrl = concertsArrayList.get(position).getConcertCoverImage();
+                                Glide.with(context).load(imageUrl)
+                                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                                        .skipMemoryCache(true)
+                                        .listener(new RequestListener<Drawable>() {
+                                            @Override
+                                            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                                                return false;
+                                            }
 
-                        Glide.with(context).load(imageUrl)
-                                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                                .skipMemoryCache(true)
-                                .listener(new RequestListener<Drawable>() {
+                                            @Override
+                                            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                                                return false;
+                                            }
+                                        }).into(imageView);
+
+                                view.setOnClickListener(new View.OnClickListener() {
                                     @Override
-                                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                                        return false;
+                                    public void onClick(View v) {
+                                        Bundle bundle = new Bundle();
+                                        String concertId = concertsArrayList.get(position).getConcertId();
+                                        bundle.putString("concertId", concertId);
+                                        ConcertInfoFragment concertInfoFragment = new ConcertInfoFragment();
+                                        concertInfoFragment.setArguments(bundle);
+                                        getFragmentManager().beginTransaction().replace(R.id.main_fragment, concertInfoFragment).addToBackStack(null).commit();
                                     }
-
-                                    @Override
-                                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                                        return false;
-                                    }
-                                }).into(imageView);
-
-                        view.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                Bundle bundle = new Bundle();
-                                String concertId = concertsArrayList.get(position).getConcertId();
-                                bundle.putString("concertId", concertId);
-                                ConcertInfoFragment concertInfoFragment = new ConcertInfoFragment();
-                                concertInfoFragment.setArguments(bundle);
-                                getFragmentManager().beginTransaction().replace(R.id.main_fragment, concertInfoFragment).addToBackStack(null).commit();
-                            }
-                        });
-                    }
-                });
-
-                concertsCarousel.setCarouselScrollListener(new CarouselScrollListener() {
-                    @Override
-                    public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState, int position) {
-                        if (lastPostionCarrousel != position) {
-                            lastPostionCarrousel = position;
-                            focusConcertOnCarouselScrolled(position);
+                                });
+                            } catch (IndexOutOfBoundsException indexOutOfBoundsException){}
+                            catch (Exception exception){}
                         }
-                    }
+                    });
 
-                    @Override
-                    public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                    }
+                    concertsCarousel.setCarouselScrollListener(new CarouselScrollListener() {
+                        @Override
+                        public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState, int position) {
+                            Log.d(TAG, String.valueOf(newState));
+                            Log.d(TAG, String.valueOf(position));
 
-                });
+                            try {
+                                if (lastPostionCarrousel != position) {
+                                    lastPostionCarrousel = position;
+                                    focusConcertOnCarouselScrolled(position);
+                                }
+                            } catch (IndexOutOfBoundsException indexOutOfBoundsException){}
+                            catch (Exception exception){}
+                        }
 
-                if (concertsCarousel != null)
-                    concertsCarousel.show();
+                        @Override
+                        public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                            try {
+
+                            } catch (IndexOutOfBoundsException indexOutOfBoundsException){}
+                            catch (Exception exception){}
+                        }
+
+                    });
+
+                    if (concertsCarousel != null)
+                        concertsCarousel.show();
+                }
+
+            } catch (IllegalArgumentException illegalArgumentException){
+
+            } catch (Exception e){
+
             }
-
-            showPoints();
-        } catch (IllegalArgumentException illegalArgumentException){
-
-        } catch (Exception e){
-
         }
+
     }
 
     private void focusConcertOnCarouselScrolled(int position) {
-        ConcertReduced concertHome = concertsArrayList.get(position);
+        try {
+            ConcertReduced concertHome = concertsArrayList.get(position);
 
-        if (googleMap != null) {
-            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(concertHome.getPlaceLatitude(), concertHome.getPlaceLongitude()), 16));
+            if (googleMap != null) {
+                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(concertHome.getPlaceLatitude(), concertHome.getPlaceLongitude()), 16));
+            }
+        } catch (IndexOutOfBoundsException indexOutOfBoundsException){
+
         }
+
     }
 
     private PendingIntent getPendingIntent() {
@@ -385,19 +421,33 @@ public class MapFragment extends Fragment {
 
     private void createPoints(){
         concertsArrayList = new ArrayList<>();
+        String currentDate = Helpers.getTimeStamp();
 
-        Call<ArrayList<ConcertReduced>> call = Api.getInstance().getAPI().getConcertsNearby(Double.parseDouble(userLocation.latitude), Double.parseDouble(userLocation.longitude), radius);
+        loadingContainer.setVisibility(View.VISIBLE);
+        carrouselContainer.setVisibility(View.GONE);
+
+        Call<ArrayList<ConcertReduced>> call = Api.getInstance().getAPI().getConcertsNearby(Double.parseDouble(userLocation.latitude), Double.parseDouble(userLocation.longitude), radius, currentDate, startDate, endDate);
         call.enqueue(new Callback<ArrayList<ConcertReduced>>() {
             @Override
             public void onResponse(@NonNull Call<ArrayList<ConcertReduced>> call, Response<ArrayList<ConcertReduced>> response) {
                 switch (response.code()) {
                     case 200:
-                        Log.d(TAG, "Nearby concerts successful");
+                        loadingContainer.setVisibility(View.GONE);
+                        carrouselContainer.setVisibility(View.VISIBLE);
+
+                        Log.d(TAG, "Nearby concerts successful " + response.body().size());
                         concertsArrayList = response.body();
-                        initCarrousel();
+
+                        if (concertsCarousel != null)
+                            concertsCarousel.setSize(0);
+
+                        showPoints();
+                        initCarousel();
                         break;
                     default:
                         Log.d(TAG, "Nearby concerts default " + response.code());
+                        loadingContainer.setVisibility(View.GONE);
+                        carrouselContainer.setVisibility(View.VISIBLE);
                         break;
                 }
             }
@@ -405,6 +455,8 @@ public class MapFragment extends Fragment {
             @Override
             public void onFailure(@NonNull Call<ArrayList<ConcertReduced>> call, Throwable t) {
                 Log.d(TAG, "Nearby concerts onFailure " + t.getLocalizedMessage());
+                loadingContainer.setVisibility(View.GONE);
+                carrouselContainer.setVisibility(View.VISIBLE);
             }
         });
     }

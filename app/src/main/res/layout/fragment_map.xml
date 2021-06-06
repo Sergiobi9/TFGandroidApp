@@ -49,6 +49,7 @@
         android:apiKey="AIzaSyAQzNWnibhgysdR80Qr9VK2T-uKEwB93fE" />
 
     <RelativeLayout
+        android:id="@+id/carousel_container"
         android:layout_width="match_parent"
         android:layout_marginLeft="-40dp"
         android:layout_height="match_parent">
@@ -74,7 +75,39 @@
 
     </RelativeLayout>
 
+    <RelativeLayout
+        android:id="@+id/loading_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        android:layout_marginBottom="25dp">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="25dp"
+            android:translationZ="1dp">
+
+            <com.wang.avi.AVLoadingIndicatorView
+                style="?android:attr/progressBarStyle"
+                android:layout_width="wrap_content"
+                android:visibility="visible"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true"
+                app:indicatorName="BallPulseIndicator"
+                app:indicatorColor="@color/black">
+            </com.wang.avi.AVLoadingIndicatorView>
+
+        </LinearLayout>
+
+    </RelativeLayout>
 
 
 </FrameLayout>

@@ -82,7 +82,7 @@ public class HomeFragment extends Fragment {
 
     private UserSession userSession;
     private String userRole = null;
-    private int radius = 30;
+    private int radius = 100;
 
 
     private FusedLocationProviderClient fusedLocationProviderClient;
@@ -178,7 +178,12 @@ public class HomeFragment extends Fragment {
     }
 
     private void getNearConcerts(double latitude, double longitude){
-        Call<ArrayList<ConcertReduced>> call = Api.getInstance().getAPI().getConcertsNearby(latitude, longitude, radius);
+        String currentDate = Helpers.getTimeStamp();
+
+        String startDate  = Helpers.getTimeStamp();
+        String endDate  = Helpers.addYearToTimestamp();
+
+        Call<ArrayList<ConcertReduced>> call = Api.getInstance().getAPI().getConcertsNearby(latitude, longitude, radius, currentDate, startDate, endDate);
         call.enqueue(new Callback<ArrayList<ConcertReduced>>() {
             @Override
             public void onResponse(@NonNull Call<ArrayList<ConcertReduced>> call, Response<ArrayList<ConcertReduced>> response) {
