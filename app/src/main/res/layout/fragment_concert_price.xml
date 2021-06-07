@@ -41,7 +41,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/concert_price"
-            android:text="Un 5% del precio de las entradas iran destinadas a {{nombreApp}} para mejorar su funcionamiento"
+            android:text="Un 5% del precio de las entradas iran destinadas a Stereo para mejorar su funcionamiento"
             android:layout_marginTop="15dp"
             android:fontFamily="@font/lato"
             android:textSize="14sp">
@@ -53,7 +53,7 @@
             android:layout_width="match_parent"
             android:layout_marginLeft="50dp"
             android:layout_marginRight="50dp"
-            android:text="NEXT"
+            android:text="SIGUIENTE"
             android:background="@drawable/black_btn"
             android:fontFamily="@font/lato"
             android:textColor="@color/white"

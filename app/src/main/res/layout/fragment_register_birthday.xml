@@ -38,7 +38,7 @@
             android:layout_width="match_parent"
             android:layout_marginLeft="50dp"
             android:layout_marginRight="50dp"
-            android:text="NEXT"
+            android:text="SIGUIENTE"
             android:background="@drawable/black_btn"
             android:fontFamily="@font/lato"
             android:textColor="@color/white"
